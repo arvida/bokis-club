@@ -1,0 +1,55 @@
+<div class="relative">
+  <div class="h-48 md:h-64 overflow-hidden">
+    <%= image_tag @club.cover_url, alt: @club.name, class: "w-full h-full object-cover" %>
+    <div class="absolute inset-0 bg-gradient-to-t from-paper via-paper/50 to-transparent"></div>
+  </div>
+
+  <div class="relative -mt-16 px-6 max-w-2xl mx-auto">
+    <span class="inline-block text-xs font-medium tracking-widest text-vermillion mb-3">
+      <%= t("clubs.show.department") %>
+    </span>
+
+    <h1 class="font-display text-3xl md:text-4xl font-light mb-6">
+      <%= @club.name %>
+    </h1>
+
+    <% if @club.description.present? %>
+      <p class="text-ink-light leading-relaxed mb-8">
+        <%= @club.description %>
+      </p>
+    <% end %>
+
+    <div class="flex items-center justify-between mb-8">
+      <%= link_to club_members_path(@club), class: "flex items-center gap-2 text-sm text-ink-muted hover:text-ink transition-colors" do %>
+        <span><%= t("clubs.show.members", count: @club.members.count) %></span>
+        <span>→</span>
+      <% end %>
+
+      <% if @is_admin %>
+        <%= link_to t("clubs.show.settings"), edit_club_path(@club), class: "text-sm text-ink-muted hover:text-ink transition-colors" %>
+      <% end %>
+    </div>
+
+    <% if @is_member %>
+      <div class="pt-8 border-t border-cream">
+        <%= button_to t("clubs.show.leave"),
+            leave_club_path(@club),
+            method: :delete,
+            form: { data: { turbo_confirm: t("clubs.show.leave_confirm") } },
+            class: "text-sm text-ink-muted hover:text-vermillion transition-colors" %>
+      </div>
+    <% elsif @club.privacy == "open" %>
+      <div class="pt-8 border-t border-cream">
+        <%= button_to t("clubs.show.join"),
+            join_club_path(@club),
+            method: :post,
+            class: "px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors" %>
+      </div>
+    <% else %>
+      <div class="pt-8 border-t border-cream text-center">
+        <p class="text-ink-muted text-sm"><%= t("clubs.show.closed") %></p>
+        <p class="text-ink-subtle text-xs mt-1"><%= t("clubs.show.closed_hint") %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

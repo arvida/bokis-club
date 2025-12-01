@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_01_162029) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_01_173339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,34 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_162029) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "clubs", force: :cascade do |t|
+    t.string "cover_library_id"
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.text "description"
+    t.string "invite_code", null: false
+    t.datetime "invite_expires_at"
+    t.datetime "invite_used_at"
+    t.string "name", null: false
+    t.string "privacy", default: "closed", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_clubs_on_deleted_at"
+    t.index ["invite_code"], name: "index_clubs_on_invite_code", unique: true
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "club_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.string "role", default: "member", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["club_id"], name: "index_memberships_on_club_id"
+    t.index ["deleted_at"], name: "index_memberships_on_deleted_at"
+    t.index ["user_id", "club_id"], name: "index_memberships_on_user_id_and_club_id", unique: true
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
   create_table "passwordless_sessions", force: :cascade do |t|
     t.integer "authenticatable_id"
     t.string "authenticatable_type"
@@ -67,4 +95,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_162029) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "memberships", "clubs"
+  add_foreign_key "memberships", "users"
 end

@@ -1,0 +1,27 @@
+<div class="max-w-md mx-auto py-16 px-4 text-center">
+  <div class="mb-8 rounded-xl overflow-hidden aspect-video">
+    <%= image_tag @club.cover_url, alt: @club.name, class: "w-full h-full object-cover" %>
+  </div>
+
+  <p class="text-sm text-ink-muted mb-2">
+    <%= t("invites.show.invited_to") %>
+  </p>
+
+  <h1 class="font-display text-3xl font-light mb-4">
+    <%= @club.name %>
+  </h1>
+
+  <% if @club.description.present? %>
+    <p class="text-ink-light mb-6">
+      <%= @club.description %>
+    </p>
+  <% end %>
+
+  <p class="text-sm text-ink-muted mb-8">
+    <%= t("clubs.show.members", count: @club.members.count) %>
+  </p>
+
+  <%= form_with url: invite_path(@club.invite_code), method: :post do %>
+    <%= submit_tag t("invites.show.join"), class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+  <% end %>
+</div>

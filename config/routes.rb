@@ -12,6 +12,20 @@ Rails.application.routes.draw do
   get "mina-klubbar", to: "home#dashboard", as: :dashboard
   resource :profile, only: [ :show, :update ], path: "profil"
 
+  # Clubs
+  resources :clubs, path: "klubbar", only: [ :new, :create, :show, :edit, :update, :destroy ] do
+    resources :members, only: [ :index, :destroy ], path: "medlemmar" do
+      patch :promote, on: :member
+    end
+    post "join", on: :member, to: "clubs#join"
+    delete "leave", on: :member, to: "clubs#leave"
+    patch "regenerate_invite", on: :member, to: "clubs#regenerate_invite"
+  end
+
+  # Invites
+  get "bjud-in/:code", to: "invites#show", as: :invite
+  post "bjud-in/:code", to: "invites#create"
+
   # Root redirects to login or dashboard based on auth state
   root to: redirect("/logga-in")
 

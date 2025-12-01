@@ -1,0 +1,13 @@
+<%= link_to club_path(club), class: "group block rounded-xl overflow-hidden bg-paper-warm border border-cream hover:border-ink-muted/30 transition-all hover:shadow-lg" do %>
+  <div class="aspect-video overflow-hidden">
+    <%= image_tag club.cover_url, alt: club.name, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+  </div>
+  <div class="p-4">
+    <h3 class="font-display text-lg font-medium mb-1 group-hover:text-vermillion transition-colors">
+      <%= club.name %>
+    </h3>
+    <p class="text-sm text-ink-muted">
+      <%= t("clubs.show.members", count: club.members.count) %>
+    </p>
+  </div>
+<% end %>

@@ -88,4 +88,34 @@ class UserTest < ActiveSupport::TestCase
     user = create(:user, email: "  test@example.com  ")
     assert_equal "test@example.com", user.email
   end
+
+  test "user has many memberships" do
+    user = create(:user)
+    club1 = create(:club)
+    club2 = create(:club)
+    create(:membership, user: user, club: club1)
+    create(:membership, user: user, club: club2)
+
+    assert_equal 2, user.memberships.count
+  end
+
+  test "user has many clubs through memberships" do
+    user = create(:user)
+    club = create(:club)
+    create(:membership, user: user, club: club)
+
+    assert_includes user.clubs, club
+  end
+
+  test "user.clubs excludes soft deleted memberships" do
+    user = create(:user)
+    active_club = create(:club)
+    deleted_club = create(:club)
+    create(:membership, user: user, club: active_club)
+    deleted_membership = create(:membership, user: user, club: deleted_club)
+    deleted_membership.soft_delete!
+
+    assert_includes user.clubs, active_club
+    assert_not_includes user.clubs, deleted_club
+  end
 end

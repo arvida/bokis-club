@@ -3,6 +3,8 @@ class User < ApplicationRecord
   MAX_AVATAR_SIZE = 5.megabytes
 
   has_one_attached :avatar
+  has_many :memberships, -> { active }
+  has_many :clubs, through: :memberships
   passwordless_with :email
 
   validates :email, presence: true,

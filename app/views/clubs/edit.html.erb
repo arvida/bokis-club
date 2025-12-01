@@ -1,0 +1,91 @@
+<div class="max-w-lg mx-auto py-16">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="font-display text-3xl font-light">
+      <%= t("clubs.edit.title") %>
+    </h1>
+    <%= link_to "←", club_path(@club), class: "text-ink-muted hover:text-ink transition-colors" %>
+  </div>
+
+  <%= form_with model: @club, url: club_path(@club), method: :patch, class: "space-y-6" do |f| %>
+    <% if @club.errors.any? %>
+      <div class="p-4 bg-vermillion/10 border border-vermillion rounded-lg">
+        <ul class="text-sm text-vermillion">
+          <% @club.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :name,
+          t("clubs.new.name.label"),
+          class: "block text-sm font-medium text-ink-light mb-2" %>
+      <%= f.text_field :name,
+          required: true,
+          autofocus: true,
+          maxlength: 100,
+          placeholder: t("clubs.new.name.placeholder"),
+          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors" %>
+    </div>
+
+    <div>
+      <%= f.label :description,
+          t("clubs.new.description.label"),
+          class: "block text-sm font-medium text-ink-light mb-2" %>
+      <%= f.text_area :description,
+          rows: 3,
+          maxlength: 500,
+          placeholder: t("clubs.new.description.placeholder"),
+          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors resize-none" %>
+    </div>
+
+    <fieldset>
+      <legend class="block text-sm font-medium text-ink-light mb-3">
+        <%= t("clubs.new.privacy.label") %>
+      </legend>
+      <div class="space-y-3">
+        <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg border border-cream hover:border-ink-muted transition-colors has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
+          <%= f.radio_button :privacy, "closed", class: "mt-1 text-vermillion focus:ring-vermillion" %>
+          <div>
+            <span class="font-medium"><%= t("clubs.new.privacy.closed") %></span>
+            <p class="text-sm text-ink-muted"><%= t("clubs.new.privacy.closed_hint") %></p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg border border-cream hover:border-ink-muted transition-colors has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
+          <%= f.radio_button :privacy, "open", class: "mt-1 text-vermillion focus:ring-vermillion" %>
+          <div>
+            <span class="font-medium"><%= t("clubs.new.privacy.open") %></span>
+            <p class="text-sm text-ink-muted"><%= t("clubs.new.privacy.open_hint") %></p>
+          </div>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset data-controller="cover-picker">
+      <legend class="block text-sm font-medium text-ink-light mb-3">
+        <%= t("clubs.new.cover.label") %>
+      </legend>
+      <div class="grid grid-cols-4 gap-2">
+        <% Club::COVER_IMAGES.each do |cover| %>
+          <label class="relative cursor-pointer aspect-video rounded-lg overflow-hidden border-2 border-transparent has-[:checked]:border-vermillion has-[:checked]:ring-2 has-[:checked]:ring-vermillion/30 transition-all">
+            <%= f.radio_button :cover_library_id, cover[:id], checked: @club.cover_library_id == cover[:id], class: "sr-only", data: { cover_picker_target: "radio" } %>
+            <%= image_tag cover[:path], alt: cover[:name], class: "w-full h-full object-cover" %>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <%= f.submit t("clubs.edit.submit"),
+        class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+  <% end %>
+
+  <div class="mt-12 pt-8 border-t border-cream">
+    <h2 class="text-sm font-medium text-vermillion mb-4"><%= t("clubs.edit.danger_zone") %></h2>
+    <%= button_to t("clubs.edit.delete_club"),
+        club_path(@club),
+        method: :delete,
+        form: { data: { turbo_confirm: t("clubs.edit.delete_confirm") } },
+        class: "px-4 py-2 text-sm border border-vermillion text-vermillion rounded-lg hover:bg-vermillion hover:text-white transition-colors" %>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="max-w-2xl mx-auto py-8 px-4">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="font-display text-2xl font-light">
+        <%= t("members.index.title") %>
+      </h1>
+      <p class="text-sm text-ink-muted">
+        <%= t("clubs.show.members", count: @members.count) %>
+      </p>
+    </div>
+    <%= link_to "←", club_path(@club), class: "text-ink-muted hover:text-ink transition-colors" %>
+  </div>
+
+  <% if @is_admin %>
+    <div class="mb-8 p-4 bg-paper-warm rounded-xl border border-cream" data-testid="invite-section" data-controller="clipboard">
+      <h2 class="font-medium mb-3"><%= t("members.index.invite.title") %></h2>
+      <div class="flex gap-2">
+        <input type="text"
+               readonly
+               value="<%= @club.invite_url %>"
+               class="flex-1 px-3 py-2 text-sm bg-paper rounded-lg border border-cream"
+               data-clipboard-target="source">
+        <button type="button"
+                class="px-4 py-2 text-sm font-medium bg-ink text-paper rounded-lg hover:bg-ink-light transition-colors"
+                data-action="clipboard#copy"
+                data-clipboard-target="button">
+          <%= t("members.index.invite.copy") %>
+        </button>
+      </div>
+      <div class="mt-3 flex gap-4 text-sm">
+        <%= button_to t("members.index.invite.regenerate"),
+            regenerate_invite_club_path(@club),
+            method: :patch,
+            form: { data: { turbo_confirm: t("members.index.invite.regenerate_confirm") } },
+            class: "text-ink-muted hover:text-vermillion transition-colors" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="space-y-2">
+    <% @members.each do |membership| %>
+      <div class="member-row flex items-center justify-between p-4 bg-paper-warm rounded-xl border border-cream">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-sm font-medium">
+            <%= membership.user.initials %>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-medium"><%= membership.user.name %></span>
+              <% if membership.admin? %>
+                <span class="admin-badge px-2 py-0.5 text-xs font-medium bg-vermillion/10 text-vermillion rounded-full">
+                  <%= t("members.index.role.admin") %>
+                </span>
+              <% end %>
+              <% if membership.user == current_user %>
+                <span class="text-xs text-ink-muted">(du)</span>
+              <% end %>
+            </div>
+            <p class="text-sm text-ink-muted">
+              <%= t("members.index.since", date: l(membership.created_at, format: :month_year)) %>
+            </p>
+          </div>
+        </div>
+
+        <% if @is_admin && membership.user != current_user && !membership.admin? %>
+          <div class="relative" data-controller="dropdown">
+            <button type="button"
+                    class="p-2 text-ink-muted hover:text-ink transition-colors"
+                    data-action="dropdown#toggle">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+              </svg>
+            </button>
+            <div class="hidden absolute right-0 mt-2 w-48 bg-paper rounded-lg shadow-lg border border-cream py-1 z-10"
+                 data-dropdown-target="menu">
+              <%= button_to t("members.index.actions.promote"),
+                  promote_club_member_path(@club, membership.user),
+                  method: :patch,
+                  class: "w-full text-left px-4 py-2 text-sm text-ink hover:bg-cream transition-colors" %>
+              <%= button_to t("members.index.actions.remove"),
+                  club_member_path(@club, membership.user),
+                  method: :delete,
+                  class: "w-full text-left px-4 py-2 text-sm text-vermillion hover:bg-cream transition-colors" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
