@@ -23,6 +23,6 @@ class ApplicationController < ActionController::Base
     return if current_user
 
     save_passwordless_redirect_location!(User)
-    redirect_to login_path, flash: { notice: "Du måste logga in för att fortsätta" }
+    redirect_to login_path, flash: { notice: t("flash.login_required") }
   end
 end

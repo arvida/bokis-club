@@ -39,6 +39,7 @@ sv:
         inclusion: "finns inte i listan"
 
   flash:
+    login_required: "Du måste logga in för att fortsätta"
     actions:
       create:
         notice: "%{resource_name} har skapats"
@@ -48,6 +49,19 @@ sv:
         notice: "%{resource_name} har tagits bort"
     profile:
       updated: "Dina ändringar har sparats"
+
+  profiles:
+    show:
+      title: "Profil"
+      name: "Namn"
+      avatar: "Profilbild"
+      avatar_hint: "Valfritt. Max 5 MB."
+      language: "Språk"
+      languages:
+        sv: "Svenska"
+        en: "English"
+      submit: "Spara ändringar"
+      logout: "Logga ut"
 
   passwordless:
     sessions:

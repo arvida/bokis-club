@@ -19,7 +19,9 @@ class LocaleTest < ActionDispatch::IntegrationTest
 
   test "falls back to English when Swedish translation missing" do
     I18n.with_locale(:sv) do
-      assert_equal "Hello world", I18n.t("hello")
+      # Test fallback using a key that's defined only in English
+      I18n.backend.store_translations(:en, { test_fallback: "English fallback" })
+      assert_equal "English fallback", I18n.t("test_fallback")
     end
   end
 end

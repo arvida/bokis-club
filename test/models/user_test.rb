@@ -72,4 +72,20 @@ class UserTest < ActiveSupport::TestCase
     user = build(:user, name: "anna svensson")
     assert_equal "AS", user.initials
   end
+
+  test "initials returns empty string for blank name" do
+    user = build(:user)
+    user.name = ""
+    assert_equal "", user.initials
+  end
+
+  test "email is normalized to lowercase" do
+    user = create(:user, email: "TEST@EXAMPLE.COM")
+    assert_equal "test@example.com", user.email
+  end
+
+  test "email is stripped of whitespace" do
+    user = create(:user, email: "  test@example.com  ")
+    assert_equal "test@example.com", user.email
+  end
 end

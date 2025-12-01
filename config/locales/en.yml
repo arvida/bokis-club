@@ -1,31 +1,92 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  registrations:
+    new:
+      title: "Create account"
+      name:
+        label: "Name"
+        placeholder: "Your name"
+      email:
+        label: "Email address"
+        placeholder: "you@example.com"
+      submit: "Create account and send link"
+      login_link: "Already have an account? Log in"
+
+  helpers:
+    submit:
+      create: "Create"
+      update: "Save changes"
+      submit: "Submit"
+    label:
+      email: "Email"
+      name: "Name"
+      password: "Password"
+
+  errors:
+    messages:
+      blank: "is required"
+      taken: "is already in use"
+      too_long: "is too long (max %{count} characters)"
+      too_short: "is too short (min %{count} characters)"
+      invalid: "is invalid"
+
+  activerecord:
+    errors:
+      messages:
+        blank: "is required"
+        taken: "is already in use"
+        too_long: "is too long (max %{count} characters)"
+        invalid: "is invalid"
+        inclusion: "is not in the list"
+
+  flash:
+    login_required: "You must log in to continue"
+    actions:
+      create:
+        notice: "%{resource_name} has been created"
+      update:
+        notice: "%{resource_name} has been updated"
+      destroy:
+        notice: "%{resource_name} has been deleted"
+    profile:
+      updated: "Your changes have been saved"
+
+  profiles:
+    show:
+      title: "Profile"
+      name: "Name"
+      avatar: "Profile picture"
+      avatar_hint: "Optional. Max 5 MB."
+      language: "Language"
+      languages:
+        sv: "Svenska"
+        en: "English"
+      submit: "Save changes"
+      logout: "Log out"
+
+  passwordless:
+    sessions:
+      new:
+        title: "Log in to Bokis"
+        email:
+          label: "Email address"
+          placeholder: "you@example.com"
+        submit: "Send magic link"
+        signup_link: "No account? Create one here"
+      show:
+        title: "Check your inbox"
+        message: "We've sent a link to %{email}. Click the link to log in."
+      create:
+        success: "We've sent a link to %{email}"
+        error: "Something went wrong, please try again"
+        email_sent: "Check your email for the login link"
+        not_found: "No account found with that email"
+      destroy:
+        success: "You have been logged out"
+        signed_out: "You have been logged out"
+      errors:
+        invalid_token: "Invalid or expired link"
+        token_claimed: "This link has already been used"
+        session_expired: "This link has expired"
+    mailer:
+      sign_in:
+        subject: "Your login link for Bokis"
