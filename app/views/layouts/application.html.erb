@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title><%= content_for(:title) || "Bokis" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Bokis">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FDFBF7">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Google Fonts - Fraunces (display) and Outfit (body) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen">
+    <%= render "shared/skip_link" %>
+    <%= render "shared/masthead" %>
+
+    <main id="main-content" class="pt-14 pb-24 sm:pb-6">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <% if flash[:notice] %>
+          <div class="mb-4 p-4 bg-sage/10 text-sage rounded-lg">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="mb-4 p-4 bg-vermillion/10 text-vermillion rounded-lg">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </div>
+    </main>
+
+    <%= render "shared/dock" %>
+  </body>
+</html>

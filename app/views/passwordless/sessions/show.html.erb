@@ -1,0 +1,14 @@
+<div class="max-w-md mx-auto py-16 text-center">
+  <h1 class="font-display text-3xl font-light mb-4">
+    <%= t("passwordless.sessions.show.title") %>
+  </h1>
+
+  <p class="text-ink-muted mb-8">
+    <%= t("passwordless.sessions.show.message", email: @session&.authenticatable&.email || "din e-post") %>
+  </p>
+
+  <p class="text-sm text-ink-subtle">
+    Fick du ingen e-post? Kolla skräpposten eller
+    <%= link_to "försök igen", login_path, class: "text-vermillion hover:underline" %>.
+  </p>
+</div>

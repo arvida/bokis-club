@@ -1,0 +1,13 @@
+<% if signed_in? %>
+  <nav class="dock fixed bottom-0 left-0 right-0 z-40 pb-safe"
+       aria-label="Huvudnavigering">
+    <div class="mx-4 mb-4 bg-ink rounded-full shadow-lg">
+      <div class="flex items-center justify-around h-16 px-2">
+        <%= dock_link "Hem", dashboard_path, icon: :home %>
+        <%= dock_link "Träffar", "#", icon: :calendar %>
+        <%= dock_link "Chatt", "#", icon: :chat %>
+        <%= dock_link "Profil", profile_path, icon: :user %>
+      </div>
+    </div>
+  </nav>
+<% end %>

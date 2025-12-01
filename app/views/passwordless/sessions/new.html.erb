@@ -1,0 +1,32 @@
+<div class="max-w-md mx-auto py-16">
+  <h1 class="font-display text-3xl font-light text-center mb-8">
+    <%= t("passwordless.sessions.new.title") %>
+  </h1>
+
+  <%= form_with url: sign_in_path, method: :post, class: "space-y-6", data: { turbo: false } do |f| %>
+    <div>
+      <%= label_tag "passwordless[email]",
+          t("passwordless.sessions.new.email.label"),
+          class: "block text-sm font-medium text-ink-light mb-2" %>
+      <%= email_field_tag "passwordless[email]",
+          params.dig(:passwordless, :email),
+          required: true,
+          autofocus: true,
+          placeholder: t("passwordless.sessions.new.email.placeholder"),
+          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors" %>
+    </div>
+
+    <%# Honeypot field - hidden from humans, filled by bots %>
+    <div class="absolute left-[-9999px]" aria-hidden="true">
+      <%= label_tag :website, "Leave this empty", class: "block text-sm" %>
+      <%= text_field_tag :website, nil, tabindex: "-1", autocomplete: "off" %>
+    </div>
+
+    <%= submit_tag t("passwordless.sessions.new.submit"),
+        class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+  <% end %>
+
+  <p class="mt-6 text-center text-ink-muted">
+    <%= link_to t("passwordless.sessions.new.signup_link"), signup_path, class: "text-vermillion hover:text-vermillion-dark transition-colors" %>
+  </p>
+</div>

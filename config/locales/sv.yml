@@ -1,0 +1,71 @@
+sv:
+  registrations:
+    new:
+      title: "Skapa konto"
+      name:
+        label: "Namn"
+        placeholder: "Ditt namn"
+      email:
+        label: "E-postadress"
+        placeholder: "din@epost.se"
+      submit: "Skapa konto och skicka länk"
+      login_link: "Har du redan ett konto? Logga in"
+
+  helpers:
+    submit:
+      create: "Skapa"
+      update: "Spara ändringar"
+      submit: "Skicka"
+    label:
+      email: "E-post"
+      name: "Namn"
+      password: "Lösenord"
+
+  errors:
+    messages:
+      blank: "måste anges"
+      taken: "används redan"
+      too_long: "är för lång (max %{count} tecken)"
+      too_short: "är för kort (min %{count} tecken)"
+      invalid: "är ogiltig"
+
+  activerecord:
+    errors:
+      messages:
+        blank: "måste anges"
+        taken: "används redan"
+        too_long: "är för lång (max %{count} tecken)"
+        invalid: "är ogiltig"
+        inclusion: "finns inte i listan"
+
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} har skapats"
+      update:
+        notice: "%{resource_name} har uppdaterats"
+      destroy:
+        notice: "%{resource_name} har tagits bort"
+    profile:
+      updated: "Dina ändringar har sparats"
+
+  passwordless:
+    sessions:
+      new:
+        title: "Logga in på Bokis"
+        email:
+          label: "E-postadress"
+          placeholder: "din@epost.se"
+        submit: "Skicka magisk länk"
+        signup_link: "Inget konto? Skapa ett här"
+      show:
+        title: "Kolla din inkorg"
+        message: "Vi har skickat en länk till %{email}. Klicka på länken för att logga in."
+      create:
+        success: "Vi har skickat en länk till %{email}"
+        error: "Något gick fel, försök igen"
+      destroy:
+        success: "Du har loggat ut"
+    mailer:
+      sign_in:
+        subject: "Din inloggningslänk till Bokis"

@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: bokis_postgres
+    environment:
+      POSTGRES_USER: bokis_app
+      POSTGRES_PASSWORD: bokis_app
+    ports:
+      - "12721:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
