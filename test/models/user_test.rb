@@ -118,4 +118,50 @@ class UserTest < ActiveSupport::TestCase
     assert_includes user.clubs, active_club
     assert_not_includes user.clubs, deleted_club
   end
+
+  test "timezone is nil by default" do
+    user = User.new(email: "test@example.com", name: "Test")
+    assert_nil user.timezone
+  end
+
+  test "timezone can be set to valid timezone" do
+    user = build(:user, timezone: "America/New_York")
+    assert user.valid?
+    assert_equal "America/New_York", user.timezone
+  end
+
+  test "timezone must be valid if present" do
+    user = build(:user, timezone: "Invalid/Timezone")
+    assert_not user.valid?
+    assert_includes user.errors[:timezone], "är ogiltig"
+  end
+
+  test "timezone can be nil" do
+    user = build(:user, timezone: nil)
+    assert user.valid?
+  end
+
+  test "effective_timezone returns user timezone when set" do
+    user = build(:user, timezone: "America/New_York")
+    club = build(:club, timezone: "Europe/London")
+    assert_equal "America/New_York", user.effective_timezone(club)
+  end
+
+  test "effective_timezone returns club timezone when user timezone nil" do
+    user = build(:user, timezone: nil)
+    club = build(:club, timezone: "Europe/London")
+    assert_equal "Europe/London", user.effective_timezone(club)
+  end
+
+  test "effective_timezone returns default when both nil" do
+    user = build(:user, timezone: nil)
+    club = build(:club)
+    club.timezone = nil
+    assert_equal "Europe/Stockholm", user.effective_timezone(club)
+  end
+
+  test "effective_timezone returns default when club nil" do
+    user = build(:user, timezone: nil)
+    assert_equal "Europe/Stockholm", user.effective_timezone(nil)
+  end
 end

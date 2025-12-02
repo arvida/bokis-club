@@ -41,6 +41,12 @@ Rails.application.routes.draw do
         get :archive
       end
     end
+    resources :meetings, path: "traffar" do
+      member do
+        post :rsvp
+        get :calendar
+      end
+    end
     post "join", on: :member, to: "clubs#join"
     delete "leave", on: :member, to: "clubs#leave"
     patch "regenerate_invite", on: :member, to: "clubs#regenerate_invite"

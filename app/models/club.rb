@@ -17,11 +17,13 @@ class Club < ApplicationRecord
   has_many :members, through: :memberships, source: :user
   has_many :club_books, -> { active }
   has_many :books, through: :club_books
+  has_many :meetings, -> { active }
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }
   validates :privacy, inclusion: { in: %w[open closed] }
   validates :invite_code, presence: true, uniqueness: true
+  validate :timezone_must_be_valid
 
   before_validation :generate_invite_code, on: :create
 
@@ -135,5 +137,12 @@ class Club < ApplicationRecord
 
   def default_url_host
     Rails.application.config.action_mailer.default_url_options[:host] || "localhost"
+  end
+
+  def timezone_must_be_valid
+    return if timezone.blank?
+    return if ActiveSupport::TimeZone[timezone].present?
+
+    errors.add(:timezone, :invalid)
   end
 end

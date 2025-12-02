@@ -286,4 +286,21 @@ class ClubTest < ActiveSupport::TestCase
 
     assert_nil club.voting_deadline
   end
+
+  test "timezone defaults to Europe/Stockholm" do
+    club = Club.new(name: "Test Club")
+    assert_equal "Europe/Stockholm", club.timezone
+  end
+
+  test "timezone can be set to other valid timezones" do
+    club = build(:club, timezone: "America/New_York")
+    assert club.valid?
+    assert_equal "America/New_York", club.timezone
+  end
+
+  test "timezone must be a valid ActiveSupport timezone" do
+    club = build(:club, timezone: "Invalid/Timezone")
+    assert_not club.valid?
+    assert_includes club.errors[:timezone], "är ogiltig"
+  end
 end

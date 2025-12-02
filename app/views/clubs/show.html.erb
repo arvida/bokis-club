@@ -1,15 +1,16 @@
-<div class="relative">
-  <div class="h-48 md:h-64 overflow-hidden">
+<div>
+  <%# Hero image - visual moment, no text overlay %>
+  <div class="h-40 md:h-56 overflow-hidden">
     <%= image_tag @club.cover_url, alt: @club.name, class: "w-full h-full object-cover" %>
-    <div class="absolute inset-0 bg-gradient-to-t from-paper via-paper/50 to-transparent"></div>
   </div>
 
-  <div class="relative -mt-16 px-6 max-w-2xl mx-auto">
-    <span class="inline-block text-xs font-medium tracking-widest text-vermillion mb-3">
+  <%# Content on clean paper %>
+  <div class="px-6 pt-6 max-w-2xl mx-auto">
+    <span class="inline-block text-xs font-medium tracking-widest text-vermillion mb-2">
       <%= t("clubs.show.department") %>
     </span>
 
-    <h1 class="font-display text-3xl md:text-4xl font-light mb-6">
+    <h1 class="font-display text-3xl md:text-4xl font-light mb-4">
       <%= @club.name %>
     </h1>
 
@@ -17,6 +18,8 @@
       <p class="text-ink-light leading-relaxed mb-8">
         <%= @club.description %>
       </p>
+    <% else %>
+      <div class="mb-6"></div>
     <% end %>
 
     <%= render "club_books/now_reading", club: @club, is_admin: @is_admin %>
@@ -39,13 +42,30 @@
           club: @club,
           suggestions_count: @suggestions_count,
           voting_active: @voting_active,
-          is_admin: @is_admin %>
+          is_admin: @is_admin,
+          upcoming_meetings_count: @upcoming_meetings_count,
+          meeting_soon: @meeting_soon %>
+    <% end %>
+
+    <% if @is_member %>
+      <%= render "clubs/next_meeting", club: @club, is_admin: @is_admin %>
     <% end %>
 
     <div class="flex items-center justify-between mb-8">
-      <%= link_to club_members_path(@club), class: "flex items-center gap-2 text-sm text-ink-muted hover:text-ink transition-colors" do %>
-        <span><%= t("clubs.show.members", count: @club.members.count) %></span>
-        <span>→</span>
+      <%= link_to club_members_path(@club), class: "group flex items-center gap-3" do %>
+        <div class="flex -space-x-2">
+          <% @club.members.limit(4).each do |member| %>
+            <%= render "shared/avatar", user: member, size: :sm, border: true %>
+          <% end %>
+          <% if @club.members.count > 4 %>
+            <div class="w-8 h-8 rounded-full bg-ink/5 border-2 border-paper flex items-center justify-center">
+              <span class="text-xs text-ink-muted">+<%= @club.members.count - 4 %></span>
+            </div>
+          <% end %>
+        </div>
+        <span class="text-sm text-ink-muted group-hover:text-ink transition-colors">
+          <%= t("clubs.show.members", count: @club.members.count) %> →
+        </span>
       <% end %>
 
       <% if @is_admin %>

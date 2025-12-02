@@ -1,0 +1,101 @@
+<%= form_with model: [club, meeting], class: "space-y-6" do |f| %>
+  <% if meeting.errors.any? %>
+    <div class="bg-vermillion/10 border border-vermillion/30 rounded-lg p-4">
+      <ul class="text-sm text-vermillion space-y-1">
+        <% meeting.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% book_options = [] %>
+  <% if club.current_book %>
+    <% current_club_book = club.club_books.reading.first %>
+    <% book_options << [club.current_book.title + " (#{t('meetings.form.book_current')})", current_club_book.id] %>
+  <% end %>
+  <% if club.next_book %>
+    <% next_club_book = club.club_books.next_up.first %>
+    <% book_options << [club.next_book.title + " (#{t('meetings.form.book_next')})", next_club_book.id] %>
+  <% end %>
+
+  <% if book_options.any? %>
+    <div>
+      <%= f.label :club_book_id, t("meetings.form.book_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+      <%= f.select :club_book_id,
+          options_for_select([[t("meetings.form.book_none"), nil]] + book_options, meeting.club_book_id),
+          {},
+          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, t("meetings.form.title_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+    <%= f.text_field :title,
+        placeholder: t("meetings.form.title_placeholder"),
+        autofocus: true,
+        class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <%= f.label :scheduled_at, t("meetings.form.date_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+      <%= f.datetime_local_field :scheduled_at,
+          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+    </div>
+
+    <div>
+      <%= f.label :ends_at, t("meetings.form.end_time_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+      <%= f.datetime_local_field :ends_at,
+          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+    </div>
+  </div>
+
+  <div data-controller="location-toggle">
+    <fieldset>
+      <legend class="block text-sm font-medium text-ink-muted mb-2"><%= t("meetings.form.location_type_label") %></legend>
+      <div class="flex flex-wrap gap-3">
+        <label class="flex items-center gap-2 px-4 py-2 rounded-lg border border-cream cursor-pointer has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
+          <%= f.radio_button :location_type, "physical",
+              data: { action: "location-toggle#toggle", location_toggle_target: "radio" } %>
+          <span class="text-sm"><%= t("meetings.form.location_physical") %></span>
+        </label>
+        <label class="flex items-center gap-2 px-4 py-2 rounded-lg border border-cream cursor-pointer has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
+          <%= f.radio_button :location_type, "video",
+              data: { action: "location-toggle#toggle", location_toggle_target: "radio" } %>
+          <span class="text-sm"><%= t("meetings.form.location_video") %></span>
+        </label>
+        <label class="flex items-center gap-2 px-4 py-2 rounded-lg border border-cream cursor-pointer has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
+          <%= f.radio_button :location_type, "tbd",
+              data: { action: "location-toggle#toggle", location_toggle_target: "radio" } %>
+          <span class="text-sm"><%= t("meetings.form.location_tbd") %></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="mt-4 <%= meeting.location_type == 'tbd' ? 'hidden' : '' %>" data-location-toggle-target="field">
+      <%= f.label :location,
+          meeting.location_type == "video" ? t("meetings.form.video_label") : t("meetings.form.location_label"),
+          class: "block text-sm font-medium text-ink-muted mb-2",
+          data: { location_toggle_target: "label" } %>
+      <%= f.text_area :location,
+          placeholder: meeting.location_type == "video" ? t("meetings.form.video_placeholder") : t("meetings.form.location_placeholder"),
+          rows: 2,
+          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion",
+          data: { location_toggle_target: "input" } %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :notes, t("meetings.form.notes_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+    <%= f.text_area :notes,
+        placeholder: t("meetings.form.notes_placeholder"),
+        rows: 3,
+        class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+  </div>
+
+  <div class="pt-4">
+    <%= f.submit meeting.persisted? ? t("meetings.edit.submit") : t("meetings.new.submit"),
+        class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+  </div>
+<% end %>

@@ -27,7 +27,7 @@
   <% if @club_book.book.description.present? %>
     <div class="mb-8">
       <h2 class="font-display text-lg font-light mb-3"><%= t("club_books.show.description") %></h2>
-      <p class="text-ink-light leading-relaxed"><%= @club_book.book.description %></p>
+      <div class="text-ink-light leading-relaxed"><%= format_book_description(@club_book.book.description) %></div>
     </div>
   <% end %>
 
@@ -71,8 +71,6 @@
   <% end %>
 
   <div class="mt-4">
-    <%= link_to t("club_books.show.back_to_club"),
-        club_path(@club),
-        class: "text-ink-muted hover:text-ink transition-colors" %>
+    <%= render "shared/back_link", path: club_path(@club), text: t("club_books.show.back_to_club"), style: :button %>
   </div>
 </div>

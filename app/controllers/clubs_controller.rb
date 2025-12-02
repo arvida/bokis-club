@@ -26,6 +26,10 @@ class ClubsController < ApplicationController
     @voting_active = @voting_books.any?
     @next_club_book = @club.club_books.next_up.includes(:book).first
 
+    upcoming_meetings = @club.meetings.upcoming
+    @upcoming_meetings_count = upcoming_meetings.count
+    @meeting_soon = upcoming_meetings.where(scheduled_at: ..24.hours.from_now).exists?
+
     if @voting_active && @is_member
       @user_vote = Vote.joins(:club_book)
                        .includes(club_book: :book)

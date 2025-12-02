@@ -1,4 +1,25 @@
 module ApplicationHelper
+  def format_book_description(description)
+    return "" if description.blank?
+
+    html = sanitize(description)
+
+    # Match quotes like: "quote text" Attribution
+    # Handles both regular quotes and unicode quotes
+    html.gsub!(/[""]([^""]+)[""](\s+[\p{Lu}][\p{L}\s]+)(?=<|\z)/u) do |_match|
+      quote_text = ::Regexp.last_match(1)
+      attribution = ::Regexp.last_match(2).strip
+      <<~HTML.html_safe
+        <blockquote class="border-l-2 border-vermillion/30 pl-4 my-4 italic text-ink-muted">
+          <p>"#{quote_text}"</p>
+          <cite class="block mt-2 text-sm not-italic text-ink-subtle">— #{attribution}</cite>
+        </blockquote>
+      HTML
+    end
+
+    html.html_safe
+  end
+
   DOCK_ICONS = {
     home: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
     calendar: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',

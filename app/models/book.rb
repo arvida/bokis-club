@@ -24,4 +24,24 @@ class Book < ApplicationRecord
   def cover_placeholder_color
     id.to_i.even? ? "vermillion" : "sage"
   end
+
+  # Returns cover URL at specified size
+  # Google Books zoom levels: 1 (small), 2 (medium), 3 (large), 4 (extra large)
+  def cover_url_at_size(size = :medium)
+    return nil if cover_url.blank?
+
+    zoom = case size
+    when :small then 1
+    when :medium then 2
+    when :large then 3
+    when :extra_large then 4
+    else 2
+    end
+
+    if cover_url.include?("zoom=")
+      cover_url.gsub(/zoom=\d/, "zoom=#{zoom}")
+    else
+      cover_url
+    end
+  end
 end

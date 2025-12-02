@@ -138,4 +138,28 @@ class BookTest < ActiveSupport::TestCase
     book = create(:book)
     assert_equal book.cover_placeholder_color, book.cover_placeholder_color
   end
+
+  test "cover_url_at_size returns nil when cover_url is blank" do
+    book = build(:book, cover_url: nil)
+    assert_nil book.cover_url_at_size(:large)
+  end
+
+  test "cover_url_at_size changes zoom parameter for different sizes" do
+    book = build(:book, cover_url: "https://books.google.com/content?id=abc&zoom=1")
+
+    assert_equal "https://books.google.com/content?id=abc&zoom=1", book.cover_url_at_size(:small)
+    assert_equal "https://books.google.com/content?id=abc&zoom=2", book.cover_url_at_size(:medium)
+    assert_equal "https://books.google.com/content?id=abc&zoom=3", book.cover_url_at_size(:large)
+    assert_equal "https://books.google.com/content?id=abc&zoom=4", book.cover_url_at_size(:extra_large)
+  end
+
+  test "cover_url_at_size returns original url if no zoom parameter" do
+    book = build(:book, cover_url: "https://example.com/cover.jpg")
+    assert_equal "https://example.com/cover.jpg", book.cover_url_at_size(:large)
+  end
+
+  test "cover_url_at_size defaults to medium" do
+    book = build(:book, cover_url: "https://books.google.com/content?id=abc&zoom=1")
+    assert_equal "https://books.google.com/content?id=abc&zoom=2", book.cover_url_at_size
+  end
 end

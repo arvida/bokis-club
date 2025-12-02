@@ -6,13 +6,13 @@
   <% if club.current_book %>
     <% book = club.current_book %>
     <% club_book = club.current_club_book %>
-    <%= link_to club_club_book_path(club, club_book), class: "flex gap-6 group" do %>
-      <div class="flex-shrink-0 w-24">
-        <%= render "shared/book_cover", book: book, class: "w-full shadow-lg rounded group-hover:shadow-xl transition-shadow" %>
+    <%= link_to club_club_book_path(club, club_book), class: "flex gap-5 group" do %>
+      <div class="flex-shrink-0 w-28">
+        <%= render "shared/book_cover", book: book, size: :large, class: "w-full shadow-xl rounded group-hover:shadow-2xl group-hover:-translate-y-0.5 transition-all duration-300" %>
       </div>
 
-      <div class="flex-1">
-        <h2 class="font-display text-xl italic font-light mb-1 group-hover:text-vermillion transition-colors"><%= book.title %></h2>
+      <div class="flex-1 py-1">
+        <h2 class="font-display text-xl md:text-2xl italic font-light mb-1 group-hover:text-vermillion transition-colors"><%= book.title %></h2>
         <% if book.authors.present? %>
           <p class="text-ink-muted text-sm mb-2"><%= book.author_names %></p>
         <% end %>

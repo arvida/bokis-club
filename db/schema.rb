@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_02_135229) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -87,10 +87,29 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_135229) do
     t.datetime "invite_used_at"
     t.string "name", null: false
     t.string "privacy", default: "closed", null: false
+    t.string "timezone", default: "Europe/Stockholm"
     t.datetime "updated_at", null: false
     t.datetime "voting_deadline"
     t.index ["deleted_at"], name: "index_clubs_on_deleted_at"
     t.index ["invite_code"], name: "index_clubs_on_invite_code", unique: true
+  end
+
+  create_table "meetings", force: :cascade do |t|
+    t.bigint "club_book_id"
+    t.bigint "club_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.datetime "ends_at"
+    t.text "location"
+    t.string "location_type", default: "tbd"
+    t.text "notes"
+    t.datetime "scheduled_at", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["club_book_id"], name: "index_meetings_on_club_book_id"
+    t.index ["club_id", "scheduled_at"], name: "index_meetings_on_club_id_and_scheduled_at"
+    t.index ["club_id"], name: "index_meetings_on_club_id"
+    t.index ["deleted_at"], name: "index_meetings_on_deleted_at"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -120,11 +139,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_135229) do
     t.index ["identifier"], name: "index_passwordless_sessions_on_identifier", unique: true
   end
 
+  create_table "rsvps", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "meeting_id", null: false
+    t.string "response", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["meeting_id", "user_id"], name: "index_rsvps_on_meeting_id_and_user_id", unique: true
+    t.index ["meeting_id"], name: "index_rsvps_on_meeting_id"
+    t.index ["user_id"], name: "index_rsvps_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", null: false
     t.string "locale", default: "sv", null: false
     t.string "name", null: false
+    t.string "timezone"
     t.datetime "updated_at", null: false
     t.index "lower((email)::text)", name: "index_users_on_lowercase_email", unique: true
   end
@@ -144,8 +175,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_135229) do
   add_foreign_key "club_books", "books"
   add_foreign_key "club_books", "clubs"
   add_foreign_key "club_books", "users", column: "suggested_by_id"
+  add_foreign_key "meetings", "club_books"
+  add_foreign_key "meetings", "clubs"
   add_foreign_key "memberships", "clubs"
   add_foreign_key "memberships", "users"
+  add_foreign_key "rsvps", "meetings"
+  add_foreign_key "rsvps", "users"
   add_foreign_key "votes", "club_books"
   add_foreign_key "votes", "users"
 end

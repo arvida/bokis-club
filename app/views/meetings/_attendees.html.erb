@@ -1,0 +1,59 @@
+<%= turbo_frame_tag "attendees-#{meeting.id}" do %>
+  <div class="space-y-4">
+    <% attendees = meeting.attendees.to_a %>
+    <% maybe_attendees = meeting.maybe_attendees.to_a %>
+    <% declined = meeting.declined.to_a %>
+
+    <% if attendees.any? || maybe_attendees.any? || declined.any? %>
+      <% if attendees.any? %>
+        <div>
+          <p class="text-sm font-medium text-ink mb-2">
+            <%= t("meetings.attendees.coming") %> (<%= attendees.size %>)
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <% attendees.each do |user| %>
+              <span class="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-vermillion/10 text-vermillion text-sm rounded-full">
+                <%= render "shared/avatar", user: user, size: :xs %>
+                <%= user.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if maybe_attendees.any? %>
+        <div>
+          <p class="text-sm font-medium text-ink mb-2">
+            <%= t("meetings.attendees.maybe") %> (<%= maybe_attendees.size %>)
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <% maybe_attendees.each do |user| %>
+              <span class="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-sage/10 text-sage text-sm rounded-full">
+                <%= render "shared/avatar", user: user, size: :xs %>
+                <%= user.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if declined.any? %>
+        <div>
+          <p class="text-sm font-medium text-ink-muted mb-2">
+            <%= t("meetings.attendees.not_coming") %> (<%= declined.size %>)
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <% declined.each do |user| %>
+              <span class="inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-cream text-ink-muted text-sm rounded-full">
+                <%= render "shared/avatar", user: user, size: :xs %>
+                <%= user.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-ink-muted text-sm"><%= t("meetings.attendees.empty") %></p>
+    <% end %>
+  </div>
+<% end %>

@@ -120,6 +120,7 @@ sv:
     book_actions:
       suggest: "Föreslå bok"
       suggestions: "Bokförslag"
+      meetings: "Träffar"
       vote: "Rösta"
       vote_active: "Röstning pågår"
     voting_section:
@@ -318,3 +319,70 @@ sv:
       voting_deadline_passed: "Röstningen har stängts, du kan inte längre rösta"
       invalid_deadline: "Ogiltigt datum för röstningen"
       deadline_must_be_future: "Deadline måste vara i framtiden"
+    meetings:
+      created: "Träffen har skapats!"
+      updated: "Träffen har uppdaterats"
+      deleted: "Träffen har tagits bort"
+      rsvp_updated: "Ditt svar har sparats"
+      invalid_response: "Ogiltigt svar"
+
+  meetings:
+    index:
+      title: "Träffar"
+      upcoming: "Kommande"
+      past: "Tidigare"
+      empty_upcoming: "Inga planerade träffar"
+      empty_past: "Inga tidigare träffar"
+      new: "Ny träff"
+    new:
+      title: "Skapa träff"
+      submit: "Skapa träff"
+    edit:
+      title: "Redigera träff"
+      submit: "Spara ändringar"
+      delete: "Ta bort träff"
+      delete_confirm: "Är du säker på att du vill ta bort denna träff?"
+    show:
+      calendar: "Lägg till i kalender"
+      edit: "Redigera"
+      notes: "Anteckningar"
+      no_notes: "Inga anteckningar"
+    form:
+      book_label: "Bok"
+      book_none: "Ingen bok"
+      book_current: "läser nu"
+      book_next: "nästa"
+      title_label: "Titel"
+      title_placeholder: "Ge träffen ett namn"
+      date_label: "Datum och tid"
+      end_time_label: "Sluttid (valfritt)"
+      location_type_label: "Plats"
+      location_physical: "Fysisk plats"
+      location_video: "Videolänk"
+      location_tbd: "Bestäms senare"
+      location_label: "Adress"
+      location_placeholder: "Skriv adressen..."
+      video_label: "Länk"
+      video_placeholder: "https://zoom.us/j/..."
+      notes_label: "Anteckningar"
+      notes_placeholder: "Övrig information..."
+    rsvp:
+      "yes": "Kommer"
+      maybe: "Kanske"
+      "no": "Kan inte"
+      your_response: "Ditt svar:"
+    attendees:
+      coming: "Kommer"
+      maybe: "Kanske"
+      not_coming: "Kan inte"
+      empty: "Ingen har svarat ännu"
+    location:
+      physical: "Fysisk plats"
+      video: "Videolänk"
+      tbd: "Bestäms senare"
+      open_in_maps: "Öppna i Maps"
+    next_meeting:
+      department: "NÄSTA TRÄFF"
+      no_meeting: "Ingen planerad träff"
+      create: "Skapa träff"
+      view_all: "Visa alla träffar"

@@ -9,6 +9,23 @@
     <span class="text-sm font-medium text-ink"><%= t("clubs.book_actions.suggest") %></span>
   <% end %>
 
+  <%= link_to club_meetings_path(club),
+      class: "flex items-center gap-3 p-4 bg-paper-warm rounded-lg border border-cream hover:border-sage transition-colors" do %>
+    <span class="w-10 h-10 rounded-full bg-sage/10 flex items-center justify-center flex-shrink-0 relative">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+      </svg>
+      <% if local_assigns[:meeting_soon] %>
+        <span class="absolute -top-1 -right-1 w-3 h-3 bg-sage rounded-full animate-pulse"></span>
+      <% elsif local_assigns[:upcoming_meetings_count] && upcoming_meetings_count > 0 %>
+        <span class="absolute -top-1 -right-1 w-5 h-5 bg-sage text-white text-xs font-medium rounded-full flex items-center justify-center">
+          <%= upcoming_meetings_count %>
+        </span>
+      <% end %>
+    </span>
+    <span class="text-sm font-medium text-ink"><%= t("clubs.book_actions.meetings") %></span>
+  <% end %>
+
   <%= link_to club_club_books_path(club),
       class: "flex items-center gap-3 p-4 bg-paper-warm rounded-lg border border-cream hover:border-sage transition-colors" do %>
     <span class="w-10 h-10 rounded-full bg-sage/10 flex items-center justify-center flex-shrink-0 relative">

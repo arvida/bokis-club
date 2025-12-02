@@ -182,4 +182,41 @@ class ClubsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to club_path(club)
     assert_not club.reload.soft_deleted?
   end
+
+  test "show displays meetings card with count for members" do
+    sign_in_as(@user)
+    club = create(:club)
+    create(:membership, user: @user, club: club)
+    create(:meeting, club: club, scheduled_at: 1.week.from_now)
+    create(:meeting, club: club, scheduled_at: 2.weeks.from_now)
+
+    get club_path(club)
+
+    assert_response :success
+    assert_select "a[href='#{club_meetings_path(club)}']"
+  end
+
+  test "show displays pulse indicator when meeting within 24 hours" do
+    sign_in_as(@user)
+    club = create(:club)
+    create(:membership, user: @user, club: club)
+    create(:meeting, club: club, scheduled_at: 12.hours.from_now)
+
+    get club_path(club)
+
+    assert_response :success
+    assert_select ".animate-pulse"
+  end
+
+  test "show does not display pulse when no meeting within 24 hours" do
+    sign_in_as(@user)
+    club = create(:club)
+    create(:membership, user: @user, club: club)
+    create(:meeting, club: club, scheduled_at: 2.days.from_now)
+
+    get club_path(club)
+
+    assert_response :success
+    assert_select ".animate-pulse", count: 0
+  end
 end

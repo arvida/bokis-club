@@ -2,16 +2,14 @@
   <h1 class="font-display text-3xl font-light mb-8"><%= t("profiles.show.title") %></h1>
 
   <div class="mb-8 flex items-center gap-4">
-    <div class="w-20 h-20 rounded-full bg-sage text-white flex items-center justify-center text-2xl font-medium">
-      <%= current_user.initials %>
-    </div>
+    <%= render "shared/avatar", user: current_user, size: :xl %>
     <div>
       <p class="font-medium text-lg"><%= current_user.name %></p>
       <p class="text-ink-muted"><%= current_user.email %></p>
     </div>
   </div>
 
-  <%= form_with model: current_user, url: profile_path, method: :patch, class: "space-y-6" do |f| %>
+  <%= form_with model: current_user, url: profile_path, method: :patch, multipart: true, class: "space-y-6" do |f| %>
     <div>
       <%= f.label :name, t("profiles.show.name"), class: "block text-sm font-medium text-ink-light mb-2" %>
       <%= f.text_field :name,

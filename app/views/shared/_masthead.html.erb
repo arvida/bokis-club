@@ -12,9 +12,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 data-dropdown-target="button">
-          <span class="w-8 h-8 rounded-full bg-sage text-white flex items-center justify-center text-sm font-medium">
-            <%= current_user.initials %>
-          </span>
+          <%= render "shared/avatar", user: current_user, size: :sm %>
         </button>
 
         <nav data-dropdown-target="menu"

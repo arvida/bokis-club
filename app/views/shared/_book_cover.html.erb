@@ -1,5 +1,9 @@
-<% if book.cover_url.present? %>
-  <%= image_tag book.cover_url, alt: book.title, class: local_assigns[:class] %>
+<%# Usage: render "shared/book_cover", book: @book, class: "w-32", size: :large %>
+<%# Sizes: :small, :medium (default), :large, :extra_large %>
+<% cover_size = local_assigns[:size] || :medium %>
+<% url = book.cover_url_at_size(cover_size) %>
+<% if url.present? %>
+  <%= image_tag url, alt: book.title, class: local_assigns[:class] %>
 <% else %>
   <% color_class = book.cover_placeholder_color == "vermillion" ? "bg-vermillion" : "bg-sage" %>
   <div class="<%= color_class %> flex items-center justify-center aspect-[2/3] rounded <%= local_assigns[:class] %>">

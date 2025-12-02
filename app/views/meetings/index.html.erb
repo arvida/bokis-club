@@ -1,0 +1,39 @@
+<div class="max-w-2xl mx-auto px-6 py-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="font-display text-2xl font-light"><%= t("meetings.index.title") %></h1>
+
+    <% if @club.admin?(current_user) %>
+      <%= link_to t("meetings.index.new"),
+          new_club_meeting_path(@club),
+          class: "px-4 py-2 bg-vermillion text-white text-sm font-medium rounded-lg hover:bg-vermillion-dark transition-colors" %>
+    <% end %>
+  </div>
+
+  <div class="space-y-8">
+    <section>
+      <h2 class="text-sm font-medium text-ink-muted mb-4"><%= t("meetings.index.upcoming") %></h2>
+      <% if @upcoming_meetings.any? %>
+        <div class="space-y-4">
+          <% @upcoming_meetings.each do |meeting| %>
+            <%= render "meetings/meeting_card", meeting: meeting, club: @club %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-ink-muted text-center py-8"><%= t("meetings.index.empty_upcoming") %></p>
+      <% end %>
+    </section>
+
+    <section>
+      <h2 class="text-sm font-medium text-ink-muted mb-4"><%= t("meetings.index.past") %></h2>
+      <% if @past_meetings.any? %>
+        <div class="space-y-4">
+          <% @past_meetings.each do |meeting| %>
+            <%= render "meetings/meeting_card", meeting: meeting, club: @club %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-ink-muted text-center py-8"><%= t("meetings.index.empty_past") %></p>
+      <% end %>
+    </section>
+  </div>
+</div>

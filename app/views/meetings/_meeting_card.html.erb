@@ -1,0 +1,27 @@
+<%= link_to club_meeting_path(club, meeting), class: "block bg-cream/30 rounded-lg p-4 hover:bg-cream/50 transition-colors" do %>
+  <div class="flex items-start gap-4">
+    <div class="text-center flex-shrink-0 w-12">
+      <div class="text-2xl font-display font-light text-ink"><%= meeting.scheduled_at.day %></div>
+      <div class="text-xs text-ink-muted uppercase"><%= I18n.l(meeting.scheduled_at, format: "%b") %></div>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="font-medium text-ink truncate"><%= meeting.title %></h3>
+      <p class="text-sm text-ink-muted">
+        <%= I18n.l(meeting.scheduled_at, format: "%H:%M") %>
+        <% if meeting.location.present? %>
+          · <%= truncate(meeting.location, length: 30) %>
+        <% end %>
+      </p>
+      <% if meeting.attendee_count > 0 %>
+        <p class="text-xs text-sage mt-1">
+          <%= meeting.attendee_count %> <%= meeting.attendee_count == 1 ? "kommer" : "kommer" %>
+        </p>
+      <% end %>
+    </div>
+    <% if meeting.club_book&.book %>
+      <div class="flex-shrink-0 w-10">
+        <%= render "shared/book_cover", book: meeting.club_book.book, class: "w-full rounded shadow-sm" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

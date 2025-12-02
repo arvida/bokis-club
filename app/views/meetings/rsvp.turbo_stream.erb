@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "rsvp-pills-#{@meeting.id}" do %>
+  <%= render "meetings/rsvp_pills", meeting: @meeting, user_rsvp: @meeting.rsvp_for(current_user), club: @club %>
+<% end %>
+
+<%= turbo_stream.replace "attendees-#{@meeting.id}" do %>
+  <%= render "meetings/attendees", meeting: @meeting %>
+<% end %>

@@ -1,0 +1,16 @@
+<div class="max-w-2xl mx-auto px-6 py-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="font-display text-2xl font-light"><%= t("meetings.edit.title") %></h1>
+    <%= render "shared/back_link", path: club_meeting_path(@club, @meeting) %>
+  </div>
+
+  <%= render "form", meeting: @meeting, club: @club %>
+
+  <div class="mt-8 pt-8 border-t border-cream">
+    <%= button_to t("meetings.edit.delete"),
+        club_meeting_path(@club, @meeting),
+        method: :delete,
+        form: { data: { turbo_confirm: t("meetings.edit.delete_confirm") } },
+        class: "px-4 py-2 border border-ink-muted text-ink-muted text-sm font-medium rounded-lg hover:border-vermillion hover:text-vermillion transition-colors" %>
+  </div>
+</div>
