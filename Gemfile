@@ -71,4 +71,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "factory_bot_rails"
+  gem "webmock"
 end

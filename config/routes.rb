@@ -2,20 +2,44 @@ Rails.application.routes.draw do
   # Passwordless authentication
   passwordless_for :users, at: "/", as: :auth
 
-  # Named routes for Swedish URLs
-  get "logga-in", to: "passwordless/sessions#new", as: :login
-  delete "logga-ut", to: "passwordless/sessions#destroy", as: :logout
-  get "registrera", to: "registrations#new", as: :signup
-  post "registrera", to: "registrations#create"
+  # Authentication routes
+  get "login", to: "passwordless/sessions#new", as: :login
+  delete "logout", to: "passwordless/sessions#destroy", as: :logout
+  get "signup", to: "registrations#new", as: :signup
+  post "signup", to: "registrations#create"
 
   # Dashboard and profile
-  get "mina-klubbar", to: "home#dashboard", as: :dashboard
-  resource :profile, only: [ :show, :update ], path: "profil"
+  get "dashboard", to: "home#dashboard", as: :dashboard
+  resource :profile, only: [ :show, :update ]
+
+  # Books
+  resources :books, only: [] do
+    collection do
+      get :search
+    end
+  end
 
   # Clubs
-  resources :clubs, path: "klubbar", only: [ :new, :create, :show, :edit, :update, :destroy ] do
-    resources :members, only: [ :index, :destroy ], path: "medlemmar" do
+  resources :clubs, only: [ :new, :create, :show, :edit, :update, :destroy ] do
+    resources :members, only: [ :index, :destroy ] do
       patch :promote, on: :member
+    end
+    resources :club_books, path: "books", only: [ :index, :show, :new, :create, :destroy ] do
+      member do
+        patch :set_reading
+      end
+      collection do
+        get :suggest
+        post :suggest
+        post :start_voting
+        get :vote
+        post :vote
+        post :end_voting
+        post :start_next_book
+        delete :cancel_next_book
+        post :mark_complete
+        get :archive
+      end
     end
     post "join", on: :member, to: "clubs#join"
     delete "leave", on: :member, to: "clubs#leave"
@@ -23,11 +47,11 @@ Rails.application.routes.draw do
   end
 
   # Invites
-  get "bjud-in/:code", to: "invites#show", as: :invite
-  post "bjud-in/:code", to: "invites#create"
+  get "invite/:code", to: "invites#show", as: :invite
+  post "invite/:code", to: "invites#create"
 
   # Root redirects to login or dashboard based on auth state
-  root to: redirect("/logga-in")
+  root to: redirect("/login")
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

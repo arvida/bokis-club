@@ -19,6 +19,29 @@
       </p>
     <% end %>
 
+    <%= render "club_books/now_reading", club: @club, is_admin: @is_admin %>
+
+    <% if @next_club_book %>
+      <%= render "clubs/next_book_section",
+          club: @club,
+          next_club_book: @next_club_book,
+          is_admin: @is_admin %>
+    <% end %>
+
+    <% if @is_member && @voting_active %>
+      <%= render "clubs/voting_section",
+          club: @club,
+          voting_books: @voting_books,
+          user_vote: @user_vote,
+          is_admin: @is_admin %>
+    <% elsif @is_member && !@next_club_book %>
+      <%= render "clubs/book_actions",
+          club: @club,
+          suggestions_count: @suggestions_count,
+          voting_active: @voting_active,
+          is_admin: @is_admin %>
+    <% end %>
+
     <div class="flex items-center justify-between mb-8">
       <%= link_to club_members_path(@club), class: "flex items-center gap-2 text-sm text-ink-muted hover:text-ink transition-colors" do %>
         <span><%= t("clubs.show.members", count: @club.members.count) %></span>
@@ -36,7 +59,7 @@
             leave_club_path(@club),
             method: :delete,
             form: { data: { turbo_confirm: t("clubs.show.leave_confirm") } },
-            class: "text-sm text-ink-muted hover:text-vermillion transition-colors" %>
+            class: "px-4 py-2 border border-ink-muted text-ink-muted text-sm font-medium rounded-lg hover:border-vermillion hover:text-vermillion transition-colors" %>
       </div>
     <% elsif @club.privacy == "open" %>
       <div class="pt-8 border-t border-cream">

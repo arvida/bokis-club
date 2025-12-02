@@ -1,0 +1,22 @@
+<turbo-frame id="book-search-results">
+  <% if @query.blank? %>
+    <div data-testid="no-results" class="py-8 text-center text-ink-muted">
+      <p><%= t("books.search.enter_query") %></p>
+    </div>
+  <% elsif @results.empty? %>
+    <div data-testid="no-results" class="py-8 text-center">
+      <p class="text-ink-muted mb-4"><%= t("books.search.no_results") %></p>
+      <button type="button"
+              data-action="book-search#showManualEntry"
+              class="text-vermillion hover:text-vermillion-dark transition-colors">
+        <%= t("books.search.manual_entry") %>
+      </button>
+    </div>
+  <% else %>
+    <div class="divide-y divide-cream">
+      <% @results.each do |book| %>
+        <%= render "books/search_result", book: book %>
+      <% end %>
+    </div>
+  <% end %>
+</turbo-frame>

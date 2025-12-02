@@ -1,0 +1,18 @@
+<div class="flex gap-4 p-4 bg-cream/30 rounded-lg">
+  <div class="flex-shrink-0 w-16">
+    <%= render "shared/book_cover", book: club_book.book, class: "w-full shadow rounded" %>
+  </div>
+
+  <div class="flex-1 min-w-0">
+    <h3 class="font-display text-lg font-light mb-1 truncate"><%= club_book.book.title %></h3>
+    <% if club_book.book.authors.present? %>
+      <p class="text-ink-muted text-sm mb-2 truncate"><%= club_book.book.author_names %></p>
+    <% end %>
+
+    <% if club_book.completed_at.present? %>
+      <p class="text-ink-subtle text-xs">
+        <%= t("club_books.archive.completed_at", date: l(club_book.completed_at, format: :month_year)) %>
+      </p>
+    <% end %>
+  </div>
+</div>

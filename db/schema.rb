@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_01_173339) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_01_215114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,41 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_173339) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string "authors", default: [], array: true
+    t.string "cover_url"
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.text "description"
+    t.string "google_books_id"
+    t.string "isbn"
+    t.integer "page_count"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_books_on_deleted_at"
+    t.index ["google_books_id"], name: "index_books_on_google_books_id", unique: true, where: "(google_books_id IS NOT NULL)"
+  end
+
+  create_table "club_books", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.bigint "club_id", null: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.text "notes"
+    t.datetime "started_at"
+    t.string "status", default: "suggested", null: false
+    t.bigint "suggested_by_id"
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_club_books_on_book_id"
+    t.index ["club_id", "book_id"], name: "index_club_books_on_club_id_and_book_id_active", unique: true, where: "(deleted_at IS NULL)"
+    t.index ["club_id", "status"], name: "index_club_books_on_club_id_and_status"
+    t.index ["club_id"], name: "index_club_books_on_club_id"
+    t.index ["deleted_at"], name: "index_club_books_on_deleted_at"
+    t.index ["status"], name: "index_club_books_on_status"
+    t.index ["suggested_by_id"], name: "index_club_books_on_suggested_by_id"
   end
 
   create_table "clubs", force: :cascade do |t|
@@ -93,8 +128,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_173339) do
     t.index "lower((email)::text)", name: "index_users_on_lowercase_email", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.bigint "club_book_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["club_book_id", "user_id"], name: "index_votes_on_club_book_id_and_user_id", unique: true
+    t.index ["club_book_id"], name: "index_votes_on_club_book_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "club_books", "books"
+  add_foreign_key "club_books", "clubs"
+  add_foreign_key "club_books", "users", column: "suggested_by_id"
   add_foreign_key "memberships", "clubs"
   add_foreign_key "memberships", "users"
+  add_foreign_key "votes", "club_books"
+  add_foreign_key "votes", "users"
 end

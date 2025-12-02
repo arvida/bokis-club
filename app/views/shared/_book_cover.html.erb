@@ -1,0 +1,10 @@
+<% if book.cover_url.present? %>
+  <%= image_tag book.cover_url, alt: book.title, class: local_assigns[:class] %>
+<% else %>
+  <% color_class = book.cover_placeholder_color == "vermillion" ? "bg-vermillion" : "bg-sage" %>
+  <div class="<%= color_class %> flex items-center justify-center aspect-[2/3] rounded <%= local_assigns[:class] %>">
+    <span class="text-white text-xs font-medium px-2 text-center line-clamp-3">
+      <%= book.title %>
+    </span>
+  </div>
+<% end %>

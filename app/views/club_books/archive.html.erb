@@ -1,0 +1,25 @@
+<div class="max-w-2xl mx-auto px-6 py-8">
+  <span class="inline-block text-xs font-medium tracking-widest text-vermillion mb-3">
+    <%= t("club_books.archive.department") %>
+  </span>
+
+  <h1 class="font-display text-2xl font-light mb-8"><%= t("club_books.archive.title") %></h1>
+
+  <% if @completed_books.any? %>
+    <div class="space-y-4">
+      <% @completed_books.each do |club_book| %>
+        <%= render "club_books/archive_card", club_book: club_book %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <p class="text-ink-muted"><%= t("club_books.archive.empty") %></p>
+    </div>
+  <% end %>
+
+  <div class="mt-8 pt-8 border-t border-cream">
+    <%= link_to t("club_books.archive.back_to_club"),
+        club_path(@club),
+        class: "text-ink-muted hover:text-ink transition-colors" %>
+  </div>
+</div>

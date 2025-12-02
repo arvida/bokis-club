@@ -1,0 +1,36 @@
+<div class="flex gap-4 p-4 bg-cream/30 rounded-lg">
+  <div class="flex-shrink-0 w-16">
+    <%= render "shared/book_cover", book: club_book.book, class: "w-full shadow rounded" %>
+  </div>
+
+  <div class="flex-1 min-w-0">
+    <h3 class="font-display text-lg font-light mb-1 truncate"><%= club_book.book.title %></h3>
+    <% if club_book.book.authors.present? %>
+      <p class="text-ink-muted text-sm mb-2 truncate"><%= club_book.book.author_names %></p>
+    <% end %>
+
+    <% if club_book.suggested_by %>
+      <p class="text-ink-subtle text-xs mb-2">
+        <%= t("club_books.index.suggested_by", name: club_book.suggested_by.name) %>
+      </p>
+    <% end %>
+
+    <% if club_book.notes.present? %>
+      <p class="text-ink-light text-sm italic line-clamp-2"><%= club_book.notes %></p>
+    <% end %>
+  </div>
+
+  <% if @club.admin?(current_user) %>
+    <div class="flex-shrink-0 flex flex-col gap-2">
+      <%= button_to t("club_books.show.set_reading"),
+          set_reading_club_club_book_path(@club, club_book),
+          method: :patch,
+          class: "text-xs text-vermillion hover:text-vermillion-dark transition-colors" %>
+      <%= button_to t("club_books.show.remove"),
+          club_club_book_path(@club, club_book),
+          method: :delete,
+          form: { data: { turbo_confirm: t("club_books.show.remove_confirm") } },
+          class: "text-xs text-ink-muted hover:text-vermillion transition-colors" %>
+    </div>
+  <% end %>
+</div>

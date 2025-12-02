@@ -1,0 +1,78 @@
+<div class="max-w-2xl mx-auto px-6 py-8">
+  <span class="inline-block text-xs font-medium tracking-widest text-vermillion mb-3">
+    <%= t("club_books.show.status.#{@club_book.status}") %>
+  </span>
+
+  <div class="flex gap-6 mb-8">
+    <div class="flex-shrink-0 w-32">
+      <%= render "shared/book_cover", book: @club_book.book, class: "w-full shadow-lg rounded" %>
+    </div>
+
+    <div class="flex-1">
+      <h1 class="font-display text-2xl font-light mb-2"><%= @club_book.book.title %></h1>
+      <% if @club_book.book.authors.present? %>
+        <p class="text-ink-muted mb-4"><%= @club_book.book.author_names %></p>
+      <% end %>
+
+      <% if @club_book.book.page_count.present? %>
+        <p class="text-ink-subtle text-sm"><%= t("club_books.show.pages", count: @club_book.book.page_count) %></p>
+      <% end %>
+
+      <% if @club_book.book.isbn.present? %>
+        <p class="text-ink-subtle text-sm mt-1">ISBN: <%= @club_book.book.isbn %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @club_book.book.description.present? %>
+    <div class="mb-8">
+      <h2 class="font-display text-lg font-light mb-3"><%= t("club_books.show.description") %></h2>
+      <p class="text-ink-light leading-relaxed"><%= @club_book.book.description %></p>
+    </div>
+  <% end %>
+
+  <% if @club_book.notes.present? %>
+    <div class="mb-8 p-4 bg-cream/30 rounded-lg">
+      <h2 class="font-display text-sm font-medium mb-2"><%= t("club_books.show.notes") %></h2>
+      <p class="text-ink-light italic"><%= @club_book.notes %></p>
+      <% if @club_book.suggested_by %>
+        <p class="text-ink-subtle text-xs mt-2">
+          <%= t("club_books.index.suggested_by", name: @club_book.suggested_by.name) %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @club_book.completed_at.present? %>
+    <p class="text-ink-subtle text-sm mb-4">
+      <%= t("club_books.archive.completed_at", date: l(@club_book.completed_at, format: :month_year)) %>
+    </p>
+  <% elsif @club_book.started_at.present? %>
+    <p class="text-ink-subtle text-sm mb-4">
+      <%= t("club_books.show.started_at", date: l(@club_book.started_at, format: :month_year)) %>
+    </p>
+  <% end %>
+
+  <% if @club.admin?(current_user) %>
+    <div class="pt-8 border-t border-cream flex flex-wrap gap-3 items-center">
+      <% if @club_book.status == "suggested" %>
+        <%= button_to t("club_books.show.set_reading"),
+            set_reading_club_club_book_path(@club, @club_book),
+            method: :patch,
+            class: "px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors" %>
+      <% end %>
+
+      <%= button_to t("club_books.show.remove"),
+          club_club_book_path(@club, @club_book),
+          method: :delete,
+          form: { data: { turbo_confirm: t("club_books.show.remove_confirm") } },
+          class: "px-4 py-2 border border-ink-muted text-ink-muted text-sm font-medium rounded-lg hover:border-vermillion hover:text-vermillion transition-colors" %>
+    </div>
+  <% end %>
+
+  <div class="mt-4">
+    <%= link_to t("club_books.show.back_to_club"),
+        club_path(@club),
+        class: "text-ink-muted hover:text-ink transition-colors" %>
+  </div>
+</div>

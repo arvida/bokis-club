@@ -15,6 +15,8 @@ class Club < ApplicationRecord
   has_one_attached :cover_image
   has_many :memberships, -> { active }
   has_many :members, through: :memberships, source: :user
+  has_many :club_books, -> { active }
+  has_many :books, through: :club_books
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }
@@ -35,6 +37,34 @@ class Club < ApplicationRecord
 
   def member?(user)
     memberships.exists?(user: user)
+  end
+
+  def current_book
+    club_books.reading.includes(:book).first&.book
+  end
+
+  def current_club_book
+    club_books.reading.first
+  end
+
+  def next_book
+    club_books.next_up.includes(:book).first&.book
+  end
+
+  def next_club_book
+    club_books.next_up.first
+  end
+
+  def suggested_books
+    club_books.suggested.includes(:book)
+  end
+
+  def voting_books
+    club_books.voting.includes(:book)
+  end
+
+  def completed_books
+    club_books.completed.includes(:book).order(completed_at: :desc)
   end
 
   def cover_url

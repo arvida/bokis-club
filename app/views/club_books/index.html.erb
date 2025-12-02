@@ -1,0 +1,32 @@
+<div class="max-w-2xl mx-auto px-6 py-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="font-display text-2xl font-light"><%= t("club_books.index.title") %></h1>
+    <%= link_to t("club_books.index.suggest_book"),
+        suggest_club_club_books_path(@club),
+        class: "px-4 py-2 border border-vermillion text-vermillion text-sm font-medium rounded-lg hover:bg-vermillion hover:text-white transition-colors" %>
+  </div>
+
+  <% if @suggested_books.any? %>
+    <div class="space-y-4">
+      <% @suggested_books.each do |club_book| %>
+        <%= render "club_books/suggestion_card", club_book: club_book %>
+      <% end %>
+    </div>
+
+    <% if @club.admin?(current_user) && @suggested_books.size >= 2 %>
+      <div class="mt-8 pt-8 border-t border-cream text-center">
+        <%= button_to t("club_books.index.start_voting"),
+            start_voting_club_club_books_path(@club),
+            method: :post,
+            class: "px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors" %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-center py-12">
+      <p class="text-ink-muted mb-4"><%= t("club_books.index.empty") %></p>
+      <%= link_to t("club_books.index.suggest_book"),
+          suggest_club_club_books_path(@club),
+          class: "inline-block px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors" %>
+    </div>
+  <% end %>
+</div>

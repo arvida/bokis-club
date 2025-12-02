@@ -44,6 +44,8 @@ sv:
         too_long: "är för lång (max %{count} tecken)"
         invalid: "är ogiltig"
         inclusion: "finns inte i listan"
+        already_voted: "har redan röstat i denna omgång"
+        not_voting: "är inte under röstning"
 
   flash:
     login_required: "Du måste logga in för att fortsätta"
@@ -115,6 +117,22 @@ sv:
       join: "Gå med"
       closed: "Stängd bokcirkel"
       closed_hint: "Du behöver en inbjudan för att gå med"
+    book_actions:
+      suggest: "Föreslå bok"
+      suggestions: "Bokförslag"
+      vote: "Rösta"
+      vote_active: "Röstning pågår"
+    voting_section:
+      department: "RÖSTNING PÅGÅR"
+      title: "Rösta på nästa bok"
+      books_count:
+        one: "1 bok"
+        other: "%{count} böcker"
+    next_book_section:
+      department: "NÄSTA BOK"
+      start_reading: "Börja läsa"
+      cancel: "Ta bort från kö"
+      cancel_confirm: "Boken flyttas tillbaka till förslag. Fortsätt?"
 
   members:
     index:
@@ -186,3 +204,108 @@ sv:
     mailer:
       sign_in:
         subject: "Din inloggningslänk till Bokis"
+
+  books:
+    search:
+      placeholder: "Sök efter bok..."
+      enter_query: "Skriv för att söka efter böcker"
+      no_results: "Inga böcker hittades"
+      manual_entry: "Kan du inte hitta boken? Lägg till manuellt"
+      select: "Välj"
+      pages:
+        one: "1 sida"
+        other: "%{count} sidor"
+    manual_entry:
+      title: "Lägg till bok manuellt"
+      fields:
+        title: "Titel"
+        authors: "Författare"
+        authors_hint: "Separera med komma"
+        description: "Beskrivning"
+        page_count: "Antal sidor"
+        isbn: "ISBN"
+      submit: "Lägg till bok"
+      back_to_search: "Tillbaka till sökning"
+
+  club_books:
+    now_reading:
+      department: "VI LÄSER"
+      no_book: "Ingen bok vald ännu"
+      set_book: "Välj bok"
+      change_book: "Byt bok"
+      mark_complete: "Markera klar"
+      mark_complete_confirm: "Markera boken som färdigläst?"
+    new:
+      title: "Välj bok att läsa"
+      submit: "Börja läsa"
+      start_now: "Börja läsa nu"
+      queue_next: "Köa som nästa bok"
+    suggest:
+      title: "Föreslå en bok"
+      note_label: "Varför vill du läsa den här?"
+      note_placeholder: "Berätta varför du tror att klubben skulle gilla den..."
+      submit: "Föreslå bok"
+    index:
+      title: "Bokförslag"
+      empty: "Inga förslag ännu"
+      suggested_by: "Föreslagen av %{name}"
+      suggest_book: "Föreslå en bok"
+      start_voting: "Starta röstning"
+    vote:
+      department: "RÖSTNING"
+      title: "Rösta på nästa bok"
+      no_voting: "Ingen röstning pågår just nu"
+      suggestions_waiting:
+        one: "Det finns 1 bokförslag som väntar"
+        other: "Det finns %{count} bokförslag som väntar"
+      no_suggestions: "Lägg till bokförslag för att kunna starta en röstning"
+      back_to_suggestions: "Tillbaka till förslag"
+      already_voted: "Du har redan röstat i denna omgång"
+      votes:
+        one: "1 röst"
+        other: "%{count} röster"
+      vote: "Rösta"
+      voted: "Din röst"
+      your_vote: "Du har röstat på"
+      end_voting: "Avsluta röstning"
+      end_voting_confirm: "Boken med flest röster blir nästa bok. Fortsätt?"
+    archive:
+      department: "ARKIV"
+      title: "Lästa böcker"
+      empty: "Ni har inte läst klart några böcker ännu"
+      back_to_club: "Tillbaka till klubben"
+      completed_at: "Läst %{date}"
+    show:
+      pages: "%{count} sidor"
+      status:
+        suggested: "Föreslagen"
+        voting: "Under röstning"
+        reading: "Läser nu"
+        completed: "Läst"
+      set_reading: "Börja läsa denna bok"
+      remove: "Ta bort"
+      remove_confirm: "Är du säker på att du vill ta bort denna bok?"
+      description: "Om boken"
+      notes: "Varför denna bok?"
+      started_at: "Började läsas %{date}"
+      back_to_club: "Tillbaka till klubben"
+
+  flash:
+    club_books:
+      created: "Ni läser nu %{title}!"
+      queued: "%{title} har lagts till som nästa bok"
+      suggested: "Ditt förslag har lagts till!"
+      removed: "Boken har tagits bort"
+      book_not_found: "Kunde inte hitta boken"
+      not_enough_suggestions: "Det krävs minst 2 förslag för att starta röstning"
+      voting_started: "Röstningen har startat!"
+      vote_cast: "Din röst har registrerats!"
+      already_voted: "Du har redan röstat"
+      no_voting: "Ingen röstning pågår just nu"
+      voting_ended: "Vinnaren är %{title}! Klicka på 'Börja läsa' när ni är redo."
+      started_reading: "Ni läser nu %{title}!"
+      next_cancelled: "Boken har flyttats tillbaka till förslag"
+      no_next_book: "Det finns ingen bok i kön"
+      marked_complete: "%{title} har markerats som klar"
+      no_current_book: "Ingen bok läses just nu"
+      has_next_book: "Ni har redan en bok i kön. Starta eller ta bort den först."

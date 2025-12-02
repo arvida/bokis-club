@@ -1,0 +1,33 @@
+<div data-testid="book-result" class="flex gap-4 py-4">
+  <div class="flex-shrink-0 w-16">
+    <% if book[:cover_url].present? %>
+      <%= image_tag book[:cover_url], alt: book[:title], class: "w-full rounded shadow-sm" %>
+    <% else %>
+      <div class="w-full aspect-[2/3] bg-vermillion rounded shadow-sm flex items-center justify-center p-2">
+        <span class="text-white text-xs font-display text-center leading-tight"><%= truncate(book[:title], length: 30) %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="flex-1 min-w-0">
+    <h3 class="font-display text-lg font-medium text-ink truncate"><%= book[:title] %></h3>
+    <% if book[:authors].present? %>
+      <p class="text-ink-muted text-sm"><%= book[:authors].join(", ") %></p>
+    <% end %>
+    <% if book[:page_count].present? %>
+      <p class="text-ink-subtle text-xs mt-1"><%= t("books.search.pages", count: book[:page_count]) %></p>
+    <% end %>
+  </div>
+
+  <div class="flex-shrink-0">
+    <button type="button"
+            data-action="book-search#selectBook"
+            data-book-id="<%= book[:google_books_id] %>"
+            data-book-title="<%= book[:title] %>"
+            data-book-authors="<%= book[:authors].join(", ") %>"
+            data-book-cover="<%= book[:cover_url] %>"
+            class="px-4 py-2 bg-vermillion text-white text-sm font-medium rounded hover:bg-vermillion-dark transition-colors">
+      <%= t("books.search.select") %>
+    </button>
+  </div>
+</div>

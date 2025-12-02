@@ -21,6 +21,18 @@ class ClubsController < ApplicationController
     @membership = current_user.memberships.find_by(club: @club)
     @is_admin = @club.admin?(current_user)
     @is_member = @club.member?(current_user)
+    @suggestions_count = @club.suggested_books.count
+    @voting_books = @club.voting_books.includes(:book, :votes)
+    @voting_active = @voting_books.any?
+    @next_club_book = @club.club_books.next_up.includes(:book).first
+
+    if @voting_active && @is_member
+      @user_vote = Vote.joins(:club_book)
+                       .includes(club_book: :book)
+                       .where(user: current_user)
+                       .where(club_books: { club_id: @club.id, status: "voting" })
+                       .first
+    end
   end
 
   def edit

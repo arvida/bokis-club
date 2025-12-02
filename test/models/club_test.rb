@@ -260,6 +260,6 @@ class ClubTest < ActiveSupport::TestCase
     url = club.invite_url
 
     assert_includes url, club.invite_code
-    assert_includes url, "bjud-in"
+    assert_includes url, "invite"
   end
 end

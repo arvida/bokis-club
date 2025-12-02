@@ -1,6 +1,6 @@
 <header class="fixed top-0 left-0 right-0 z-40 bg-paper border-b border-cream">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-    <%= link_to root_path, class: "font-display text-2xl font-light italic text-ink hover:text-vermillion transition-colors" do %>
+    <%= link_to (signed_in? ? dashboard_path : root_path), class: "font-display text-2xl font-light italic text-ink hover:text-vermillion transition-colors" do %>
       Bokis
     <% end %>
 
