@@ -10,6 +10,20 @@
 
   <h2 class="font-display text-xl font-light mb-4"><%= t("clubs.voting_section.title") %></h2>
 
+  <% if club.voting_deadline.present? %>
+    <div class="text-sm mb-4"
+         data-controller="countdown"
+         data-countdown-deadline-value="<%= club.voting_deadline.iso8601 %>"
+         data-countdown-expired-text-value="<%= t('club_books.vote.voting_ended') %>">
+      <% if club.voting_deadline_passed? %>
+        <span class="text-vermillion"><%= t("club_books.vote.voting_ended") %></span>
+      <% else %>
+        <span class="text-ink-muted"><%= t("clubs.voting_section.deadline") %></span>
+        <span class="text-vermillion font-medium" data-countdown-target="display">...</span>
+      <% end %>
+    </div>
+  <% end %>
+
   <% has_voted = user_vote.present? %>
 
   <% if has_voted %>

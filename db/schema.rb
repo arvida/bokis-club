@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_01_215114) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_02_135229) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_215114) do
     t.string "name", null: false
     t.string "privacy", default: "closed", null: false
     t.datetime "updated_at", null: false
+    t.datetime "voting_deadline"
     t.index ["deleted_at"], name: "index_clubs_on_deleted_at"
     t.index ["invite_code"], name: "index_clubs_on_invite_code", unique: true
   end

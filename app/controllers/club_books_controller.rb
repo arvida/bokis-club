@@ -69,6 +69,20 @@ class ClubBooksController < ApplicationController
       return redirect_to club_club_books_path(@club), alert: t("flash.club_books.not_enough_suggestions")
     end
 
+    deadline = if params[:voting_deadline].present?
+                 parsed = Time.zone.parse(params[:voting_deadline])
+                 if parsed.nil?
+                   return redirect_to club_club_books_path(@club), alert: t("flash.club_books.invalid_deadline")
+                 end
+                 if parsed <= Time.current
+                   return redirect_to club_club_books_path(@club), alert: t("flash.club_books.deadline_must_be_future")
+                 end
+                 parsed
+    else
+                 7.days.from_now
+    end
+
+    @club.update!(voting_deadline: deadline)
     suggestions.update_all(status: "voting")
     redirect_to vote_club_club_books_path(@club), notice: t("flash.club_books.voting_started")
   end
@@ -83,8 +97,12 @@ class ClubBooksController < ApplicationController
                      .first
     @has_voted = @user_vote.present?
 
-    if request.post? && !@has_voted
-      cast_vote
+    if request.post?
+      if @club.voting_deadline_passed?
+        return redirect_to vote_club_club_books_path(@club), alert: t("flash.club_books.voting_deadline_passed")
+      end
+
+      cast_vote unless @has_voted
     end
   end
 
@@ -103,6 +121,7 @@ class ClubBooksController < ApplicationController
 
       ClubBook.where(id: voting_books.map(&:id)).where.not(id: winner.id).update_all(status: "suggested")
       Vote.where(club_book_id: voting_books.map(&:id)).delete_all
+      @club.clear_voting_deadline!
     end
 
     redirect_to club_path(@club), notice: t("flash.club_books.voting_ended", title: winner.book.title)

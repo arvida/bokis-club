@@ -41,4 +41,19 @@ class ClubBooksTest < ApplicationSystemTestCase
     assert_nil book.google_books_id
     assert_equal [ "Test Författare" ], book.authors
   end
+
+  test "clicking now reading section navigates to book detail" do
+    book = create(:book, title: "Test Bok")
+    club_book = create(:club_book, club: @club, book: book, status: "reading")
+
+    passwordless_sign_in(@admin)
+    visit club_path(@club)
+
+    within "[data-testid='now-reading']" do
+      click_link book.title
+    end
+
+    assert_current_path club_club_book_path(@club, club_book)
+    assert_selector "h1", text: book.title
+  end
 end

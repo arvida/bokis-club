@@ -125,6 +125,7 @@ sv:
     voting_section:
       department: "RÖSTNING PÅGÅR"
       title: "Rösta på nästa bok"
+      deadline: "Tid kvar:"
       books_count:
         one: "1 bok"
         other: "%{count} böcker"
@@ -251,9 +252,14 @@ sv:
       suggested_by: "Föreslagen av %{name}"
       suggest_book: "Föreslå en bok"
       start_voting: "Starta röstning"
+      start_voting_title: "Starta röstning"
+      voting_deadline_label: "Röstningen stänger"
+      voting_deadline_hint: "Standardvärde: 7 dagar från nu"
     vote:
       department: "RÖSTNING"
       title: "Rösta på nästa bok"
+      deadline: "Röstningen stänger om"
+      voting_ended: "Röstningen är avslutad"
       no_voting: "Ingen röstning pågår just nu"
       suggestions_waiting:
         one: "Det finns 1 bokförslag som väntar"
@@ -309,3 +315,6 @@ sv:
       marked_complete: "%{title} har markerats som klar"
       no_current_book: "Ingen bok läses just nu"
       has_next_book: "Ni har redan en bok i kön. Starta eller ta bort den först."
+      voting_deadline_passed: "Röstningen har stängts, du kan inte längre rösta"
+      invalid_deadline: "Ogiltigt datum för röstningen"
+      deadline_must_be_future: "Deadline måste vara i framtiden"

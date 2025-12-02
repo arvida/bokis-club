@@ -63,6 +63,14 @@ class Club < ApplicationRecord
     club_books.voting.includes(:book)
   end
 
+  def voting_deadline_passed?
+    voting_deadline.present? && voting_deadline < Time.current
+  end
+
+  def clear_voting_deadline!
+    update!(voting_deadline: nil)
+  end
+
   def completed_books
     club_books.completed.includes(:book).order(completed_at: :desc)
   end

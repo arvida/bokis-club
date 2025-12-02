@@ -36,6 +36,20 @@
           class: "text-vermillion hover:text-vermillion-dark transition-colors" %>
     </div>
   <% else %>
+    <% if @club.voting_deadline.present? %>
+      <div class="bg-cream/30 rounded-lg p-4 mb-6 text-center"
+           data-controller="countdown"
+           data-countdown-deadline-value="<%= @club.voting_deadline.iso8601 %>"
+           data-countdown-expired-text-value="<%= t('club_books.vote.voting_ended') %>">
+        <% if @club.voting_deadline_passed? %>
+          <p class="text-vermillion font-medium"><%= t("club_books.vote.voting_ended") %></p>
+        <% else %>
+          <p class="text-ink-muted text-sm"><%= t("club_books.vote.deadline") %></p>
+          <p class="text-ink font-medium" data-countdown-target="display">...</p>
+        <% end %>
+      </div>
+    <% end %>
+
     <% if @has_voted %>
       <div class="bg-sage/10 rounded-lg p-6 mb-8 flex items-center gap-4">
         <div class="w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center flex-shrink-0">

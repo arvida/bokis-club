@@ -262,4 +262,28 @@ class ClubTest < ActiveSupport::TestCase
     assert_includes url, club.invite_code
     assert_includes url, "invite"
   end
+
+  test "voting_deadline_passed? returns false when nil" do
+    club = build(:club, voting_deadline: nil)
+    assert_not club.voting_deadline_passed?
+  end
+
+  test "voting_deadline_passed? returns false before deadline" do
+    club = build(:club, voting_deadline: 1.day.from_now)
+    assert_not club.voting_deadline_passed?
+  end
+
+  test "voting_deadline_passed? returns true after deadline" do
+    club = build(:club, voting_deadline: 1.day.ago)
+    assert club.voting_deadline_passed?
+  end
+
+  test "clear_voting_deadline! sets voting_deadline to nil" do
+    club = create(:club, voting_deadline: 1.day.from_now)
+    assert_not_nil club.voting_deadline
+
+    club.clear_voting_deadline!
+
+    assert_nil club.voting_deadline
+  end
 end

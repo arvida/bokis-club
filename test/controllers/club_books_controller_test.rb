@@ -228,6 +228,65 @@ class ClubBooksControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("flash.club_books.has_next_book"), flash[:alert]
   end
 
+  test "start_voting sets voting_deadline from params" do
+    sign_in_as(@admin)
+    book1 = create(:book)
+    book2 = create(:book)
+    create(:club_book, club: @club, book: book1, status: "suggested")
+    create(:club_book, club: @club, book: book2, status: "suggested")
+
+    deadline = 3.days.from_now.beginning_of_day
+    post start_voting_club_club_books_path(@club), params: { voting_deadline: deadline.iso8601 }
+
+    @club.reload
+    assert_in_delta deadline, @club.voting_deadline, 1.second
+  end
+
+  test "start_voting uses default 7 days when no deadline param" do
+    sign_in_as(@admin)
+    book1 = create(:book)
+    book2 = create(:book)
+    create(:club_book, club: @club, book: book1, status: "suggested")
+    create(:club_book, club: @club, book: book2, status: "suggested")
+
+    post start_voting_club_club_books_path(@club)
+
+    @club.reload
+    assert_not_nil @club.voting_deadline
+    assert_in_delta 7.days.from_now, @club.voting_deadline, 1.minute
+  end
+
+  test "start_voting rejects past deadline" do
+    sign_in_as(@admin)
+    book1 = create(:book)
+    book2 = create(:book)
+    create(:club_book, club: @club, book: book1, status: "suggested")
+    create(:club_book, club: @club, book: book2, status: "suggested")
+
+    past_deadline = 1.day.ago
+    post start_voting_club_club_books_path(@club), params: { voting_deadline: past_deadline.iso8601 }
+
+    assert_redirected_to club_club_books_path(@club)
+    assert_equal I18n.t("flash.club_books.deadline_must_be_future"), flash[:alert]
+    @club.reload
+    assert_nil @club.voting_deadline
+  end
+
+  test "start_voting rejects invalid deadline" do
+    sign_in_as(@admin)
+    book1 = create(:book)
+    book2 = create(:book)
+    create(:club_book, club: @club, book: book1, status: "suggested")
+    create(:club_book, club: @club, book: book2, status: "suggested")
+
+    post start_voting_club_club_books_path(@club), params: { voting_deadline: "not-a-date" }
+
+    assert_redirected_to club_club_books_path(@club)
+    assert_equal I18n.t("flash.club_books.invalid_deadline"), flash[:alert]
+    @club.reload
+    assert_nil @club.voting_deadline
+  end
+
   # Voting page tests
   test "vote page shows voting books" do
     sign_in_as(@member)
@@ -262,6 +321,29 @@ class ClubBooksControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference("Vote.count") do
       post vote_club_club_books_path(@club), params: { club_book_id: club_book2.id }
+    end
+  end
+
+  test "vote is rejected after deadline" do
+    sign_in_as(@member)
+    @club.update!(voting_deadline: 1.hour.ago)
+    club_book = create(:club_book, club: @club, book: @book, status: "voting")
+
+    assert_no_difference("Vote.count") do
+      post vote_club_club_books_path(@club), params: { club_book_id: club_book.id }
+    end
+
+    assert_redirected_to vote_club_club_books_path(@club)
+    assert_equal I18n.t("flash.club_books.voting_deadline_passed"), flash[:alert]
+  end
+
+  test "vote is allowed before deadline" do
+    sign_in_as(@member)
+    @club.update!(voting_deadline: 1.day.from_now)
+    club_book = create(:club_book, club: @club, book: @book, status: "voting")
+
+    assert_difference("Vote.count", 1) do
+      post vote_club_club_books_path(@club), params: { club_book_id: club_book.id }
     end
   end
 
@@ -303,6 +385,18 @@ class ClubBooksControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Vote.count", -1) do
       post end_voting_club_club_books_path(@club)
     end
+  end
+
+  test "end_voting clears voting_deadline" do
+    sign_in_as(@admin)
+    @club.update!(voting_deadline: 3.days.from_now)
+    book1 = create(:book)
+    create(:club_book, club: @club, book: book1, status: "voting")
+
+    post end_voting_club_club_books_path(@club)
+
+    @club.reload
+    assert_nil @club.voting_deadline
   end
 
   test "end_voting handles tie by selecting one winner randomly" do
