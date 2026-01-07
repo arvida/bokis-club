@@ -3,15 +3,15 @@ class DiscussionQuestionGenerator
   CACHE_EXPIRY = 6.months
 
   FALLBACK_QUESTIONS_SV = [
-    "Vad tyckte du om huvudkaraktären?",
-    "Vilket tema i boken resonerade mest med dig?",
-    "Fanns det något i boken som överraskade dig?"
+    "Skulle du vilja hänga med huvudpersonen?",
+    "Vilken scen sitter kvar i huvudet?",
+    "Påminde boken dig om något i ditt eget liv?"
   ].freeze
 
   FALLBACK_QUESTIONS_EN = [
-    "What did you think of the main character?",
-    "Which theme in the book resonated most with you?",
-    "Was there anything in the book that surprised you?"
+    "Would you want to hang out with the main character?",
+    "Which scene is stuck in your head?",
+    "Did the book remind you of anything in your own life?"
   ].freeze
 
   FallbackQuestion = Struct.new(:text, :source, keyword_init: true)
@@ -68,22 +68,26 @@ class DiscussionQuestionGenerator
     language_name = language_name_for(language)
 
     <<~PROMPT.strip
-      You are creating discussion questions for an intimate book club of well-read, culturally
-      curious adults in their 30s and 40s. Think urban Europeans who read literary fiction,
-      attend gallery openings, and appreciate nuanced conversation over natural wine.
+      You are creating discussion questions for a book club of friends who read a lot.
+      They want real conversation, not a literature seminar.
 
       Your questions should:
-      - Be SHORT: one sentence, max 15 words. Punchy and direct.
-      - Probe deeper themes: identity, moral ambiguity, societal structures, the human condition
-      - Connect literature to contemporary life and personal experience
-      - Invite vulnerability and genuine reflection, not surface-level opinions
-      - Be intellectually stimulating without being pretentious
-      - Assume readers are thoughtful and can handle complexity
+      - Sound like something a friend would ask over drinks
+      - Be SHORT: one sentence, max 12 words
+      - Go beyond "what did you think" but stay grounded
+      - Connect to real life, feelings, or experiences
+      - Be specific to the book when possible
 
-      Avoid: cliches, obvious questions, school assignment vibes, em-dashes, compound questions.
+      Tone: Curious, direct, a bit cheeky. Like a smart friend who's genuinely interested.
 
-      IMPORTANT: Write your response in #{language_name}.
-      Respond ONLY with the questions, one per line, without numbering or other characters.
+      Avoid: Academic language, philosophical abstractions, "moral responsibility",
+      "the human condition", anything that sounds like a thesis question.
+
+      Bad example: "Hur påverkar detta din syn på författarens moraliska ansvar?"
+      Good example: "Skulle du kunna vara vän med huvudpersonen?"
+
+      IMPORTANT: Write in #{language_name}.
+      Respond ONLY with questions, one per line, no numbering.
     PROMPT
   end
 

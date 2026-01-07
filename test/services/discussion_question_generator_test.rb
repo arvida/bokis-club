@@ -75,7 +75,7 @@ class DiscussionQuestionGeneratorTest < ActiveSupport::TestCase
 
     assert_equal 3, result.size
     assert result.all? { |q| q.source == "fallback" }
-    assert_includes result.first.text, "huvudkaraktären"
+    assert_includes result.first.text, "huvudpersonen"
   end
 
   test "generate_for_book returns English fallback questions on API error" do
@@ -115,7 +115,7 @@ class DiscussionQuestionGeneratorTest < ActiveSupport::TestCase
     generator.generate_for_book(@book, language: "sv")
 
     system_msg = mock_client.calls.first[:messages].find { |m| m[:role] == "system" }
-    assert_includes system_msg[:content], "Write your response in Swedish"
+    assert_includes system_msg[:content], "Write in Swedish"
   end
 
   test "generate_for_book instructs response in English for en language" do
@@ -125,6 +125,6 @@ class DiscussionQuestionGeneratorTest < ActiveSupport::TestCase
     generator.generate_for_book(@book, language: "en")
 
     system_msg = mock_client.calls.first[:messages].find { |m| m[:role] == "system" }
-    assert_includes system_msg[:content], "Write your response in English"
+    assert_includes system_msg[:content], "Write in English"
   end
 end
