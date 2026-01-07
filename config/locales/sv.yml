@@ -286,9 +286,16 @@ sv:
         message: "Vi har skickat en länk till %{email}. Klicka på länken för att logga in."
       create:
         success: "Vi har skickat en länk till %{email}"
+        email_sent: "Vi har skickat en länk till %{email}"
         error: "Något gick fel, försök igen"
+        not_found: "Vi hittade inget konto med den e-postadressen"
       destroy:
         success: "Du har loggat ut"
+        signed_out: "Du har loggat ut"
+      errors:
+        invalid_token: "Ogiltig eller utgången länk"
+        token_claimed: "Den här länken har redan använts"
+        session_expired: "Länken har gått ut"
     mailer:
       sign_in:
         subject: "Din inloggningslänk till Bokis"
