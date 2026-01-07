@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] ||= "test"
+ENV["GOOGLE_BOOKS_API_KEY"] ||= "test_api_key"
 require_relative "../config/environment"
 require "rails/test_help"
 require "passwordless/test_helpers"

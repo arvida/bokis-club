@@ -6,7 +6,7 @@ class GoogleBooksService
   API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 
   def initialize(api_key: nil)
-    @api_key = api_key || Rails.application.credentials.dig(:google_books, :api_key)
+    @api_key = api_key || ENV["GOOGLE_BOOKS_API_KEY"] || Rails.application.credentials.dig(:google_books, :api_key)
   end
 
   def search(query, max_results: 10)

@@ -2,7 +2,7 @@ require "test_helper"
 
 class GoogleBooksServiceTest < ActiveSupport::TestCase
   setup do
-    @service = GoogleBooksService.new
+    @service = GoogleBooksService.new(api_key: "test_api_key")
   end
 
   test "search returns empty array for blank query" do
