@@ -11,7 +11,7 @@
 
 # UI/UX
 
-- The app will mainly be used on mobile. Ensure responsive design and usability on small screens.
+- The app will mainly be used on mobile. Ensure responsive design and usability on small/mobile screens.
 - Autofocus input fields where appropriate for better user experience.
 - Use clear and concise labels and placeholders in forms.
 - Avoid basic text links for actions, use buttons instead as this will be used on mobile.

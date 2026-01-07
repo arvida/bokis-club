@@ -1,5 +1,5 @@
 <%# Mobile-first hero: stacked on mobile, side-by-side on larger screens %>
-<div class="px-6 pt-6 pb-8">
+<div class="px-4 sm:px-6 pt-6 pb-8">
   <div class="mb-6">
     <%= render "shared/back_link", path: club_path(club) %>
   </div>
@@ -82,13 +82,13 @@
 </div>
 
 <%# RSVP Section - full width with background %>
-<div class="bg-paper-warm px-6 py-6">
+<div class="bg-paper-warm px-4 sm:px-6 py-6">
   <%= render "meetings/rsvp_pills", meeting: meeting, user_rsvp: user_rsvp, club: club %>
 </div>
 
 <%# Host %>
 <% if meeting.host.present? %>
-  <div class="px-6 py-4 border-t border-cream flex items-center gap-3">
+  <div class="px-4 sm:px-6 py-4 border-t border-cream flex items-center gap-3">
     <span class="text-xs font-medium tracking-widest text-ink-muted uppercase">
       <%= t("meetings.scheduled.host") %>
     </span>
@@ -102,13 +102,13 @@
 <% end %>
 
 <%# Attendees %>
-<div class="px-6 py-8 border-t border-cream">
+<div class="px-4 sm:px-6 py-8 border-t border-cream">
   <%= render "meetings/attendees", meeting: meeting %>
 </div>
 
 <%# Preparation Section - Discussion Questions %>
 <% if meeting.club_book&.book %>
-  <div class="px-6 py-8 border-t border-cream">
+  <div class="px-4 sm:px-6 py-8 border-t border-cream">
     <div class="flex items-center justify-between mb-4">
       <span class="text-xs font-medium tracking-widest text-vermillion uppercase">
         <%= t("meetings.scheduled.preparation") %>
@@ -125,7 +125,7 @@
 
 <%# Notes %>
 <% if meeting.notes.present? %>
-  <div class="px-6 py-8 border-t border-cream">
+  <div class="px-4 sm:px-6 py-8 border-t border-cream">
     <span class="inline-block text-xs font-medium tracking-widest text-vermillion uppercase mb-4">
       <%= t("meetings.show.notes") %>
     </span>
@@ -134,7 +134,7 @@
 <% end %>
 
 <%# Actions - sticky on mobile for thumb reach %>
-<div class="px-6 py-6 border-t border-cream bg-paper sticky bottom-0 md:static md:bg-transparent">
+<div class="px-4 sm:px-6 py-6 border-t border-cream bg-paper sticky bottom-0 md:static md:bg-transparent">
   <div class="flex gap-3">
     <% if club.admin?(current_user) %>
       <%= button_to start_club_meeting_path(club, meeting),
