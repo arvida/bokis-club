@@ -6,6 +6,7 @@ en:
     login: "Log in"
     footer: "Bokis – for book lovers"
     contact: "Contact"
+    install_hint: "Save as app: tap Share → Add to Home Screen"
 
   registrations:
     new:

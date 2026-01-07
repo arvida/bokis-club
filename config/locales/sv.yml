@@ -11,6 +11,7 @@ sv:
     login: "Logga in"
     footer: "Bokis – för bokälskare"
     contact: "Kontakt"
+    install_hint: "Spara som app: tryck Dela → Lägg till på hemskärmen"
 
   date:
     formats:

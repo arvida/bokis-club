@@ -22,11 +22,12 @@
     </div>
   </main>
 
-  <footer class="py-8 text-center text-sm text-ink-muted">
-    <p>
+  <footer class="py-8 text-center text-ink-muted">
+    <p class="text-sm mb-2">
       <%= t("landing.footer") %>
       <span class="mx-2">·</span>
       <%= mail_to "hi@bokis.club", t("landing.contact"), class: "hover:text-ink transition-colors" %>
     </p>
+    <p class="text-xs">📲 <%= t("landing.install_hint") %></p>
   </footer>
 </div>
