@@ -2,13 +2,14 @@ en:
   registrations:
     new:
       title: "Create account"
+      description: "Enter your details and we'll send a link to your email. Click the link to activate your account and log in."
       name:
         label: "Name"
         placeholder: "Your name"
       email:
         label: "Email address"
         placeholder: "you@example.com"
-      submit: "Create account and send link"
+      submit: "Create account"
       login_link: "Already have an account? Log in"
 
   helpers:
@@ -67,10 +68,11 @@ en:
     sessions:
       new:
         title: "Log in to Bokis"
+        description: "Enter your email address and we'll send you a login link. Click the link in the email to log in – no password needed."
         email:
           label: "Email address"
           placeholder: "you@example.com"
-        submit: "Send magic link"
+        submit: "Send login link"
         signup_link: "No account? Create one here"
       show:
         title: "Check your inbox"

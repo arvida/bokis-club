@@ -1,7 +1,11 @@
 <div class="max-w-md mx-auto py-16">
-  <h1 class="font-display text-3xl font-light text-center mb-8">
+  <h1 class="font-display text-3xl font-light text-center mb-4">
     <%= t("passwordless.sessions.new.title") %>
   </h1>
+
+  <p class="text-center text-ink-muted mb-8">
+    <%= t("passwordless.sessions.new.description") %>
+  </p>
 
   <%= form_with url: sign_in_path, method: :post, class: "space-y-6", data: { turbo: false } do |f| %>
     <div>

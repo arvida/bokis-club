@@ -9,13 +9,14 @@ sv:
   registrations:
     new:
       title: "Skapa konto"
+      description: "Fyll i dina uppgifter så skickar vi en länk till din e-post. Klicka på länken för att aktivera ditt konto och logga in."
       name:
         label: "Namn"
         placeholder: "Ditt namn"
       email:
         label: "E-postadress"
         placeholder: "din@epost.se"
-      submit: "Skapa konto och skicka länk"
+      submit: "Skapa konto"
       login_link: "Har du redan ett konto? Logga in"
 
   helpers:
@@ -246,10 +247,11 @@ sv:
     sessions:
       new:
         title: "Logga in på Bokis"
+        description: "Ange din e-postadress så skickar vi en inloggningslänk. Klicka på länken i mailet för att logga in – inget lösenord behövs."
         email:
           label: "E-postadress"
           placeholder: "din@epost.se"
-        submit: "Skicka magisk länk"
+        submit: "Skicka inloggningslänk"
         signup_link: "Inget konto? Skapa ett här"
       show:
         title: "Kolla din inkorg"
