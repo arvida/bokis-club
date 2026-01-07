@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head>
-    <title><%= content_for(:title) || "Bokis.club" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Bokis.club">
-    <meta name="mobile-web-app-capable" content="yes">
+    <title><%= content_for(:title) || "Bokis" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="theme-color" content="#FDFBF7">
+    <meta name="application-name" content="Bokis">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
 
-    <%= yield :head %>
+    <%# PWA manifest %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%# iOS PWA settings %>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Bokis">
 
-    <link rel="icon" href="/icon.png" type="image/png">
+    <%# Icons %>
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/icon-180.png">
+
+    <%= yield :head %>
 
     <%# Google Fonts - Fraunces (display) and Outfit (body) %>
     <link rel="preconnect" href="https://fonts.googleapis.com">
