@@ -5,6 +5,7 @@ sv:
     signup: "Kom igång"
     login: "Logga in"
     footer: "Bokis – för bokälskare"
+    contact: "Kontakt"
 
   date:
     formats:

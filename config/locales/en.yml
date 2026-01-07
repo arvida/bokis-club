@@ -5,6 +5,7 @@ en:
     signup: "Get started"
     login: "Log in"
     footer: "Bokis – for book lovers"
+    contact: "Contact"
 
   registrations:
     new:
