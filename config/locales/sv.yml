@@ -1,4 +1,8 @@
 sv:
+  pwa:
+    open_in_app: "Öppna Bokis-appen från hemskärmen för bästa upplevelsen"
+    dismiss: "Stäng"
+
   navigation:
     home: "Hem"
     meetings: "Träffar"

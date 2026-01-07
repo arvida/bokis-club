@@ -1,4 +1,8 @@
 en:
+  pwa:
+    open_in_app: "Open the Bokis app from your home screen for the best experience"
+    dismiss: "Close"
+
   landing:
     tagline: "For book clubs that want it simple"
     description: "Manage your book picks, plan meetups and get discussion questions – all in one place."
