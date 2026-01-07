@@ -18,7 +18,8 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Anna Svensson", user.name
     assert_equal "sv", user.locale
 
-    assert_redirected_to auth_sign_in_path(email: "anna@example.com")
+    assert_response :redirect
+    assert_match %r{/sign_in/[a-f0-9-]+}, response.location
   end
 
   test "rejects submission when honeypot is filled" do

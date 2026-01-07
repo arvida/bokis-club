@@ -14,9 +14,13 @@ class InvitesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: @club.name
   end
 
-  test "show redirects to login when not authenticated" do
+  test "show displays club info for valid invite when not authenticated" do
     get invite_path(@club.invite_code)
-    assert_redirected_to login_path
+
+    assert_response :success
+    assert_select "h1", text: @club.name
+    assert_select "a[href='#{login_path}']"
+    assert_select "a[href='#{signup_path}']"
   end
 
   test "show displays error for invalid code" do

@@ -50,7 +50,7 @@ class ClubBooksController < ApplicationController
   end
 
   def suggest
-    if request.get?
+    if request.get? || request.head?
       @club_book = @club.club_books.new
       render :suggest
     else
