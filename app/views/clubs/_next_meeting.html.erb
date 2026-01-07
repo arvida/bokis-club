@@ -11,8 +11,8 @@
   <% next_meeting = club.meetings.upcoming.first %>
 
   <% if next_meeting %>
-    <%= link_to club_meeting_path(club, next_meeting), class: "block group" do %>
-      <div class="flex gap-4">
+    <%= link_to club_meeting_path(club, next_meeting), class: "block group active:bg-sage/10 -mx-2 px-2 py-2 -my-2 rounded-lg transition-colors" do %>
+      <div class="flex gap-4 items-start">
         <div class="text-center flex-shrink-0">
           <div class="text-3xl font-display font-light text-ink group-hover:text-vermillion transition-colors">
             <%= next_meeting.scheduled_at.day %>
@@ -50,6 +50,13 @@
               </span>
             </div>
           <% end %>
+        </div>
+
+        <%# Arrow indicator for tap affordance %>
+        <div class="flex-shrink-0 self-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage/50 group-hover:text-sage group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
         </div>
       </div>
     <% end %>

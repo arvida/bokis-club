@@ -1,0 +1,97 @@
+<%# Native-style header bar - sticky %>
+<div class="sticky top-0 z-10 bg-paper/95 backdrop-blur-sm border-b border-cream/50">
+  <div class="flex items-center justify-between px-4 py-3">
+    <%= link_to club_path(club), class: "flex items-center gap-1.5 text-ink-muted active:text-ink transition-colors -ml-1 py-1" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+      </svg>
+      <span class="text-sm font-medium"><%= club.name %></span>
+    <% end %>
+
+    <%# Live indicator pill - more vibrant %>
+    <div class="live-badge flex items-center gap-1.5 px-3 py-1.5 rounded-full">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-sage"></span>
+      </span>
+      <span class="text-xs font-bold text-sage uppercase tracking-wide"><%= t("meetings.live.indicator") %></span>
+    </div>
+  </div>
+</div>
+
+<%# Meeting hero - exciting event feel %>
+<div class="live-hero px-5 pt-6 pb-5">
+  <div class="flex flex-col items-center text-center">
+    <%# Book cover with glow - centered and prominent %>
+    <% if meeting.club_book&.book %>
+      <%= link_to club_club_book_path(club, meeting.club_book), class: "book-glow mb-4 group" do %>
+        <%= render "shared/book_cover", book: meeting.club_book.book, size: :medium,
+            class: "w-24 rounded-lg shadow-xl group-active:scale-95 transition-transform" %>
+      <% end %>
+    <% end %>
+
+    <%# Meeting title - larger, more celebratory %>
+    <h1 class="font-display text-xl font-medium text-ink leading-snug mb-2"><%= meeting.title %></h1>
+
+    <%# Time info with icon %>
+    <div class="flex items-center gap-1.5 text-sm text-ink-muted">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+      <%= t("meetings.live.started_at", time: I18n.l(meeting.started_at, format: "%H:%M")) %>
+    </div>
+  </div>
+</div>
+
+<%# Check-in section - floating glass card %>
+<div class="px-4 -mt-2 mb-4">
+  <div class="glass-card glass-card--floating p-4">
+    <%= render "meetings/check_in_section", meeting: meeting, club: club, user_rsvp: user_rsvp %>
+  </div>
+</div>
+
+<%# Discussion Guide - elevated section %>
+<div class="section-elevated mx-4 rounded-2xl p-5 mb-4">
+  <%= render "meetings/discussion_guide_section", meeting: meeting, club: club %>
+</div>
+
+<%# Comments Section - inset feel %>
+<div class="section-inset rounded-t-3xl px-5 pt-5 pb-40">
+  <%= render "meetings/comments_section", meeting: meeting, club: club %>
+</div>
+
+<%# Floating bottom bar - comment form + admin actions %>
+<div class="floating-form" id="comment-form-container">
+  <div class="space-y-3">
+    <%# Comment form %>
+    <%= form_with model: [club, meeting, MeetingComment.new],
+        url: club_meeting_comments_path(club, meeting),
+        id: "new_meeting_comment",
+        class: "flex items-end gap-2" do |f| %>
+      <div class="flex-1 bg-cream/50 rounded-2xl px-4 py-2.5">
+        <%= f.text_area :content,
+            placeholder: t("meetings.comments.placeholder"),
+            rows: 1,
+            class: "w-full text-sm bg-transparent border-0 resize-none focus:outline-none focus:ring-0 placeholder:text-ink-subtle leading-relaxed" %>
+      </div>
+      <button type="submit" class="flex-shrink-0 w-9 h-9 bg-sage text-white rounded-full flex items-center justify-center active:scale-95 transition-transform cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.894 2.553a1 1 0 0 0-1.788 0l-7 14a1 1 0 0 0 1.169 1.409l5-1.429A1 1 0 0 0 9 15.571V11a1 1 0 1 1 2 0v4.571a1 1 0 0 0 .725.962l5 1.428a1 1 0 0 0 1.17-1.408l-7-14Z" />
+        </svg>
+      </button>
+    <% end %>
+
+    <%# Admin: End meeting button %>
+    <% if club.admin?(current_user) %>
+      <%= button_to end_meeting_club_meeting_path(club, meeting),
+          method: :post,
+          data: { turbo_confirm: t("meetings.live.end_confirm") },
+          class: "w-full inline-flex items-center justify-center gap-2 px-4 py-3 border border-ink-muted/30 text-ink-muted text-sm font-medium rounded-xl active:bg-vermillion/5 active:border-vermillion active:text-vermillion transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
+        </svg>
+        <%= t("meetings.live.end_meeting") %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

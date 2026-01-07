@@ -42,10 +42,24 @@ Rails.application.routes.draw do
       end
     end
     resources :meetings, path: "traffar" do
+      collection do
+        post :generate_questions
+      end
       member do
         post :rsvp
         get :calendar
+        post :start
+        post :end_meeting
+        post :resume
+        post :check_in
       end
+      resources :comments, controller: "meeting_comments", only: [ :create, :update, :destroy ]
+      resources :discussion_guide_items, only: [ :create, :update, :destroy ] do
+        member do
+          post :toggle
+        end
+      end
+      post "regenerate_questions", to: "discussion_guide_items#regenerate"
     end
     post "join", on: :member, to: "clubs#join"
     delete "leave", on: :member, to: "clubs#leave"

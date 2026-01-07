@@ -1,0 +1,60 @@
+<div id="check-in-section">
+  <div class="flex items-center justify-between">
+    <%# Count and title - broadcast to everyone %>
+    <%= turbo_frame_tag "checked-in-count" do %>
+      <div>
+        <span class="text-xs font-medium tracking-widest text-sage uppercase"><%= t("meetings.check_in.title") %></span>
+        <p class="text-sm text-ink-muted mt-1">
+          <%= t("meetings.check_in.count", count: meeting.checked_in_count, total: meeting.attendee_count) %>
+        </p>
+      </div>
+    <% end %>
+
+    <%# User-specific button - only updated for current user %>
+    <%= turbo_frame_tag "check-in-button" do %>
+      <% if user_rsvp&.response == "yes" %>
+        <% if user_rsvp.checked_in? %>
+          <div class="flex items-center gap-2 px-4 py-2.5 bg-sage/15 rounded-full animate-check-in">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-sm font-semibold text-sage"><%= t("meetings.check_in.checked_in") %></span>
+          </div>
+        <% else %>
+          <%= button_to check_in_club_meeting_path(club, meeting),
+              method: :post,
+              class: "inline-flex items-center gap-2 px-4 py-2 bg-sage text-white text-sm font-medium rounded-full active:scale-[0.98] transition-transform" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            <%= t("meetings.check_in.check_in") %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <span class="text-sm text-ink-muted italic"><%= t("meetings.check_in.rsvp_required") %></span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# Checked-in attendees avatars - broadcast to everyone %>
+  <%= turbo_frame_tag "checked-in-avatars" do %>
+    <% checked_in = meeting.checked_in_attendees %>
+    <% if checked_in.any? %>
+      <div class="flex items-center gap-2 mt-4">
+        <div class="flex -space-x-2">
+          <% checked_in.first(5).each do |user| %>
+            <%= render "shared/avatar", user: user, size: :sm, border: true %>
+          <% end %>
+          <% if checked_in.size > 5 %>
+            <div class="w-8 h-8 rounded-full border-2 border-paper bg-cream flex items-center justify-center">
+              <span class="text-xs font-medium text-ink-muted">+<%= checked_in.size - 5 %></span>
+            </div>
+          <% end %>
+        </div>
+        <span class="text-xs text-ink-muted">
+          <%= checked_in.first(2).map(&:name).join(", ") %><%= ", ..." if checked_in.size > 2 %>
+        </span>
+      </div>
+    <% end %>
+  <% end %>
+</div>

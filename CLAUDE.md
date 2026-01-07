@@ -33,3 +33,44 @@ All action buttons must have min 44px touch targets for mobile accessibility.
 - Neutral outline: For less prominent actions like "Byt bok", "Ta bort från kö"
 - Destructive hint: For actions like "Ta bort", "Lämna klubben" that should warn on hover
 - Navigation links (to other pages) can remain as text links
+
+## Form Styles
+
+Use these CSS classes for form inputs (defined in `app/assets/tailwind/application.css`):
+
+| Class | Use case |
+|-------|----------|
+| `form-input` | Text inputs, textareas, email/password fields |
+| `form-select` | Dropdown selects (includes custom arrow) |
+| `form-input--sage` | Sage-colored focus state (use for discussion questions) |
+
+**Features:**
+- White background with `cream-dark` border for contrast
+- 16px font size prevents iOS zoom on focus
+- Vermillion focus ring (sage variant available)
+- Proper padding for touch targets
+
+**Labels:** `class="block text-sm font-medium text-ink-muted mb-2"`
+
+## Editable Card Pattern
+
+For multi-line editable items with actions (reorder, delete), use this card pattern:
+
+```erb
+<div class="bg-white rounded-lg border border-cream-dark overflow-hidden">
+  <%= text_area_tag "name[]", value,
+      rows: 3,
+      placeholder: "...",
+      class: "w-full px-4 py-3 text-base border-0 focus:outline-none focus:ring-0 resize-none" %>
+  <div class="flex items-center justify-between px-2 py-1.5 bg-cream/30 border-t border-cream">
+    <div class="drag-handle flex items-center gap-1 px-2 py-1 cursor-grab text-ink-muted/60 hover:text-ink-muted">
+      <!-- drag icon + label -->
+    </div>
+    <button class="flex items-center gap-1 px-2 py-1 text-ink-muted/60 hover:text-vermillion">
+      <!-- remove icon + label -->
+    </button>
+  </div>
+</div>
+```
+
+**Use for:** Discussion questions, notes, any list of editable text items with actions.

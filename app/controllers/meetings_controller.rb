@@ -2,8 +2,8 @@ class MeetingsController < ApplicationController
   before_action :require_user!
   before_action :set_club
   before_action :require_membership!
-  before_action :require_admin!, except: [ :index, :show, :rsvp, :calendar ]
-  before_action :set_meeting, only: [ :show, :edit, :update, :destroy, :rsvp, :calendar ]
+  before_action :require_admin!, except: [ :index, :show, :rsvp, :calendar, :check_in ]
+  before_action :set_meeting, only: [ :show, :edit, :update, :destroy, :rsvp, :calendar, :start, :end_meeting, :resume, :check_in ]
 
   def index
     @upcoming_meetings = @club.meetings.upcoming.includes(:rsvps)
@@ -19,6 +19,7 @@ class MeetingsController < ApplicationController
     @meeting.title = default_title
     @meeting.scheduled_at = 2.weeks.from_now.change(hour: 18, min: 0)
     @meeting.club_book = @club.club_books.reading.first || @club.club_books.next_up.first
+    @meeting.host = current_user
   end
 
   def create
@@ -79,6 +80,70 @@ class MeetingsController < ApplicationController
               filename: "bokis-traff-#{@meeting.scheduled_at.to_date}.ics"
   end
 
+  def start
+    if @meeting.start!
+      redirect_to club_meeting_path(@club, @meeting), notice: t("flash.meetings.started")
+    else
+      redirect_to club_meeting_path(@club, @meeting), alert: t("flash.meetings.already_started")
+    end
+  end
+
+  def end_meeting
+    if @meeting.end!
+      # TODO: Phase 5 - redirect to rating page when ratings are implemented
+      # redirect_to new_club_club_book_rating_path(@club, @meeting.club_book) if @meeting.club_book
+      redirect_to club_meeting_path(@club, @meeting), notice: t("flash.meetings.ended")
+    else
+      redirect_to club_meeting_path(@club, @meeting), alert: t("flash.meetings.not_live")
+    end
+  end
+
+  def resume
+    if @meeting.resume!
+      redirect_to club_meeting_path(@club, @meeting), notice: t("flash.meetings.resumed")
+    else
+      redirect_to club_meeting_path(@club, @meeting), alert: t("flash.meetings.not_ended")
+    end
+  end
+
+  def check_in
+    rsvp = @meeting.rsvp_for(current_user)
+
+    if rsvp&.check_in!
+      respond_to do |format|
+        format.html { redirect_to club_meeting_path(@club, @meeting), notice: t("flash.meetings.checked_in") }
+        format.turbo_stream
+      end
+    else
+      redirect_to club_meeting_path(@club, @meeting), alert: t("flash.meetings.check_in_failed")
+    end
+  end
+
+  def generate_questions
+    club_book = @club.club_books.find_by(id: params[:club_book_id])
+
+    unless club_book&.book
+      render json: { questions: [] }
+      return
+    end
+
+    book = club_book.book
+    existing_questions = Array(params[:existing_questions]).map(&:strip).reject(&:blank?)
+
+    cached = book.discussion_questions.for_language(@club.language).fresh
+    available = cached.where.not(text: existing_questions)
+
+    if available.count < 1
+      generator = DiscussionQuestionGenerator.new
+      generator.regenerate_for_book(book, language: @club.language, count: 5)
+      cached = book.discussion_questions.for_language(@club.language).fresh.reload
+      available = cached.where.not(text: existing_questions)
+    end
+
+    question = available.random_sample(1).first
+    render json: { questions: question ? [ question.text ] : [] }
+  end
+
   private
 
   def set_club
@@ -102,7 +167,7 @@ class MeetingsController < ApplicationController
   end
 
   def meeting_params
-    params.require(:meeting).permit(:title, :scheduled_at, :ends_at, :location_type, :location, :notes, :club_book_id)
+    params.require(:meeting).permit(:title, :scheduled_at, :ends_at, :location_type, :location, :notes, :club_book_id, :host_id, initial_questions: [])
   end
 
   def default_title

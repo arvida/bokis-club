@@ -1,0 +1,20 @@
+<%= turbo_frame_tag "checked-in-avatars" do %>
+  <% checked_in = meeting.checked_in_attendees %>
+  <% if checked_in.any? %>
+    <div class="flex items-center gap-2 mt-4">
+      <div class="flex -space-x-2">
+        <% checked_in.first(5).each do |user| %>
+          <%= render "shared/avatar", user: user, size: :sm, border: true %>
+        <% end %>
+        <% if checked_in.size > 5 %>
+          <div class="w-8 h-8 rounded-full border-2 border-paper bg-cream flex items-center justify-center">
+            <span class="text-xs font-medium text-ink-muted">+<%= checked_in.size - 5 %></span>
+          </div>
+        <% end %>
+      </div>
+      <span class="text-xs text-ink-muted">
+        <%= checked_in.first(2).map(&:name).join(", ") %><%= ", ..." if checked_in.size > 2 %>
+      </span>
+    </div>
+  <% end %>
+<% end %>

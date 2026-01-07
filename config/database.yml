@@ -76,3 +76,7 @@ production:
     <<: *primary_production
     database: bokis_app_production_queue
     migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: bokis_app_production_cable
+    migrations_paths: db/cable_migrate

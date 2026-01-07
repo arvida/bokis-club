@@ -1,0 +1,29 @@
+<li id="<%= dom_id_for_item(item) %>" class="flex items-start gap-3 group">
+  <%= button_to toggle_club_meeting_discussion_guide_item_path(club, meeting, item["id"]),
+      method: :post,
+      class: "flex-shrink-0 mt-0.5 discussion-item-checkbox" do %>
+    <span class="block w-5 h-5 rounded border-2 transition-colors cursor-pointer
+                 <%= item["checked"] ? 'bg-sage border-sage' : 'border-ink-muted/30 active:border-sage' %>">
+      <% if item["checked"] %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-white" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      <% end %>
+    </span>
+  <% end %>
+
+  <span class="flex-1 text-ink leading-relaxed <%= item["checked"] ? 'line-through text-ink-muted' : '' %>">
+    <%= item["text"] %>
+  </span>
+
+  <% if defined?(current_user) && current_user && meeting.can_manage?(current_user) && item["source"] == "user_added" %>
+    <%= button_to club_meeting_discussion_guide_item_path(club, meeting, item["id"]),
+        method: :delete,
+        class: "opacity-0 group-hover:opacity-100 text-ink-muted hover:text-vermillion transition-all p-1",
+        data: { turbo_confirm: t("meetings.discussion_guide.delete_confirm") } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    <% end %>
+  <% end %>
+</li>

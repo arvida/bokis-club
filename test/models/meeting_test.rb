@@ -132,4 +132,154 @@ class MeetingTest < ActiveSupport::TestCase
     meeting = create(:meeting, club: club, club_book: club_book)
     assert_equal club_book, meeting.club_book
   end
+
+  # State machine tests
+  test "state defaults to scheduled" do
+    meeting = Meeting.new
+    assert_equal "scheduled", meeting.state
+  end
+
+  test "state must be valid" do
+    meeting = build(:meeting)
+    meeting.state = "invalid"
+    assert_not meeting.valid?
+    assert_includes meeting.errors[:state], "finns inte i listan"
+  end
+
+  test "scheduled? returns true when state is scheduled" do
+    meeting = build(:meeting, state: "scheduled")
+    assert meeting.scheduled?
+    assert_not meeting.live?
+    assert_not meeting.ended?
+  end
+
+  test "live? returns true when state is live" do
+    meeting = build(:meeting, state: "live")
+    assert meeting.live?
+    assert_not meeting.scheduled?
+    assert_not meeting.ended?
+  end
+
+  test "ended? returns true when state is ended" do
+    meeting = build(:meeting, state: "ended")
+    assert meeting.ended?
+    assert_not meeting.scheduled?
+    assert_not meeting.live?
+  end
+
+  test "start! transitions from scheduled to live" do
+    meeting = create(:meeting, state: "scheduled")
+
+    result = meeting.start!
+
+    assert result
+    assert meeting.live?
+    assert_not_nil meeting.started_at
+  end
+
+  test "start! does not change state if already live" do
+    meeting = create(:meeting, state: "live", started_at: 1.hour.ago)
+
+    result = meeting.start!
+
+    assert_not result
+    assert meeting.live?
+  end
+
+  test "start! preserves existing started_at when resuming" do
+    original_started_at = 2.hours.ago
+    meeting = create(:meeting, state: "ended", started_at: original_started_at)
+    meeting.resume!
+
+    assert meeting.live?
+    assert_equal original_started_at.to_i, meeting.started_at.to_i
+  end
+
+  test "end! transitions from live to ended" do
+    meeting = create(:meeting, state: "live", started_at: 1.hour.ago)
+
+    result = meeting.end!
+
+    assert result
+    assert meeting.ended?
+    assert_not_nil meeting.ended_at
+  end
+
+  test "end! does not change state if not live" do
+    meeting = create(:meeting, state: "scheduled")
+
+    result = meeting.end!
+
+    assert_not result
+    assert meeting.scheduled?
+  end
+
+  test "resume! transitions from ended to live" do
+    meeting = create(:meeting, state: "ended", started_at: 2.hours.ago, ended_at: 1.hour.ago)
+
+    result = meeting.resume!
+
+    assert result
+    assert meeting.live?
+    assert_nil meeting.ended_at
+    assert_not_nil meeting.started_at
+  end
+
+  test "resume! does not change state if not ended" do
+    meeting = create(:meeting, state: "live", started_at: 1.hour.ago)
+
+    result = meeting.resume!
+
+    assert_not result
+    assert meeting.live?
+  end
+
+  test "live scope returns only live meetings" do
+    scheduled_meeting = create(:meeting, state: "scheduled")
+    live_meeting = create(:meeting, state: "live", started_at: 1.hour.ago)
+    ended_meeting = create(:meeting, state: "ended", started_at: 2.hours.ago, ended_at: 1.hour.ago)
+
+    assert_includes Meeting.live, live_meeting
+    assert_not_includes Meeting.live, scheduled_meeting
+    assert_not_includes Meeting.live, ended_meeting
+  end
+
+  test "ended scope returns only ended meetings" do
+    scheduled_meeting = create(:meeting, state: "scheduled")
+    live_meeting = create(:meeting, state: "live", started_at: 1.hour.ago)
+    ended_meeting = create(:meeting, state: "ended", started_at: 2.hours.ago, ended_at: 1.hour.ago)
+
+    assert_includes Meeting.ended, ended_meeting
+    assert_not_includes Meeting.ended, scheduled_meeting
+    assert_not_includes Meeting.ended, live_meeting
+  end
+
+  test "regenerate_count defaults to 0" do
+    meeting = Meeting.new
+    assert_equal 0, meeting.regenerate_count
+  end
+
+  test "can_regenerate? returns true when count is less than 3" do
+    meeting = build(:meeting, regenerate_count: 0)
+    assert meeting.can_regenerate?
+
+    meeting.regenerate_count = 2
+    assert meeting.can_regenerate?
+  end
+
+  test "can_regenerate? returns false when count is 3 or more" do
+    meeting = build(:meeting, regenerate_count: 3)
+    assert_not meeting.can_regenerate?
+
+    meeting.regenerate_count = 5
+    assert_not meeting.can_regenerate?
+  end
+
+  test "increment_regenerate! increases count by 1" do
+    meeting = create(:meeting, regenerate_count: 1)
+
+    meeting.increment_regenerate!
+
+    assert_equal 2, meeting.regenerate_count
+  end
 end

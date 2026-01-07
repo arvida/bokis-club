@@ -1,0 +1,11 @@
+<%# Replace the toggled item %>
+<%= turbo_stream.replace dom_id_for_item(@toggled_item) do %>
+  <%= render "meetings/discussion_guide_item", item: @toggled_item, meeting: @meeting, club: @club %>
+<% end %>
+
+<%# Update the count %>
+<%= turbo_stream.replace "discussion-guide-count" do %>
+  <span id="discussion-guide-count" class="text-xs text-ink-muted">
+    <%= @discussion_guide.checked_count %>/<%= @discussion_guide.total_count %>
+  </span>
+<% end %>

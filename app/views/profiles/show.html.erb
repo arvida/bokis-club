@@ -11,9 +11,9 @@
 
   <%= form_with model: current_user, url: profile_path, method: :patch, multipart: true, class: "space-y-6" do |f| %>
     <div>
-      <%= f.label :name, t("profiles.show.name"), class: "block text-sm font-medium text-ink-light mb-2" %>
+      <%= f.label :name, t("profiles.show.name"), class: "block text-sm font-medium text-ink-muted mb-2" %>
       <%= f.text_field :name,
-          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors #{current_user.errors[:name].any? ? 'border-vermillion' : ''}",
+          class: "form-input #{current_user.errors[:name].any? ? 'border-vermillion' : ''}",
           required: true %>
       <% if current_user.errors[:name].any? %>
         <p class="mt-1 text-sm text-vermillion"><%= current_user.errors[:name].first %></p>
@@ -21,19 +21,19 @@
     </div>
 
     <div>
-      <%= f.label :avatar, t("profiles.show.avatar"), class: "block text-sm font-medium text-ink-light mb-2" %>
+      <%= f.label :avatar, t("profiles.show.avatar"), class: "block text-sm font-medium text-ink-muted mb-2" %>
       <%= f.file_field :avatar,
           accept: "image/*",
-          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-sage file:text-white file:cursor-pointer hover:file:bg-sage/80" %>
-      <p class="mt-1 text-sm text-ink-subtle"><%= t("profiles.show.avatar_hint") %></p>
+          class: "form-input file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-sage file:text-white file:cursor-pointer hover:file:bg-sage/80" %>
+      <p class="mt-1 text-xs text-ink-muted"><%= t("profiles.show.avatar_hint") %></p>
     </div>
 
     <div>
-      <%= f.label :locale, t("profiles.show.language"), class: "block text-sm font-medium text-ink-light mb-2" %>
+      <%= f.label :locale, t("profiles.show.language"), class: "block text-sm font-medium text-ink-muted mb-2" %>
       <%= f.select :locale,
           [[t("profiles.show.languages.sv"), "sv"], [t("profiles.show.languages.en"), "en"]],
           {},
-          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors" %>
+          class: "form-select" %>
     </div>
 
     <div class="pt-4">

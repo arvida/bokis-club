@@ -1,0 +1,27 @@
+<%# Clear the form %>
+<%= turbo_stream.replace "new_meeting_comment" do %>
+  <%= form_with model: [@club, @meeting, MeetingComment.new],
+      url: club_meeting_comments_path(@club, @meeting),
+      id: "new_meeting_comment",
+      class: "flex items-end gap-2" do |f| %>
+    <div class="flex-1 bg-cream/50 rounded-2xl px-4 py-2.5">
+      <%= f.text_area :content,
+          placeholder: t("meetings.comments.placeholder"),
+          rows: 1,
+          class: "w-full text-sm bg-transparent border-0 resize-none focus:outline-none focus:ring-0 placeholder:text-ink-subtle leading-relaxed" %>
+    </div>
+    <button type="submit" class="flex-shrink-0 w-10 h-10 bg-sage text-white rounded-full flex items-center justify-center active:scale-95 transition-transform cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M10.894 2.553a1 1 0 0 0-1.788 0l-7 14a1 1 0 0 0 1.169 1.409l5-1.429A1 1 0 0 0 9 15.571V11a1 1 0 1 1 2 0v4.571a1 1 0 0 0 .725.962l5 1.428a1 1 0 0 0 1.17-1.408l-7-14Z" />
+      </svg>
+    </button>
+  <% end %>
+<% end %>
+
+<%# Also append the comment for the current user (in case broadcast is slow) %>
+<%= turbo_stream.prepend "meeting-comments" do %>
+  <%= render @comment %>
+<% end %>
+
+<%# Hide the empty state if it was showing %>
+<%= turbo_stream.remove "comments-empty-state" %>

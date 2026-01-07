@@ -1,4 +1,4 @@
-<%= form_with model: [club, meeting], class: "space-y-6" do |f| %>
+<%= form_with model: [club, meeting], class: "space-y-6 pb-24 md:pb-0" do |f| %>
   <% if meeting.errors.any? %>
     <div class="bg-vermillion/10 border border-vermillion/30 rounded-lg p-4">
       <ul class="text-sm text-vermillion space-y-1">
@@ -25,50 +25,62 @@
       <%= f.select :club_book_id,
           options_for_select([[t("meetings.form.book_none"), nil]] + book_options, meeting.club_book_id),
           {},
-          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+          class: "form-select" %>
     </div>
   <% end %>
+
+  <%# Host selector - who's facilitating %>
+  <div>
+    <%= f.label :host_id, t("meetings.form.host_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+    <% host_options = club.members.map { |user| [user.name, user.id] } %>
+    <%= f.select :host_id,
+        options_for_select([[t("meetings.form.host_none"), nil]] + host_options, meeting.host_id),
+        {},
+        class: "form-select" %>
+    <p class="text-xs text-ink-muted mt-1"><%= t("meetings.form.host_hint") %></p>
+  </div>
 
   <div>
     <%= f.label :title, t("meetings.form.title_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
     <%= f.text_field :title,
         placeholder: t("meetings.form.title_placeholder"),
         autofocus: true,
-        class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+        class: "form-input" %>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <%= f.label :scheduled_at, t("meetings.form.date_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
-      <%= f.datetime_local_field :scheduled_at,
-          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
-    </div>
-
-    <div>
-      <%= f.label :ends_at, t("meetings.form.end_time_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
-      <%= f.datetime_local_field :ends_at,
-          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
-    </div>
+  <div>
+    <%= f.label :scheduled_at, t("meetings.form.date_label"), class: "block text-sm font-medium text-ink-muted mb-2" %>
+    <%= f.datetime_local_field :scheduled_at, class: "form-input" %>
   </div>
 
   <div data-controller="location-toggle">
     <fieldset>
-      <legend class="block text-sm font-medium text-ink-muted mb-2"><%= t("meetings.form.location_type_label") %></legend>
-      <div class="flex flex-wrap gap-3">
-        <label class="flex items-center gap-2 px-4 py-2 rounded-lg border border-cream cursor-pointer has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
-          <%= f.radio_button :location_type, "physical",
+      <legend class="block text-sm font-medium text-ink-muted mb-3"><%= t("meetings.form.location_type_label") %></legend>
+      <div class="flex flex-wrap gap-2">
+        <label class="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-white border border-cream-dark/50 cursor-pointer active:scale-[0.98] transition-all has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5 has-[:checked]:shadow-sm">
+          <%= f.radio_button :location_type, "physical", class: "sr-only",
               data: { action: "location-toggle#toggle", location_toggle_target: "radio" } %>
-          <span class="text-sm"><%= t("meetings.form.location_physical") %></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+          </svg>
+          <span class="text-sm font-medium"><%= t("meetings.form.location_physical") %></span>
         </label>
-        <label class="flex items-center gap-2 px-4 py-2 rounded-lg border border-cream cursor-pointer has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
-          <%= f.radio_button :location_type, "video",
+        <label class="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-white border border-cream-dark/50 cursor-pointer active:scale-[0.98] transition-all has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5 has-[:checked]:shadow-sm">
+          <%= f.radio_button :location_type, "video", class: "sr-only",
               data: { action: "location-toggle#toggle", location_toggle_target: "radio" } %>
-          <span class="text-sm"><%= t("meetings.form.location_video") %></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+          </svg>
+          <span class="text-sm font-medium"><%= t("meetings.form.location_video") %></span>
         </label>
-        <label class="flex items-center gap-2 px-4 py-2 rounded-lg border border-cream cursor-pointer has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5">
-          <%= f.radio_button :location_type, "tbd",
+        <label class="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-white border border-cream-dark/50 cursor-pointer active:scale-[0.98] transition-all has-[:checked]:border-vermillion has-[:checked]:bg-vermillion/5 has-[:checked]:shadow-sm">
+          <%= f.radio_button :location_type, "tbd", class: "sr-only",
               data: { action: "location-toggle#toggle", location_toggle_target: "radio" } %>
-          <span class="text-sm"><%= t("meetings.form.location_tbd") %></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          <span class="text-sm font-medium"><%= t("meetings.form.location_tbd") %></span>
         </label>
       </div>
     </fieldset>
@@ -81,9 +93,91 @@
       <%= f.text_area :location,
           placeholder: meeting.location_type == "video" ? t("meetings.form.video_placeholder") : t("meetings.form.location_placeholder"),
           rows: 2,
-          class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion",
+          class: "form-input",
           data: { location_toggle_target: "input" } %>
     </div>
+  </div>
+
+  <%# Discussion Questions Section %>
+  <div data-controller="question-fields"
+       data-question-fields-generate-url-value="<%= generate_questions_club_meetings_path(club) %>">
+    <label class="block text-sm font-medium text-ink-muted mb-2"><%= t("meetings.form.questions_label") %></label>
+    <p class="text-xs text-ink-muted mb-3"><%= t("meetings.form.questions_hint") %></p>
+
+    <%# Questions list %>
+    <div data-question-fields-target="list" class="space-y-3 mb-4">
+      <% (meeting.initial_questions || []).each_with_index do |question, index| %>
+        <div data-question-id="<%= index %>" class="bg-white rounded-lg border border-cream-dark overflow-hidden">
+          <%= text_area_tag "meeting[initial_questions][]", question,
+              rows: 3,
+              placeholder: t("meetings.form.question_placeholder"),
+              class: "w-full px-4 py-3 text-base border-0 focus:outline-none focus:ring-0 resize-none" %>
+          <div class="flex items-center justify-between px-2 py-1.5 bg-cream/30 border-t border-cream">
+            <div class="drag-handle flex items-center gap-1 px-2 py-1 cursor-grab active:cursor-grabbing text-ink-muted/60 hover:text-ink-muted transition-colors rounded">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <span class="text-xs"><%= t("meetings.form.drag_to_reorder", default: "Dra för att ändra ordning") %></span>
+            </div>
+            <button type="button"
+                    data-action="question-fields#remove"
+                    class="flex items-center gap-1 px-2 py-1 text-ink-muted/60 hover:text-vermillion transition-colors rounded">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+              <span class="text-xs"><%= t("meetings.form.remove", default: "Ta bort") %></span>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Add question buttons - touch-friendly %>
+    <div class="flex flex-wrap gap-2">
+      <button type="button"
+              data-action="question-fields#add"
+              class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-ink-muted bg-white border border-cream-dark/50 rounded-xl hover:border-sage hover:text-sage active:scale-[0.98] transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <%= t("meetings.form.add_question") %>
+      </button>
+      <button type="button"
+              data-action="question-fields#generate"
+              data-question-fields-target="generateBtn"
+              class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-ink-muted bg-white border border-cream-dark/50 rounded-xl hover:border-sage hover:text-sage active:scale-[0.98] transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
+        </svg>
+        <%= t("meetings.form.add_ai_question") %>
+      </button>
+    </div>
+
+    <%# Template for new questions %>
+    <template data-question-fields-target="template">
+      <div data-question-id="NEW_ID" class="bg-white rounded-lg border border-cream-dark overflow-hidden">
+        <%= text_area_tag "meeting[initial_questions][]", "",
+            rows: 4,
+            placeholder: t("meetings.form.question_placeholder"),
+            class: "w-full px-4 py-3 text-base border-0 focus:outline-none focus:ring-0 resize-none" %>
+        <div class="flex items-center justify-between px-2 py-1.5 bg-cream/30 border-t border-cream">
+          <div class="drag-handle flex items-center gap-1 px-2 py-1 cursor-grab active:cursor-grabbing text-ink-muted/60 hover:text-ink-muted transition-colors rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            <span class="text-xs"><%= t("meetings.form.drag_to_reorder", default: "Dra för att ändra ordning") %></span>
+          </div>
+          <button type="button"
+                  data-action="question-fields#remove"
+                  class="flex items-center gap-1 px-2 py-1 text-ink-muted/60 hover:text-vermillion transition-colors rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+            <span class="text-xs"><%= t("meetings.form.remove", default: "Ta bort") %></span>
+          </button>
+        </div>
+      </div>
+    </template>
   </div>
 
   <div>
@@ -91,11 +185,12 @@
     <%= f.text_area :notes,
         placeholder: t("meetings.form.notes_placeholder"),
         rows: 3,
-        class: "w-full px-4 py-3 bg-paper rounded-lg border border-cream focus:outline-none focus:ring-2 focus:ring-vermillion/20 focus:border-vermillion" %>
+        class: "form-input" %>
   </div>
 
-  <div class="pt-4">
+  <%# Submit button - sticky on mobile for thumb reach %>
+  <div class="fixed bottom-0 left-0 right-0 p-4 bg-paper/95 backdrop-blur-sm border-t border-cream md:relative md:p-0 md:pt-4 md:bg-transparent md:backdrop-blur-none md:border-0 z-10">
     <%= f.submit meeting.persisted? ? t("meetings.edit.submit") : t("meetings.new.submit"),
-        class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+        class: "w-full px-6 py-3.5 bg-vermillion text-white font-medium rounded-xl hover:bg-vermillion-dark active:scale-[0.98] transition-all cursor-pointer shadow-lg md:shadow-none" %>
   </div>
 <% end %>

@@ -17,22 +17,22 @@
     <div>
       <%= f.label :name,
           t("registrations.new.name.label"),
-          class: "block text-sm font-medium text-ink-light mb-2" %>
+          class: "block text-sm font-medium text-ink-muted mb-2" %>
       <%= f.text_field :name,
           required: true,
           autofocus: true,
           placeholder: t("registrations.new.name.placeholder"),
-          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors" %>
+          class: "form-input" %>
     </div>
 
     <div>
       <%= f.label :email,
           t("registrations.new.email.label"),
-          class: "block text-sm font-medium text-ink-light mb-2" %>
+          class: "block text-sm font-medium text-ink-muted mb-2" %>
       <%= f.email_field :email,
           required: true,
           placeholder: t("registrations.new.email.placeholder"),
-          class: "w-full px-4 py-3 rounded-lg border border-cream bg-paper-warm focus:border-vermillion focus:ring-1 focus:ring-vermillion transition-colors" %>
+          class: "form-input" %>
     </div>
 
     <%# Honeypot field - hidden from humans, filled by bots %>

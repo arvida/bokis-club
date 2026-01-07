@@ -75,4 +75,56 @@ class RsvpTest < ActiveSupport::TestCase
     assert_not rsvp.valid?
     assert_includes rsvp.errors[:user], "måste vara medlem i klubben"
   end
+
+  test "checked_in? returns false when not checked in" do
+    rsvp = create(:rsvp)
+    assert_not rsvp.checked_in?
+  end
+
+  test "checked_in? returns true when checked in" do
+    rsvp = create(:rsvp, checked_in_at: Time.current)
+    assert rsvp.checked_in?
+  end
+
+  test "check_in! sets checked_in_at" do
+    rsvp = create(:rsvp, response: "yes")
+
+    assert rsvp.check_in!
+    assert rsvp.reload.checked_in?
+    assert_not_nil rsvp.checked_in_at
+  end
+
+  test "check_in! returns false if already checked in" do
+    rsvp = create(:rsvp, response: "yes", checked_in_at: Time.current)
+
+    assert_not rsvp.check_in!
+  end
+
+  test "check_in! returns false if response is not yes" do
+    rsvp = create(:rsvp, response: "maybe")
+
+    assert_not rsvp.check_in!
+    assert_not rsvp.reload.checked_in?
+  end
+
+  test "undo_check_in! clears checked_in_at" do
+    rsvp = create(:rsvp, checked_in_at: Time.current)
+
+    assert rsvp.undo_check_in!
+    assert_not rsvp.reload.checked_in?
+  end
+
+  test "undo_check_in! returns false if not checked in" do
+    rsvp = create(:rsvp)
+
+    assert_not rsvp.undo_check_in!
+  end
+
+  test "checked_in scope returns only checked in rsvps" do
+    rsvp1 = create(:rsvp, checked_in_at: Time.current)
+    rsvp2 = create(:rsvp)
+
+    assert_includes Rsvp.checked_in, rsvp1
+    assert_not_includes Rsvp.checked_in, rsvp2
+  end
 end

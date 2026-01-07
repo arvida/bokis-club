@@ -1,59 +1,54 @@
-<div class="grid grid-cols-2 gap-3 mb-8">
-  <%= link_to suggest_club_club_books_path(club),
-      class: "flex items-center gap-3 p-4 bg-paper-warm rounded-lg border border-cream hover:border-sage transition-colors" do %>
-    <span class="w-10 h-10 rounded-full bg-sage/10 flex items-center justify-center flex-shrink-0">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+<div class="mb-8">
+  <%# Action pills - unified row %>
+  <div class="flex items-center justify-center gap-2 flex-wrap">
+    <%# Primary: Suggest a book %>
+    <%= link_to suggest_club_club_books_path(club),
+        class: "group flex items-center gap-1.5 px-4 py-2.5 bg-vermillion/10 rounded-full text-vermillion hover:bg-vermillion/20 active:scale-[0.97] transition-all" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
       </svg>
-    </span>
-    <span class="text-sm font-medium text-ink"><%= t("clubs.book_actions.suggest") %></span>
-  <% end %>
+      <span class="text-sm font-medium"><%= t("clubs.book_actions.suggest") %></span>
+    <% end %>
 
-  <%= link_to club_meetings_path(club),
-      class: "flex items-center gap-3 p-4 bg-paper-warm rounded-lg border border-cream hover:border-sage transition-colors" do %>
-    <span class="w-10 h-10 rounded-full bg-sage/10 flex items-center justify-center flex-shrink-0 relative">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-      </svg>
+    <%# Meetings %>
+    <%= link_to club_meetings_path(club),
+        class: "group flex items-center gap-1.5 px-4 py-2.5 bg-cream/50 rounded-full text-ink-muted hover:bg-cream hover:text-ink active:scale-[0.97] transition-all" do %>
+      <span class="text-sm font-medium"><%= t("clubs.book_actions.meetings") %></span>
       <% if local_assigns[:meeting_soon] %>
-        <span class="absolute -top-1 -right-1 w-3 h-3 bg-sage rounded-full animate-pulse"></span>
+        <span class="w-2 h-2 bg-sage rounded-full animate-pulse"></span>
       <% elsif local_assigns[:upcoming_meetings_count] && upcoming_meetings_count > 0 %>
-        <span class="absolute -top-1 -right-1 w-5 h-5 bg-sage text-white text-xs font-medium rounded-full flex items-center justify-center">
-          <%= upcoming_meetings_count %>
-        </span>
+        <span class="text-xs text-sage font-medium"><%= upcoming_meetings_count %></span>
       <% end %>
-    </span>
-    <span class="text-sm font-medium text-ink"><%= t("clubs.book_actions.meetings") %></span>
-  <% end %>
+    <% end %>
 
-  <%= link_to club_club_books_path(club),
-      class: "flex items-center gap-3 p-4 bg-paper-warm rounded-lg border border-cream hover:border-sage transition-colors" do %>
-    <span class="w-10 h-10 rounded-full bg-sage/10 flex items-center justify-center flex-shrink-0 relative">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sage" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-      </svg>
+    <%# Book suggestions %>
+    <%= link_to club_club_books_path(club),
+        class: "group flex items-center gap-1.5 px-4 py-2.5 bg-cream/50 rounded-full text-ink-muted hover:bg-cream hover:text-ink active:scale-[0.97] transition-all" do %>
+      <span class="text-sm font-medium"><%= t("clubs.book_actions.suggestions") %></span>
       <% if suggestions_count > 0 %>
-        <span class="absolute -top-1 -right-1 w-5 h-5 bg-vermillion text-white text-xs font-medium rounded-full flex items-center justify-center">
-          <%= suggestions_count %>
-        </span>
+        <span class="text-xs text-vermillion font-medium"><%= suggestions_count %></span>
       <% end %>
-    </span>
-    <span class="text-sm font-medium text-ink"><%= t("clubs.book_actions.suggestions") %></span>
-  <% end %>
+    <% end %>
+  </div>
 
+  <%# Voting CTA when active %>
   <% if voting_active %>
     <%= link_to vote_club_club_books_path(club),
-        class: "col-span-2 flex items-center gap-3 p-4 bg-vermillion/5 rounded-lg border border-vermillion/20 hover:border-vermillion/40 transition-colors" do %>
-      <span class="w-10 h-10 rounded-full bg-vermillion/10 flex items-center justify-center flex-shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-vermillion" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
-      </span>
-      <div class="flex-1">
-        <span class="text-sm font-medium text-vermillion"><%= t("clubs.book_actions.vote") %></span>
-        <span class="block text-xs text-vermillion/70"><%= t("clubs.book_actions.vote_active") %></span>
+        class: "group flex items-center justify-between w-full px-5 py-4 bg-vermillion/5 rounded-xl border border-vermillion/20 hover:border-vermillion/40 active:scale-[0.99] transition-all" do %>
+      <div class="flex items-center gap-3">
+        <span class="w-8 h-8 rounded-full bg-vermillion/10 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-vermillion" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </span>
+        <div>
+          <span class="text-sm font-medium text-vermillion"><%= t("clubs.book_actions.vote") %></span>
+          <span class="block text-xs text-vermillion/60"><%= t("clubs.book_actions.vote_active") %></span>
+        </div>
       </div>
-      <span class="text-vermillion">→</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-vermillion group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+      </svg>
     <% end %>
   <% end %>
 </div>

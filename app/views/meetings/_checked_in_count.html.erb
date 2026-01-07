@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "checked-in-count" do %>
+  <div>
+    <span class="text-xs font-medium tracking-widest text-sage uppercase"><%= t("meetings.check_in.title") %></span>
+    <p class="text-sm text-ink-muted mt-1">
+      <%= t("meetings.check_in.count", count: meeting.checked_in_count, total: meeting.attendee_count) %>
+    </p>
+  </div>
+<% end %>

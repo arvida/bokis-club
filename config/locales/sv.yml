@@ -80,6 +80,8 @@ sv:
       cannot_remove_last_admin: "Du kan inte ta bort den sista adminen"
 
   clubs:
+    live_meeting:
+      banner_title: "Möte pågår"
     new:
       title: "Skapa bokcirkel"
       name:
@@ -102,6 +104,11 @@ sv:
     edit:
       title: "Inställningar"
       submit: "Spara ändringar"
+      language: "Språk för AI-innehåll"
+      language_hint: "Används för AI-genererade diskussionsfrågor"
+      languages:
+        sv: "Svenska"
+        en: "English"
       danger_zone: "Farlig zon"
       delete_club: "Ta bort bokcirkel"
       delete_confirm: "Är du säker? Detta går inte att ångra."
@@ -325,6 +332,25 @@ sv:
       deleted: "Träffen har tagits bort"
       rsvp_updated: "Ditt svar har sparats"
       invalid_response: "Ogiltigt svar"
+      started: "Mötet har startat!"
+      already_started: "Mötet har redan startat"
+      ended: "Mötet har avslutats"
+      not_live: "Mötet är inte aktivt"
+      resumed: "Mötet har återupptagits"
+      not_ended: "Mötet är inte avslutat"
+      checked_in: "Du har checkat in!"
+      check_in_failed: "Kunde inte checka in"
+    comments:
+      created: "Kommentaren har sparats"
+      updated: "Kommentaren har uppdaterats"
+      deleted: "Kommentaren har tagits bort"
+      not_authorized: "Du kan inte redigera denna kommentar"
+    discussion_guide:
+      item_added: "Frågan har lagts till"
+      item_updated: "Frågan har uppdaterats"
+      item_deleted: "Frågan har tagits bort"
+      regenerated: "Nya frågor har genererats"
+      max_regenerate: "Du kan inte generera fler frågor för detta möte"
 
   meetings:
     index:
@@ -347,6 +373,41 @@ sv:
       edit: "Redigera"
       notes: "Anteckningar"
       no_notes: "Inga anteckningar"
+      start_meeting: "Starta möte"
+    scheduled:
+      host: "Värd"
+      preparation: "Förberedelse"
+      preparation_hint: "Här kan du förbereda diskussionsfrågor inför träffen. Frågorna visas under mötet."
+    live:
+      indicator: "Pågår"
+      started_at: "Startade %{time}"
+      end_meeting: "Avsluta möte"
+      end_confirm: "Vill du avsluta mötet?"
+    ended:
+      indicator: "Avslutat"
+      ended_at: "Avslutades %{time}"
+      resume_meeting: "Återuppta möte"
+      checked_in_count:
+        one: "1 deltagare checkade in"
+        other: "%{count} deltagare checkade in"
+    check_in:
+      title: "Incheckning"
+      check_in: "Checka in"
+      checked_in: "Incheckad"
+      count: "%{count}/%{total} incheckade"
+      rsvp_required: "Du måste svara ja för att checka in"
+    discussion_guide:
+      title: "Diskussionsfrågor"
+      empty: "Inga diskussionsfrågor ännu"
+      add: "Lägg till"
+      add_placeholder: "Lägg till en fråga..."
+      regenerate: "Generera nya (%{remaining} kvar)"
+      delete_confirm: "Ta bort denna fråga?"
+    comments:
+      title: "Kommentarer"
+      empty: "Inga kommentarer ännu. Var först med att kommentera!"
+      placeholder: "Skriv en kommentar..."
+      submit: "Skicka"
     form:
       book_label: "Bok"
       book_none: "Ingen bok"
@@ -366,6 +427,15 @@ sv:
       video_placeholder: "https://zoom.us/j/..."
       notes_label: "Anteckningar"
       notes_placeholder: "Övrig information..."
+      host_label: "Värd"
+      host_none: "Ingen värd"
+      host_hint: "Värden leder diskussionen och kan hantera träffen"
+      questions_label: "Diskussionsfrågor"
+      questions_hint: "Lägg till frågor som ni vill diskutera på träffen"
+      questions_empty: "Inga frågor tillagda än"
+      question_placeholder: "Skriv en diskussionsfråga..."
+      add_question: "Lägg till fråga"
+      add_ai_question: "Lägg till AI-fråga"
     rsvp:
       "yes": "Kommer"
       maybe: "Kanske"

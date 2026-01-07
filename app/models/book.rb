@@ -1,4 +1,6 @@
 class Book < ApplicationRecord
+  has_many :discussion_questions, class_name: "BookDiscussionQuestion", dependent: :destroy
+
   validates :title, presence: true, length: { maximum: 500 }
   validates :google_books_id, uniqueness: true, allow_nil: true
   validates :page_count, numericality: { greater_than: 0 }, allow_nil: true

@@ -1,0 +1,9 @@
+<%# Remove the deleted item %>
+<%= turbo_stream.remove "discussion-item-#{@deleted_item_id}" %>
+
+<%# Update the count %>
+<%= turbo_stream.replace "discussion-guide-count" do %>
+  <span id="discussion-guide-count" class="text-xs text-ink-muted">
+    <%= @discussion_guide.checked_count %>/<%= @discussion_guide.total_count %>
+  </span>
+<% end %>

@@ -1,0 +1,25 @@
+<%# Clear the input field %>
+<%= turbo_stream.replace "add-question-form" do %>
+  <%= form_with url: club_meeting_discussion_guide_items_path(@club, @meeting),
+      method: :post,
+      id: "add-question-form",
+      class: "flex gap-2" do |f| %>
+    <%= f.text_field :text,
+        placeholder: t("meetings.discussion_guide.add_placeholder"),
+        class: "flex-1 px-3 py-2 text-sm border border-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/50 focus:border-sage" %>
+    <%= f.submit t("meetings.discussion_guide.add"),
+        class: "px-4 py-2 bg-sage text-white text-sm font-medium rounded-lg active:scale-[0.98] transition-transform cursor-pointer" %>
+  <% end %>
+<% end %>
+
+<%# Append the new item to the list %>
+<%= turbo_stream.append "discussion-guide-items" do %>
+  <%= render "meetings/discussion_guide_item", item: @new_item, meeting: @meeting, club: @club %>
+<% end %>
+
+<%# Update the count %>
+<%= turbo_stream.replace "discussion-guide-count" do %>
+  <span id="discussion-guide-count" class="text-xs text-ink-muted">
+    <%= @discussion_guide.checked_count %>/<%= @discussion_guide.total_count %>
+  </span>
+<% end %>

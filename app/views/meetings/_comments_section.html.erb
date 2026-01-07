@@ -1,0 +1,24 @@
+<div id="comments-section">
+  <div class="flex items-center justify-between mb-5">
+    <span class="text-xs font-medium tracking-widest text-vermillion uppercase">
+      <%= t("meetings.comments.title") %>
+    </span>
+    <% if meeting.comments.any? %>
+      <span class="text-xs text-ink-muted"><%= meeting.comments.count %> <%= meeting.comments.count == 1 ? 'anteckning' : 'anteckningar' %></span>
+    <% end %>
+  </div>
+
+  <%# Comments list - clean vertical stack %>
+  <div id="meeting-comments" class="comments-scattered">
+    <% meeting.comments.includes(:user).order(created_at: :desc).each do |comment| %>
+      <%= render comment %>
+    <% end %>
+  </div>
+
+  <% if meeting.comments.empty? %>
+    <p id="comments-empty-state" class="text-sm text-ink-muted italic text-center py-8">
+      <%= t("meetings.comments.empty") %>
+    </p>
+  <% end %>
+</div>
+

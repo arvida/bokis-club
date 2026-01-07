@@ -39,4 +39,8 @@ module ApplicationHelper
         content_tag(:span, label, class: "text-xs font-medium")
     end
   end
+
+  def dom_id_for_item(item)
+    "discussion-item-#{item['id']}"
+  end
 end

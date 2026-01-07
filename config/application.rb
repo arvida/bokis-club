@@ -11,7 +11,7 @@ require "action_mailer/railtie"
 require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
-# require "action_cable/engine"
+require "action_cable/engine"
 require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -40,5 +40,14 @@ module BokisApp
     config.i18n.default_locale = :sv
     config.i18n.available_locales = [ :sv, :en ]
     config.i18n.fallbacks = [ :en ]
+
+
+    config.hosts << "bokis.club"
+    config.hosts << "www.bokis.club"
+
+    config.action_mailer.delivery_method = :postmark
+    config.action_mailer.postmark_settings = {
+      api_token: Rails.application.credentials.postmark_api_token
+    }
   end
 end

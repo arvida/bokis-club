@@ -16,6 +16,16 @@ module ActiveSupport
 
     # Include Factory Bot methods
     include FactoryBot::Syntax::Methods
+
+    # Global stub for Azure OpenAI API (used by DiscussionQuestionGenerator)
+    setup do
+      stub_request(:post, /openai\.azure\.com.*chat\/completions/)
+        .to_return(
+          status: 200,
+          body: { choices: [ { message: { content: "Testvfråga 1?\nTestfråga 2?" } } ] }.to_json,
+          headers: { "Content-Type" => "application/json" }
+        )
+    end
   end
 end
 

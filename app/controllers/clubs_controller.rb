@@ -29,6 +29,7 @@ class ClubsController < ApplicationController
     upcoming_meetings = @club.meetings.upcoming
     @upcoming_meetings_count = upcoming_meetings.count
     @meeting_soon = upcoming_meetings.where(scheduled_at: ..24.hours.from_now).exists?
+    @live_meeting = @club.meetings.live.includes(:club_book).first
 
     if @voting_active && @is_member
       @user_vote = Vote.joins(:club_book)
@@ -105,6 +106,6 @@ class ClubsController < ApplicationController
   private
 
   def club_params
-    params.require(:club).permit(:name, :description, :privacy, :cover_library_id, :cover_image)
+    params.require(:club).permit(:name, :description, :privacy, :cover_library_id, :cover_image, :language)
   end
 end

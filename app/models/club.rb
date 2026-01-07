@@ -19,9 +19,12 @@ class Club < ApplicationRecord
   has_many :books, through: :club_books
   has_many :meetings, -> { active }
 
+  LANGUAGES = %w[sv en].freeze
+
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }
   validates :privacy, inclusion: { in: %w[open closed] }
+  validates :language, inclusion: { in: LANGUAGES }
   validates :invite_code, presence: true, uniqueness: true
   validate :timezone_must_be_valid
 

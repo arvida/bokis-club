@@ -1,29 +1,60 @@
 <%= turbo_frame_tag "rsvp-pills-#{meeting.id}" do %>
-  <div class="bg-cream/30 rounded-lg p-4">
-    <p class="text-sm text-ink-muted mb-3"><%= t("meetings.rsvp.your_response") %></p>
-    <div class="flex gap-2">
-      <% current_response = user_rsvp&.response %>
+  <% current_response = user_rsvp&.response %>
+  <% has_responded = current_response.present? %>
 
-      <%= button_to rsvp_club_meeting_path(club, meeting),
-          method: :post,
-          params: { response: "yes" },
-          class: "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-colors #{current_response == 'yes' ? 'bg-vermillion text-white' : 'bg-white border border-cream text-ink-muted hover:border-vermillion hover:text-vermillion'}" do %>
-        <%= t("meetings.rsvp.yes") %>
-      <% end %>
+  <% if has_responded %>
+    <%# Compact view - already responded %>
+    <div class="flex items-center gap-2">
+      <span class="text-xs text-ink-muted"><%= t("meetings.rsvp.your_response") %></span>
+      <div class="flex gap-1.5">
+        <%= button_to rsvp_club_meeting_path(club, meeting),
+            method: :post,
+            params: { response: "yes" },
+            class: "px-3 py-1.5 text-xs font-medium rounded-full transition-colors #{current_response == 'yes' ? 'bg-vermillion text-white' : 'bg-cream/50 text-ink-muted hover:bg-vermillion/10 hover:text-vermillion'}" do %>
+          <%= t("meetings.rsvp.yes") %>
+        <% end %>
 
-      <%= button_to rsvp_club_meeting_path(club, meeting),
-          method: :post,
-          params: { response: "maybe" },
-          class: "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-colors #{current_response == 'maybe' ? 'bg-sage text-white' : 'bg-white border border-cream text-ink-muted hover:border-sage hover:text-sage'}" do %>
-        <%= t("meetings.rsvp.maybe") %>
-      <% end %>
+        <%= button_to rsvp_club_meeting_path(club, meeting),
+            method: :post,
+            params: { response: "maybe" },
+            class: "px-3 py-1.5 text-xs font-medium rounded-full transition-colors #{current_response == 'maybe' ? 'bg-sage text-white' : 'bg-cream/50 text-ink-muted hover:bg-sage/10 hover:text-sage'}" do %>
+          <%= t("meetings.rsvp.maybe") %>
+        <% end %>
 
-      <%= button_to rsvp_club_meeting_path(club, meeting),
-          method: :post,
-          params: { response: "no" },
-          class: "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-colors #{current_response == 'no' ? 'bg-ink-muted text-white' : 'bg-white border border-cream text-ink-muted hover:border-ink hover:text-ink'}" do %>
-        <%= t("meetings.rsvp.no") %>
-      <% end %>
+        <%= button_to rsvp_club_meeting_path(club, meeting),
+            method: :post,
+            params: { response: "no" },
+            class: "px-3 py-1.5 text-xs font-medium rounded-full transition-colors #{current_response == 'no' ? 'bg-ink-muted text-white' : 'bg-cream/50 text-ink-muted hover:bg-ink/10 hover:text-ink'}" do %>
+          <%= t("meetings.rsvp.no") %>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% else %>
+    <%# Full view - prompt to respond %>
+    <div class="bg-cream/30 rounded-lg p-4">
+      <p class="text-sm text-ink-muted mb-3"><%= t("meetings.rsvp.your_response") %></p>
+      <div class="flex gap-2">
+        <%= button_to rsvp_club_meeting_path(club, meeting),
+            method: :post,
+            params: { response: "yes" },
+            class: "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-colors bg-white border border-cream text-ink-muted hover:border-vermillion hover:text-vermillion" do %>
+          <%= t("meetings.rsvp.yes") %>
+        <% end %>
+
+        <%= button_to rsvp_club_meeting_path(club, meeting),
+            method: :post,
+            params: { response: "maybe" },
+            class: "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-colors bg-white border border-cream text-ink-muted hover:border-sage hover:text-sage" do %>
+          <%= t("meetings.rsvp.maybe") %>
+        <% end %>
+
+        <%= button_to rsvp_club_meeting_path(club, meeting),
+            method: :post,
+            params: { response: "no" },
+            class: "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-colors bg-white border border-cream text-ink-muted hover:border-ink hover:text-ink" do %>
+          <%= t("meetings.rsvp.no") %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 <% end %>

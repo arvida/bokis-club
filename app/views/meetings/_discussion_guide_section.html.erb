@@ -1,0 +1,53 @@
+<%= turbo_frame_tag "discussion-guide" do %>
+  <div class="flex items-center justify-between mb-4">
+    <span class="text-xs font-medium tracking-widest text-vermillion uppercase">
+      <%= t("meetings.discussion_guide.title") %>
+    </span>
+    <% if meeting.discussion_guide&.items&.any? %>
+      <span id="discussion-guide-count" class="text-xs text-ink-muted">
+        <%= meeting.discussion_guide.checked_count %>/<%= meeting.discussion_guide.total_count %>
+      </span>
+    <% end %>
+  </div>
+
+  <% guide = meeting.discussion_guide %>
+  <% if guide&.items&.any? %>
+    <ul id="discussion-guide-items" class="space-y-3 mb-6">
+      <% guide.items.each do |item| %>
+        <%= render "meetings/discussion_guide_item", item: item, meeting: meeting, club: club %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-sm text-ink-muted italic mb-6"><%= t("meetings.discussion_guide.empty") %></p>
+  <% end %>
+
+  <%# Add question form (admin or host) - check current_user exists (not available in broadcasts) %>
+  <% if defined?(current_user) && current_user && meeting.can_manage?(current_user) %>
+    <div class="border-t border-cream pt-4">
+      <%= form_with url: club_meeting_discussion_guide_items_path(club, meeting),
+          method: :post,
+          id: "add-question-form",
+          class: "flex gap-2" do |f| %>
+        <%= f.text_field :text,
+            placeholder: t("meetings.discussion_guide.add_placeholder"),
+            class: "flex-1 px-3 py-2 text-sm border border-cream rounded-lg focus:outline-none focus:ring-2 focus:ring-sage/50 focus:border-sage" %>
+        <%= f.submit t("meetings.discussion_guide.add"),
+            class: "px-4 py-2 bg-sage text-white text-sm font-medium rounded-lg active:scale-[0.98] transition-transform cursor-pointer" %>
+      <% end %>
+
+      <%# Regenerate button %>
+      <% if meeting.can_regenerate? && meeting.club_book&.book %>
+        <div id="regenerate-questions-btn" class="mt-3 flex justify-end">
+          <%= button_to club_meeting_regenerate_questions_path(club, meeting),
+              method: :post,
+              class: "inline-flex items-center gap-1.5 text-xs text-ink-muted hover:text-sage transition-colors" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <%= t("meetings.discussion_guide.regenerate", remaining: 3 - meeting.regenerate_count) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

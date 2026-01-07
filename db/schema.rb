@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_03_082531) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "book_discussion_questions", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.string "language", default: "sv", null: false
+    t.string "source", null: false
+    t.text "text", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id", "language"], name: "index_book_discussion_questions_on_book_id_and_language"
+    t.index ["book_id"], name: "index_book_discussion_questions_on_book_id"
   end
 
   create_table "books", force: :cascade do |t|
@@ -85,6 +96,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
     t.string "invite_code", null: false
     t.datetime "invite_expires_at"
     t.datetime "invite_used_at"
+    t.string "language", default: "sv", null: false
     t.string "name", null: false
     t.string "privacy", default: "closed", null: false
     t.string "timezone", default: "Europe/Stockholm"
@@ -94,22 +106,48 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
     t.index ["invite_code"], name: "index_clubs_on_invite_code", unique: true
   end
 
+  create_table "discussion_guides", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.jsonb "items", default: []
+    t.bigint "meeting_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meeting_id"], name: "index_discussion_guides_on_meeting_id"
+  end
+
+  create_table "meeting_comments", force: :cascade do |t|
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.bigint "meeting_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["meeting_id", "created_at"], name: "index_meeting_comments_on_meeting_id_and_created_at"
+    t.index ["meeting_id"], name: "index_meeting_comments_on_meeting_id"
+    t.index ["user_id"], name: "index_meeting_comments_on_user_id"
+  end
+
   create_table "meetings", force: :cascade do |t|
     t.bigint "club_book_id"
     t.bigint "club_id", null: false
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
+    t.datetime "ended_at"
     t.datetime "ends_at"
+    t.bigint "host_id"
     t.text "location"
     t.string "location_type", default: "tbd"
     t.text "notes"
+    t.integer "regenerate_count", default: 0, null: false
     t.datetime "scheduled_at", null: false
+    t.datetime "started_at"
+    t.string "state", default: "scheduled", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["club_book_id"], name: "index_meetings_on_club_book_id"
     t.index ["club_id", "scheduled_at"], name: "index_meetings_on_club_id_and_scheduled_at"
     t.index ["club_id"], name: "index_meetings_on_club_id"
     t.index ["deleted_at"], name: "index_meetings_on_deleted_at"
+    t.index ["host_id"], name: "index_meetings_on_host_id"
+    t.index ["state"], name: "index_meetings_on_state"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -140,6 +178,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
   end
 
   create_table "rsvps", force: :cascade do |t|
+    t.datetime "checked_in_at"
     t.datetime "created_at", null: false
     t.bigint "meeting_id", null: false
     t.string "response", null: false
@@ -172,11 +211,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_143322) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "book_discussion_questions", "books"
   add_foreign_key "club_books", "books"
   add_foreign_key "club_books", "clubs"
   add_foreign_key "club_books", "users", column: "suggested_by_id"
+  add_foreign_key "discussion_guides", "meetings"
+  add_foreign_key "meeting_comments", "meetings"
+  add_foreign_key "meeting_comments", "users"
   add_foreign_key "meetings", "club_books"
   add_foreign_key "meetings", "clubs"
+  add_foreign_key "meetings", "users", column: "host_id"
   add_foreign_key "memberships", "clubs"
   add_foreign_key "memberships", "users"
   add_foreign_key "rsvps", "meetings"

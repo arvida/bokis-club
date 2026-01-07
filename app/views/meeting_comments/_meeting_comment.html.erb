@@ -1,0 +1,21 @@
+<%= turbo_frame_tag meeting_comment do %>
+  <%# Post-it style comment with subtle rotation for organic feel %>
+  <% rotation_class = ["comment-note--rotate-1", "comment-note--rotate-2", "comment-note--rotate-3", "comment-note--rotate-4"].sample %>
+  <% color_class = ["comment-note--cream", "comment-note--warm", "comment-note--soft"].sample %>
+  <div id="<%= dom_id(meeting_comment) %>"
+       class="comment-note <%= rotation_class %> <%= color_class %>">
+    <div class="flex items-start gap-3">
+      <%# Author initial in a hand-drawn circle %>
+      <div class="comment-note__initial">
+        <%= meeting_comment.user.name.first.upcase %>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-baseline gap-2 mb-1.5 flex-wrap">
+          <span class="font-display font-medium text-ink text-sm"><%= meeting_comment.user.name %></span>
+          <span class="text-xs text-ink-muted"><%= time_ago_in_words(meeting_comment.created_at) %></span>
+        </div>
+        <p class="text-ink text-sm leading-relaxed whitespace-pre-wrap"><%= meeting_comment.content %></p>
+      </div>
+    </div>
+  </div>
+<% end %>
