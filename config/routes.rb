@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   get "signup", to: "registrations#new", as: :signup
   post "signup", to: "registrations#create"
 
-  # Dashboard and profile
+  # Dashboard, meetings overview and profile
   get "dashboard", to: "home#dashboard", as: :dashboard
+  get "meetings", to: "home#meetings", as: :meetings
   resource :profile, only: [ :show, :update ]
 
   # Books

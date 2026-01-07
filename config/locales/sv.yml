@@ -1,4 +1,9 @@
 sv:
+  navigation:
+    home: "Hem"
+    meetings: "Träffar"
+    profile: "Profil"
+
   landing:
     tagline: "För bokcirklar som vill ha det enkelt"
     description: "Hantera era bokval, planera träffar och få diskussionsfrågor – allt på ett ställe."
@@ -245,6 +250,12 @@ sv:
       create: "Skapa bokcirkel"
       empty: "Du är inte med i någon bokcirkel än"
       empty_cta: "Skapa din första"
+    meetings:
+      title: "Träffar"
+      upcoming: "Kommande"
+      past: "Tidigare"
+      empty: "Inga kommande träffar"
+      empty_hint: "Träffar från dina bokcirklar visas här"
 
   profiles:
     show:

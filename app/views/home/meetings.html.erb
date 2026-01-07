@@ -1,0 +1,65 @@
+<div class="max-w-2xl mx-auto px-6 py-8">
+  <h1 class="font-display text-2xl font-light mb-8"><%= t("home.meetings.title") %></h1>
+
+  <div class="space-y-8">
+    <section>
+      <h2 class="text-sm font-medium text-ink-muted mb-4"><%= t("home.meetings.upcoming") %></h2>
+      <% if @upcoming_meetings.any? %>
+        <div class="space-y-4">
+          <% @upcoming_meetings.each do |meeting| %>
+            <%= link_to club_meeting_path(meeting.club, meeting), class: "block bg-cream/30 rounded-lg p-4 hover:bg-cream/50 transition-colors" do %>
+              <div class="flex items-start gap-4">
+                <div class="text-center flex-shrink-0 w-12">
+                  <div class="text-2xl font-display font-light text-ink"><%= meeting.scheduled_at.day %></div>
+                  <div class="text-xs text-ink-muted uppercase"><%= I18n.l(meeting.scheduled_at, format: "%b") %></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-medium text-ink truncate"><%= meeting.title %></h3>
+                  <p class="text-sm text-ink-muted">
+                    <%= I18n.l(meeting.scheduled_at, format: "%H:%M") %>
+                    <% if meeting.location.present? %>
+                      · <%= truncate(meeting.location, length: 30) %>
+                    <% end %>
+                  </p>
+                  <p class="text-xs text-vermillion mt-1"><%= meeting.club.name %></p>
+                </div>
+                <% if meeting.club_book&.book %>
+                  <div class="flex-shrink-0 w-10">
+                    <%= render "shared/book_cover", book: meeting.club_book.book, class: "w-full rounded shadow-sm" %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-ink-muted mb-2"><%= t("home.meetings.empty") %></p>
+          <p class="text-sm text-ink-subtle"><%= t("home.meetings.empty_hint") %></p>
+        </div>
+      <% end %>
+    </section>
+
+    <% if @past_meetings.any? %>
+      <section>
+        <h2 class="text-sm font-medium text-ink-muted mb-4"><%= t("home.meetings.past") %></h2>
+        <div class="space-y-4">
+          <% @past_meetings.each do |meeting| %>
+            <%= link_to club_meeting_path(meeting.club, meeting), class: "block bg-cream/30 rounded-lg p-4 hover:bg-cream/50 transition-colors opacity-60" do %>
+              <div class="flex items-start gap-4">
+                <div class="text-center flex-shrink-0 w-12">
+                  <div class="text-2xl font-display font-light text-ink"><%= meeting.scheduled_at.day %></div>
+                  <div class="text-xs text-ink-muted uppercase"><%= I18n.l(meeting.scheduled_at, format: "%b") %></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-medium text-ink truncate"><%= meeting.title %></h3>
+                  <p class="text-xs text-vermillion"><%= meeting.club.name %></p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+  </div>
+</div>

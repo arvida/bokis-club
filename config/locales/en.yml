@@ -131,6 +131,17 @@ en:
         one: "1 member"
         other: "%{count} members"
 
+  navigation:
+    home: "Home"
+    meetings: "Meetups"
+    profile: "Profile"
+
   home:
     dashboard:
       title: "My clubs"
+    meetings:
+      title: "Meetups"
+      upcoming: "Upcoming"
+      past: "Past"
+      empty: "No upcoming meetups"
+      empty_hint: "Plan meetups with your book clubs"
