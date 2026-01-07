@@ -4,6 +4,6 @@ Passwordless.configure do |config|
   config.timeout_at = -> { 20.minutes.from_now }
   config.parent_mailer = "ActionMailer::Base"
   config.restrict_token_reuse = true
-  config.success_redirect_path = "/mina-klubbar"
+  config.success_redirect_path = "/dashboard"
   config.sign_out_redirect_path = "/logga-in"
 end

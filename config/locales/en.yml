@@ -90,3 +90,4 @@ en:
     mailer:
       sign_in:
         subject: "Your login link for Bokis"
+        body: "Click the link below to log in to Bokis:\n\n%{magic_link}\n\nThis link is valid for 20 minutes.\n\nIf you didn't request this link, you can ignore this email."

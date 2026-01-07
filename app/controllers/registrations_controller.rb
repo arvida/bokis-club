@@ -9,9 +9,9 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      session = Passwordless::Session.create!(authenticatable: @user)
-      Passwordless::Mailer.sign_in(session).deliver_now
-      redirect_to auth_sign_in_path(email: @user.email)
+      passwordless_session = Passwordless::Session.create!(authenticatable: @user)
+      Passwordless::Mailer.sign_in(passwordless_session).deliver_now
+      redirect_to verify_auth_sign_in_path(passwordless_session)
     else
       render :new, status: :unprocessable_entity
     end

@@ -213,6 +213,7 @@ sv:
     mailer:
       sign_in:
         subject: "Din inloggningslänk till Bokis"
+        body: "Klicka på länken nedan för att logga in på Bokis:\n\n%{magic_link}\n\nLänken är giltig i 20 minuter.\n\nOm du inte begärde denna länk kan du ignorera detta mail."
 
   books:
     search:
