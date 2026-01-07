@@ -75,7 +75,7 @@ class DiscussionQuestionGeneratorTest < ActiveSupport::TestCase
 
     assert_equal 3, result.size
     assert result.all? { |q| q.source == "fallback" }
-    assert_includes result.first.text, "huvudpersonen"
+    assert_includes result.first.text, "middag"
   end
 
   test "generate_for_book returns English fallback questions on API error" do
@@ -86,7 +86,7 @@ class DiscussionQuestionGeneratorTest < ActiveSupport::TestCase
 
     assert_equal 3, result.size
     assert result.all? { |q| q.source == "fallback" }
-    assert_includes result.first.text, "main character"
+    assert_includes result.first.text, "dinner"
   end
 
   test "generate_for_book filters blank lines from response" do

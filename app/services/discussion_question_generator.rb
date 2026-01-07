@@ -3,13 +3,13 @@ class DiscussionQuestionGenerator
   CACHE_EXPIRY = 6.months
 
   FALLBACK_QUESTIONS_SV = [
-    "Skulle du vilja hänga med huvudpersonen?",
+    "Vad skulle du bjuda huvudpersonen på om du bjöd den på middag?",
     "Vilken scen sitter kvar i huvudet?",
     "Påminde boken dig om något i ditt eget liv?"
   ].freeze
 
   FALLBACK_QUESTIONS_EN = [
-    "Would you want to hang out with the main character?",
+    "What would you serve the main character if you had them over for dinner?",
     "Which scene is stuck in your head?",
     "Did the book remind you of anything in your own life?"
   ].freeze
@@ -84,7 +84,7 @@ class DiscussionQuestionGenerator
       "the human condition", anything that sounds like a thesis question.
 
       Bad example: "Hur påverkar detta din syn på författarens moraliska ansvar?"
-      Good example: "Skulle du kunna vara vän med huvudpersonen?"
+      Good example: "Vad skulle du bjuda huvudpersonen på om du bjöd den på middag?"
 
       IMPORTANT: Write in #{language_name}.
       Respond ONLY with questions, one per line, no numbering.
