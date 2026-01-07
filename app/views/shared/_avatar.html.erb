@@ -1,18 +1,17 @@
 <%# Usage: render "shared/avatar", user: @user, size: :sm %>
-<%# Sizes: :xs (w-6), :sm (w-8), :md (w-10), :lg (w-16), :xl (w-20) %>
+<%# Sizes: :xs (24px), :sm (32px), :md (40px), :lg (48px) %>
 <% size_class = case local_assigns[:size]
-   when :xs then "w-6 h-6 text-xs"
+   when :xs then "w-6 h-6 text-[10px]"
    when :sm then "w-8 h-8 text-xs"
    when :md then "w-10 h-10 text-sm"
-   when :lg then "w-16 h-16 text-xl"
-   when :xl then "w-20 h-20 text-2xl"
+   when :lg then "w-12 h-12 text-base"
    else "w-8 h-8 text-xs"
    end %>
 <% border_class = local_assigns[:border] ? "border-2 border-paper" : "" %>
 <% if user.avatar.attached? %>
-  <%= image_tag user.avatar, class: "#{size_class} #{border_class} rounded-full object-cover #{local_assigns[:class]}" %>
+  <%= image_tag user.avatar, class: "#{size_class} #{border_class} rounded-full object-cover aspect-square flex-shrink-0 #{local_assigns[:class]}" %>
 <% else %>
-  <div class="<%= size_class %> <%= border_class %> rounded-full bg-sage text-white flex items-center justify-center font-medium <%= local_assigns[:class] %>">
+  <div class="<%= size_class %> <%= border_class %> rounded-full bg-sage text-white flex items-center justify-center font-medium flex-shrink-0 <%= local_assigns[:class] %>">
     <%= user.initials %>
   </div>
 <% end %>

@@ -41,9 +41,7 @@
     <% @members.each do |membership| %>
       <div class="member-row flex items-center justify-between p-4 bg-paper-warm rounded-xl border border-cream">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-sm font-medium">
-            <%= membership.user.initials %>
-          </div>
+          <%= render "shared/avatar", user: membership.user, size: :sm %>
           <div>
             <div class="flex items-center gap-2">
               <span class="font-medium"><%= membership.user.name %></span>

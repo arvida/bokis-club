@@ -25,7 +25,7 @@ module Passwordless
         Passwordless.config.after_session_save.call(@session, request)
         redirect_to(
           Passwordless.context.path_for(@session, id: @session.to_param, action: "show"),
-          flash: { notice: I18n.t("passwordless.sessions.create.email_sent") }
+          flash: { notice: I18n.t("passwordless.sessions.create.email_sent", email: @resource.email) }
         )
       else
         flash.alert = I18n.t("passwordless.sessions.create.error")

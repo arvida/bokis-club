@@ -93,7 +93,7 @@ en:
       create:
         success: "We've sent a link to %{email}"
         error: "Something went wrong, please try again"
-        email_sent: "Check your email for the login link"
+        email_sent: "We've sent a link to %{email}"
         not_found: "No account found with that email"
       destroy:
         success: "You have been logged out"
