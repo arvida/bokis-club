@@ -1,4 +1,11 @@
 sv:
+  landing:
+    tagline: "För bokcirklar som vill ha det enkelt"
+    description: "Hantera era bokval, planera träffar och få diskussionsfrågor – allt på ett ställe."
+    signup: "Kom igång"
+    login: "Logga in"
+    footer: "Bokis – för bokälskare"
+
   date:
     formats:
       month_year: "%B %Y"

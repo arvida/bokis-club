@@ -70,8 +70,8 @@ Rails.application.routes.draw do
   get "invite/:code", to: "invites#show", as: :invite
   post "invite/:code", to: "invites#create"
 
-  # Root redirects to login or dashboard based on auth state
-  root to: redirect("/login")
+  # Landing page (redirects to dashboard if signed in)
+  root to: "pages#landing"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

@@ -1,4 +1,11 @@
 en:
+  landing:
+    tagline: "For book clubs that want it simple"
+    description: "Manage your book picks, plan meetups and get discussion questions – all in one place."
+    signup: "Get started"
+    login: "Log in"
+    footer: "Bokis – for book lovers"
+
   registrations:
     new:
       title: "Create account"
