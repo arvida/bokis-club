@@ -231,13 +231,13 @@ GEM
     passwordless (1.8.1)
       bcrypt (>= 3.1.11)
       rails (>= 5.1.4)
-    pg (1.6.2)
-    pg (1.6.2-aarch64-linux)
-    pg (1.6.2-aarch64-linux-musl)
-    pg (1.6.2-arm64-darwin)
-    pg (1.6.2-x86_64-darwin)
-    pg (1.6.2-x86_64-linux)
-    pg (1.6.2-x86_64-linux-musl)
+    pg (1.6.3)
+    pg (1.6.3-aarch64-linux)
+    pg (1.6.3-aarch64-linux-musl)
+    pg (1.6.3-arm64-darwin)
+    pg (1.6.3-x86_64-darwin)
+    pg (1.6.3-x86_64-linux)
+    pg (1.6.3-x86_64-linux-musl)
     postmark (1.25.1)
       json
     postmark-rails (0.22.1)
@@ -440,7 +440,7 @@ DEPENDENCIES
   jbuilder
   letter_opener
   passwordless
-  pg (~> 1.1)
+  pg (~> 1.6)
   postmark-rails (~> 0.22.1)
   propshaft
   puma (>= 5.0)
