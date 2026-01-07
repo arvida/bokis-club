@@ -135,6 +135,14 @@ sv:
       max_regenerate: "Du kan inte generera fler frågor för detta möte"
 
   clubs:
+    getting_started:
+      title: "Kom igång"
+      invite_text: "Bjud in vänner till din bokcirkel"
+      invite_link: "Bjud in medlemmar →"
+      book_text: "Välj er första bok att läsa tillsammans"
+      book_link: "Välj bok →"
+      meeting_text: "Planera en träff för att diskutera boken"
+      meeting_link: "Skapa träff →"
     live_meeting:
       banner_title: "Möte pågår"
     new:

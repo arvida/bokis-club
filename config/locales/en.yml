@@ -118,6 +118,14 @@ en:
       message: "This invite has already been used or has expired"
 
   clubs:
+    getting_started:
+      title: "Get started"
+      invite_text: "Invite friends to your book club"
+      invite_link: "Invite members →"
+      book_text: "Pick your first book to read together"
+      book_link: "Choose book →"
+      meeting_text: "Plan a meetup to discuss the book"
+      meeting_link: "Create meetup →"
     show:
       members:
         one: "1 member"

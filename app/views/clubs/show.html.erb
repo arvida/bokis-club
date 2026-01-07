@@ -46,6 +46,10 @@
 
     <%= render "club_books/now_reading", club: @club, is_admin: @is_admin %>
 
+    <% if @is_admin %>
+      <%= render "clubs/getting_started", club: @club %>
+    <% end %>
+
     <% if @next_club_book %>
       <%= render "clubs/next_book_section",
           club: @club,
