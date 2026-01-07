@@ -91,3 +91,28 @@ en:
       sign_in:
         subject: "Your login link for Bokis"
         body: "Click the link below to log in to Bokis:\n\n%{magic_link}\n\nThis link is valid for 20 minutes.\n\nIf you didn't request this link, you can ignore this email."
+
+  invites:
+    show:
+      title: "Invitation"
+      invited_to: "You've been invited to join"
+      join: "Join book club"
+      login_to_join: "Log in or create an account to join"
+      login: "Log in"
+      signup: "Create account"
+    not_found:
+      title: "Invalid link"
+      message: "This invite link doesn't exist"
+    invalid:
+      title: "Link no longer works"
+      message: "This invite has already been used or has expired"
+
+  clubs:
+    show:
+      members:
+        one: "1 member"
+        other: "%{count} members"
+
+  home:
+    dashboard:
+      title: "My clubs"

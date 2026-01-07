@@ -21,7 +21,17 @@
     <%= t("clubs.show.members", count: @club.members.count) %>
   </p>
 
-  <%= form_with url: invite_path(@club.invite_code), method: :post do %>
-    <%= submit_tag t("invites.show.join"), class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+  <% if signed_in? %>
+    <%= form_with url: invite_path(@club.invite_code), method: :post do %>
+      <%= submit_tag t("invites.show.join"), class: "w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+    <% end %>
+  <% else %>
+    <p class="text-ink-muted mb-4">
+      <%= t("invites.show.login_to_join") %>
+    </p>
+    <div class="space-y-3">
+      <%= link_to t("invites.show.login"), login_path, class: "block w-full px-6 py-3 bg-vermillion text-white font-medium rounded-lg hover:bg-vermillion-dark transition-colors" %>
+      <%= link_to t("invites.show.signup"), signup_path, class: "block w-full px-6 py-3 border border-vermillion text-vermillion font-medium rounded-lg hover:bg-vermillion hover:text-white transition-colors" %>
+    </div>
   <% end %>
 </div>

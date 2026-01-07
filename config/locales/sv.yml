@@ -212,6 +212,9 @@ sv:
       title: "Inbjudan"
       invited_to: "Du har blivit inbjuden till"
       join: "Gå med i bokcirkeln"
+      login_to_join: "Logga in eller skapa konto för att gå med"
+      login: "Logga in"
+      signup: "Skapa konto"
     not_found:
       title: "Ogiltig länk"
       message: "Den här inbjudningslänken finns inte"

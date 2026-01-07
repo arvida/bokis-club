@@ -1,10 +1,12 @@
 class InvitesController < ApplicationController
-  before_action :require_user!
   before_action :set_club_by_invite_code
-  before_action :check_invite_validity, only: [ :show, :create ]
+  before_action :check_invite_validity
+  before_action :require_user!, only: :create
 
   def show
-    redirect_to club_path(@club) if already_member?
+    if signed_in?
+      redirect_to club_path(@club) if already_member?
+    end
   end
 
   def create
