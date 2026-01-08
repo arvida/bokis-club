@@ -69,6 +69,7 @@ module Passwordless
     def authenticate_and_sign_in(session, token)
       if session.authenticate(token)
         sign_in(session)
+        cookies[:show_pwa_banner] = { value: "1", expires: 1.minute.from_now }
         redirect_to Passwordless.config.success_redirect_path, status: :see_other
       else
         flash.alert = I18n.t("passwordless.sessions.errors.invalid_token")
