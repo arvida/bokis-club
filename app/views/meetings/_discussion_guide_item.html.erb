@@ -16,7 +16,7 @@
     <%= item["text"] %>
   </span>
 
-  <% if defined?(current_user) && current_user && meeting.can_manage?(current_user) && item["source"] == "user_added" %>
+  <% if defined?(current_user) && current_user && meeting.can_manage?(current_user) %>
     <%= button_to club_meeting_discussion_guide_item_path(club, meeting, item["id"]),
         method: :delete,
         class: "text-ink-muted/40 hover:text-vermillion transition-colors p-1",
