@@ -22,8 +22,8 @@
             <p class="font-medium text-ink truncate"><%= current_user.name %></p>
             <p class="text-sm text-ink-muted truncate"><%= current_user.email %></p>
           </div>
-          <%= link_to "Profil", profile_path, class: "block px-4 py-2 text-ink hover:bg-paper-warm transition-colors", role: "menuitem" %>
-          <%= button_to "Logga ut", logout_path, method: :delete, class: "w-full text-left px-4 py-2 text-ink hover:bg-paper-warm transition-colors", role: "menuitem" %>
+          <%= link_to "Profil", profile_path, class: "block px-4 py-3 text-ink hover:bg-paper-warm transition-colors", role: "menuitem" %>
+          <%= button_to "Logga ut", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-ink hover:bg-paper-warm transition-colors", role: "menuitem" %>
         </nav>
       </div>
     <% else %>

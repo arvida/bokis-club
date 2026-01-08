@@ -40,7 +40,7 @@
     <%= render "shared/pwa_banner" if signed_in? %>
 
     <main id="main-content" class="pt-14 pb-24 sm:pb-6">
-      <div class="max-w-4xl mx-auto px-2 sm:px-6 pb-24">
+      <div class="max-w-4xl mx-auto px-2 sm:px-6">
         <% if flash[:notice] %>
           <div class="mb-4 p-4 bg-sage/10 text-sage rounded-lg">
             <%= flash[:notice] %>
@@ -56,5 +56,14 @@
     </main>
 
     <%= render "shared/dock" %>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+          .catch(function(error) {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      }
+    </script>
   </body>
 </html>

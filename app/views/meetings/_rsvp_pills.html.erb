@@ -10,21 +10,21 @@
         <%= button_to rsvp_club_meeting_path(club, meeting),
             method: :post,
             params: { response: "yes" },
-            class: "px-3 py-1.5 text-xs font-medium rounded-full transition-colors #{current_response == 'yes' ? 'bg-vermillion text-white' : 'bg-cream/50 text-ink-muted hover:bg-vermillion/10 hover:text-vermillion'}" do %>
+            class: "px-3 py-2 text-xs font-medium rounded-full transition-colors #{current_response == 'yes' ? 'bg-vermillion text-white' : 'bg-cream/50 text-ink-muted hover:bg-vermillion/10 hover:text-vermillion'}" do %>
           <%= t("meetings.rsvp.yes") %>
         <% end %>
 
         <%= button_to rsvp_club_meeting_path(club, meeting),
             method: :post,
             params: { response: "maybe" },
-            class: "px-3 py-1.5 text-xs font-medium rounded-full transition-colors #{current_response == 'maybe' ? 'bg-sage text-white' : 'bg-cream/50 text-ink-muted hover:bg-sage/10 hover:text-sage'}" do %>
+            class: "px-3 py-2 text-xs font-medium rounded-full transition-colors #{current_response == 'maybe' ? 'bg-sage text-white' : 'bg-cream/50 text-ink-muted hover:bg-sage/10 hover:text-sage'}" do %>
           <%= t("meetings.rsvp.maybe") %>
         <% end %>
 
         <%= button_to rsvp_club_meeting_path(club, meeting),
             method: :post,
             params: { response: "no" },
-            class: "px-3 py-1.5 text-xs font-medium rounded-full transition-colors #{current_response == 'no' ? 'bg-ink-muted text-white' : 'bg-cream/50 text-ink-muted hover:bg-ink/10 hover:text-ink'}" do %>
+            class: "px-3 py-2 text-xs font-medium rounded-full transition-colors #{current_response == 'no' ? 'bg-ink-muted text-white' : 'bg-cream/50 text-ink-muted hover:bg-ink/10 hover:text-ink'}" do %>
           <%= t("meetings.rsvp.no") %>
         <% end %>
       </div>

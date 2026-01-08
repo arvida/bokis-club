@@ -14,7 +14,8 @@
       <%= f.label :name, t("profiles.show.name"), class: "block text-sm font-medium text-ink-muted mb-2" %>
       <%= f.text_field :name,
           class: "form-input #{current_user.errors[:name].any? ? 'border-vermillion' : ''}",
-          required: true %>
+          required: true,
+          autofocus: true %>
       <% if current_user.errors[:name].any? %>
         <p class="mt-1 text-sm text-vermillion"><%= current_user.errors[:name].first %></p>
       <% end %>
@@ -44,6 +45,6 @@
 
   <div class="mt-12 pt-8 border-t border-cream">
     <%= button_to t("profiles.show.logout"), logout_path, method: :delete,
-        class: "text-ink-muted hover:text-vermillion transition-colors" %>
+        class: "px-4 py-2 border border-ink-muted text-ink-muted text-sm font-medium rounded-lg hover:border-vermillion hover:text-vermillion transition-colors" %>
   </div>
 </div>
