@@ -2,7 +2,11 @@ class HomeController < ApplicationController
   before_action :require_user!
 
   def dashboard
-    @clubs = current_user.clubs.active.order(updated_at: :desc)
+    @clubs = current_user.clubs
+      .active
+      .includes(:members)
+      .preload(club_books: :book, meetings: { club_book: :book })
+      .order(updated_at: :desc)
   end
 
   def meetings

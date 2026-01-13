@@ -1,0 +1,68 @@
+<%# Enhanced club card for dashboard showing current book and next meeting %>
+<% large = local_assigns[:size] == :large %>
+<%= link_to club_path(club), class: "group block rounded-xl overflow-hidden bg-paper-warm border border-cream hover:border-ink-muted/30 transition-all hover:shadow-lg" do %>
+  <div class="aspect-video overflow-hidden">
+    <%= image_tag club.cover_url, alt: club.name, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+  </div>
+
+  <div class="p-4">
+    <h3 class="font-display <%= large ? 'text-xl' : 'text-lg' %> font-medium mb-1 group-hover:text-vermillion transition-colors">
+      <%= club.name %>
+    </h3>
+    <p class="text-sm text-ink-muted">
+      <%= t("clubs.show.members", count: club.members.size) %>
+    </p>
+
+    <%# Current book section %>
+    <div class="mt-4 pt-4 border-t border-cream/50">
+      <span class="text-[10px] font-medium tracking-widest text-vermillion uppercase">
+        <%= t("club_books.now_reading.department") %>
+      </span>
+      <% if (current_book = club.current_book) %>
+        <div class="flex gap-3 mt-2">
+          <div class="w-10 flex-shrink-0">
+            <%= render "shared/book_cover", book: current_book, size: :small, class: "w-full rounded shadow-sm" %>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium truncate"><%= current_book.title %></p>
+            <p class="text-xs text-ink-muted truncate"><%= current_book.author_names %></p>
+          </div>
+        </div>
+      <% else %>
+        <p class="text-sm text-ink-muted mt-1"><%= t("clubs.dashboard_card.no_book") %></p>
+      <% end %>
+    </div>
+
+    <%# Next meeting section %>
+    <% next_meeting = club.meetings.select { |m| m.scheduled_at > Time.current }.min_by(&:scheduled_at) %>
+    <% if next_meeting %>
+      <div class="mt-3 pt-3 border-t border-cream/50 flex items-center gap-3">
+        <div class="text-center flex-shrink-0 w-10">
+          <div class="<%= large ? 'text-xl' : 'text-lg' %> font-display font-light text-ink leading-none">
+            <%= next_meeting.scheduled_at.day %>
+          </div>
+          <div class="text-[10px] text-ink-muted uppercase">
+            <%= I18n.l(next_meeting.scheduled_at, format: "%b") %>
+          </div>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-medium truncate"><%= next_meeting.title %></p>
+          <p class="text-xs text-ink-muted"><%= I18n.l(next_meeting.scheduled_at, format: "%H:%M") %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Voting indicator %>
+    <% if club.voting_books.any? %>
+      <div class="mt-3 flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vermillion opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-vermillion"></span>
+        </span>
+        <span class="text-xs text-vermillion font-medium">
+          <%= t("clubs.dashboard_card.voting_active") %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+<% end %>

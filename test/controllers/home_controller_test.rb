@@ -16,13 +16,13 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
   test "dashboard shows user's clubs" do
     user = create(:user)
-    club = create(:club, name: "Min Bokcirkel")
+    club = create(:club, name: "Min Bokklubb")
     create(:membership, user: user, club: club)
     sign_in_as(user)
 
     get dashboard_path
     assert_response :success
-    assert_select "h3", text: "Min Bokcirkel"
+    assert_select "h3", text: "Min Bokklubb"
   end
 
   test "dashboard shows empty state when no clubs" do
@@ -31,7 +31,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     get dashboard_path
     assert_response :success
-    assert_select "p", text: I18n.t("home.dashboard.empty")
+    assert_select "h2", text: I18n.t("home.dashboard.empty_title")
   end
 
   test "dashboard shows create button" do
