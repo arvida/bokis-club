@@ -9,7 +9,7 @@ sv:
     profile: "Profil"
 
   landing:
-    tagline: "För bokcirklar som vill ha det enkelt"
+    tagline: "För bokklubbar som vill ha det enkelt"
     description: "Hantera era bokval, planera träffar och få diskussionsfrågor – allt på ett ställe."
     signup: "Kom igång"
     login: "Logga in"
@@ -78,17 +78,17 @@ sv:
     profile:
       updated: "Dina ändringar har sparats"
     clubs:
-      created: "Din bokcirkel har skapats!"
-      updated: "Bokcirkeln har uppdaterats"
-      deleted: "Bokcirkeln har tagits bort"
+      created: "Din bokklubb har skapats!"
+      updated: "Bokklubben har uppdaterats"
+      deleted: "Bokklubben har tagits bort"
       left: "Du har lämnat %{club}"
       joined: "Välkommen till %{club}!"
-      not_open: "Denna bokcirkel är stängd"
+      not_open: "Denna bokklubb är stängd"
       cannot_leave_last_admin: "Du kan inte lämna som sista admin"
       invite_regenerated: "Ny inbjudningslänk har skapats"
     invites:
       joined: "Välkommen till %{club}!"
-      already_member: "Du är redan medlem i denna bokcirkel"
+      already_member: "Du är redan medlem i denna bokklubb"
     members:
       removed: "Medlemmen har tagits bort"
       promoted: "Medlemmen är nu admin"
@@ -145,9 +145,13 @@ sv:
       max_regenerate: "Du kan inte generera fler frågor för detta möte"
 
   clubs:
+    dashboard_card:
+      no_book: "Ingen bok vald"
+      no_meeting: "Ingen planerad träff"
+      voting_active: "Röstning pågår"
     getting_started:
       title: "Kom igång"
-      invite_text: "Bjud in vänner till din bokcirkel"
+      invite_text: "Bjud in vänner till din bokklubb"
       invite_link: "Bjud in medlemmar →"
       book_text: "Välj er första bok att läsa tillsammans"
       book_link: "Välj bok →"
@@ -156,13 +160,13 @@ sv:
     live_meeting:
       banner_title: "Möte pågår"
     new:
-      title: "Skapa bokcirkel"
+      title: "Skapa bokklubb"
       name:
         label: "Namn"
-        placeholder: "Min bokcirkel"
+        placeholder: "Min bokklubb"
       description:
         label: "Beskrivning"
-        placeholder: "Beskriv er bokcirkel..."
+        placeholder: "Beskriv er bokklubb..."
       privacy:
         label: "Typ"
         open: "Öppen"
@@ -173,7 +177,7 @@ sv:
         label: "Omslagsbild"
         library: "Välj från bibliotek"
         upload: "Ladda upp egen"
-      submit: "Skapa bokcirkel"
+      submit: "Skapa bokklubb"
     edit:
       title: "Inställningar"
       submit: "Spara ändringar"
@@ -183,10 +187,10 @@ sv:
         sv: "Svenska"
         en: "English"
       danger_zone: "Farlig zon"
-      delete_club: "Ta bort bokcirkel"
+      delete_club: "Ta bort bokklubb"
       delete_confirm: "Är du säker? Detta går inte att ångra."
     show:
-      department: "BOKCIRKEL"
+      department: "BOKKLUBB"
       members:
         one: "1 medlem"
         other: "%{count} medlemmar"
@@ -195,7 +199,7 @@ sv:
       leave: "Lämna klubben"
       leave_confirm: "Är du säker på att du vill lämna klubben?"
       join: "Gå med"
-      closed: "Stängd bokcirkel"
+      closed: "Stängd bokklubb"
       closed_hint: "Du behöver en inbjudan för att gå med"
     book_actions:
       suggest: "Föreslå bok"
@@ -238,7 +242,7 @@ sv:
     show:
       title: "Inbjudan"
       invited_to: "Du har blivit inbjuden till"
-      join: "Gå med i bokcirkeln"
+      join: "Gå med i bokklubbn"
       login_to_join: "Logga in eller skapa konto för att gå med"
       login: "Logga in"
       signup: "Skapa konto"
@@ -251,16 +255,19 @@ sv:
 
   home:
     dashboard:
-      title: "Mina klubbar"
-      create: "Skapa bokcirkel"
-      empty: "Du är inte med i någon bokcirkel än"
-      empty_cta: "Skapa din första"
+      title: "Mina bokklubbar"
+      title_single: "Min bokklubb"
+      create: "Ny bokklubb"
+      empty_title: "Välkommen till Bokis"
+      empty_description: "Bokis hjälper er bokklubb att välja böcker, planera träffar och få diskussionsfrågor."
+      empty_create: "Starta en bokklubb"
+      empty_invite_hint: "Redan inbjuden? Öppna inbjudningslänken från din vän."
     meetings:
       title: "Träffar"
       upcoming: "Kommande"
       past: "Tidigare"
       empty: "Inga kommande träffar"
-      empty_hint: "Träffar från dina bokcirklar visas här"
+      empty_hint: "Träffar från dina bokklubbar visas här"
 
   profiles:
     show:

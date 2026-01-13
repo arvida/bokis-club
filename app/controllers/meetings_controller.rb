@@ -174,7 +174,7 @@ class MeetingsController < ApplicationController
     if @club.current_book
       "Diskussion: #{@club.current_book.title}"
     else
-      "Bokcirkelmöte"
+      "Bokklubbsmöte"
     end
   end
 
@@ -206,7 +206,7 @@ class MeetingsController < ApplicationController
   end
 
   def ics_description
-    description = "Bokcirkel: #{@club.name}"
+    description = "Bokklubb: #{@club.name}"
     description += "\\n\\nBok: #{@meeting.club_book.book.title}" if @meeting.club_book
     description
   end

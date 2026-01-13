@@ -28,12 +28,12 @@ class ClubsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("Club.count", 1) do
       post clubs_path, params: {
-        club: { name: "Min Bokcirkel", description: "En mysig klubb", privacy: "closed" }
+        club: { name: "Min Bokklubb", description: "En mysig klubb", privacy: "closed" }
       }
     end
 
     club = Club.last
-    assert_equal "Min Bokcirkel", club.name
+    assert_equal "Min Bokklubb", club.name
     assert_equal "En mysig klubb", club.description
     assert_equal "closed", club.privacy
   end
