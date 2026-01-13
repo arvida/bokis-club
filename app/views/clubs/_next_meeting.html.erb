@@ -1,23 +1,23 @@
-<div class="bg-sage/5 rounded-lg p-6 mb-8 border border-sage/20">
-  <div class="flex items-center justify-between mb-4">
+<div class="bg-sage/5 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border border-sage/20">
+  <div class="flex items-center justify-between mb-3 sm:mb-4">
     <span class="inline-block text-xs font-medium tracking-widest text-sage">
       <%= t("meetings.next_meeting.department") %>
     </span>
     <%= link_to t("meetings.next_meeting.view_all"),
         club_meetings_path(club),
-        class: "text-xs text-sage hover:text-sage-dark transition-colors" %>
+        class: "text-xs text-sage hover:text-sage-dark transition-colors min-h-[44px] flex items-center px-2 -mr-2" %>
   </div>
 
   <% next_meeting = club.meetings.upcoming.first %>
 
   <% if next_meeting %>
     <%= link_to club_meeting_path(club, next_meeting), class: "block group active:bg-sage/10 -mx-2 px-2 py-2 -my-2 rounded-lg transition-colors" do %>
-      <div class="flex gap-4 items-start">
+      <div class="flex gap-3 sm:gap-4 items-start">
         <div class="text-center flex-shrink-0">
-          <div class="text-3xl font-display font-light text-ink group-hover:text-vermillion transition-colors">
+          <div class="text-2xl sm:text-3xl font-display font-light text-ink group-hover:text-vermillion transition-colors">
             <%= next_meeting.scheduled_at.day %>
           </div>
-          <div class="text-sm text-ink-muted uppercase">
+          <div class="text-xs sm:text-sm text-ink-muted uppercase">
             <%= I18n.l(next_meeting.scheduled_at, format: "%b") %>
           </div>
         </div>
@@ -61,17 +61,17 @@
       </div>
     <% end %>
 
-    <div class="mt-4 pt-4 border-t border-sage/20">
+    <div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-sage/20">
       <% user_rsvp = next_meeting.rsvp_for(current_user) %>
       <%= render "meetings/rsvp_pills", meeting: next_meeting, user_rsvp: user_rsvp, club: club %>
     </div>
   <% else %>
-    <div class="text-center py-4">
-      <p class="text-ink-muted mb-4"><%= t("meetings.next_meeting.no_meeting") %></p>
+    <div class="text-center py-3 sm:py-4">
+      <p class="text-ink-muted mb-3 sm:mb-4"><%= t("meetings.next_meeting.no_meeting") %></p>
       <% if is_admin %>
         <%= link_to t("meetings.next_meeting.create"),
             new_club_meeting_path(club),
-            class: "inline-block px-4 py-2 bg-sage text-white text-sm font-medium rounded-lg hover:bg-sage-dark transition-colors" %>
+            class: "inline-block px-4 py-2 bg-sage text-white text-sm font-medium rounded-lg hover:bg-sage-dark active:bg-sage-dark transition-colors" %>
       <% end %>
     </div>
   <% end %>

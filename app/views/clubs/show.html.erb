@@ -1,6 +1,6 @@
 <div>
   <%# Hero image - visual moment, no text overlay %>
-  <div class="h-40 md:h-56 overflow-hidden">
+  <div class="h-32 sm:h-40 md:h-56 overflow-hidden">
     <%= image_tag @club.cover_url, alt: @club.name, class: "w-full h-full object-cover" %>
   </div>
 
@@ -41,11 +41,11 @@
     </h1>
 
     <% if @club.description.present? %>
-      <p class="text-ink-light leading-relaxed mb-8">
+      <p class="text-ink-light leading-relaxed mb-6 sm:mb-8">
         <%= @club.description %>
       </p>
     <% else %>
-      <div class="mb-6"></div>
+      <div class="mb-4 sm:mb-6"></div>
     <% end %>
 
     <%= render "club_books/now_reading", club: @club, is_admin: @is_admin %>
@@ -81,8 +81,8 @@
       <%= render "clubs/next_meeting", club: @club, is_admin: @is_admin %>
     <% end %>
 
-    <div class="flex items-center justify-between mb-8">
-      <%= link_to club_members_path(@club), class: "group flex items-center gap-3" do %>
+    <div class="flex items-center justify-between mb-6 sm:mb-8">
+      <%= link_to club_members_path(@club), class: "group flex items-center gap-3 min-h-[44px] py-2" do %>
         <div class="flex -space-x-2">
           <% @club.members.limit(4).each do |member| %>
             <%= render "shared/avatar", user: member, size: :sm, border: true %>
@@ -99,7 +99,7 @@
       <% end %>
 
       <% if @is_admin %>
-        <%= link_to t("clubs.show.settings"), edit_club_path(@club), class: "text-sm text-ink-muted hover:text-ink transition-colors" %>
+        <%= link_to t("clubs.show.settings"), edit_club_path(@club), class: "min-h-[44px] flex items-center px-3 text-sm text-ink-muted hover:text-ink transition-colors" %>
       <% end %>
     </div>
 

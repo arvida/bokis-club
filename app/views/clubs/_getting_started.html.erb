@@ -4,19 +4,19 @@
 <% show_meeting = club.meetings.upcoming.empty? && club.current_club_book.present? %>
 
 <% if show_invite || show_book %>
-  <div class="mb-10 p-6 bg-cream/30 rounded-xl border border-cream">
-    <h3 class="font-display text-lg font-medium mb-4">
+  <div class="mb-8 sm:mb-10 p-4 sm:p-6 bg-cream/30 rounded-xl border border-cream">
+    <h3 class="font-display text-lg font-medium mb-3 sm:mb-4">
       <%= t("clubs.getting_started.title") %>
     </h3>
 
-    <ul class="space-y-4">
+    <ul class="space-y-3 sm:space-y-4">
       <% if show_invite %>
         <li class="flex items-start gap-3">
           <span class="flex-shrink-0 w-6 h-6 rounded-full bg-vermillion/10 text-vermillion flex items-center justify-center text-sm font-medium">1</span>
           <div>
             <p class="text-ink mb-1"><%= t("clubs.getting_started.invite_text") %></p>
             <%= link_to t("clubs.getting_started.invite_link"), club_members_path(club),
-                class: "text-sm text-vermillion hover:text-vermillion-dark transition-colors" %>
+                class: "inline-flex items-center min-h-[44px] text-sm text-vermillion hover:text-vermillion-dark active:text-vermillion-dark transition-colors" %>
           </div>
         </li>
       <% end %>
@@ -27,7 +27,7 @@
           <div>
             <p class="text-ink mb-1"><%= t("clubs.getting_started.book_text") %></p>
             <%= link_to t("clubs.getting_started.book_link"), new_club_club_book_path(club),
-                class: "text-sm text-vermillion hover:text-vermillion-dark transition-colors" %>
+                class: "inline-flex items-center min-h-[44px] text-sm text-vermillion hover:text-vermillion-dark active:text-vermillion-dark transition-colors" %>
           </div>
         </li>
       <% end %>
@@ -38,7 +38,7 @@
           <div>
             <p class="text-ink mb-1"><%= t("clubs.getting_started.meeting_text") %></p>
             <%= link_to t("clubs.getting_started.meeting_link"), new_club_meeting_path(club),
-                class: "text-sm text-vermillion hover:text-vermillion-dark transition-colors" %>
+                class: "inline-flex items-center min-h-[44px] text-sm text-vermillion hover:text-vermillion-dark active:text-vermillion-dark transition-colors" %>
           </div>
         </li>
       <% end %>
