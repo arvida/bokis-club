@@ -1,9 +1,13 @@
 <div class="max-w-2xl mx-auto px-2 sm:px-6 py-8">
-  <div class="flex items-center justify-between mb-8">
+  <div class="mb-4">
+    <%= render "shared/back_link", path: club_path(@club) %>
+  </div>
+
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
     <h1 class="font-display text-2xl font-light"><%= t("club_books.index.title") %></h1>
     <%= link_to t("club_books.index.suggest_book"),
         suggest_club_club_books_path(@club),
-        class: "px-4 py-2 border border-vermillion text-vermillion text-sm font-medium rounded-lg hover:bg-vermillion hover:text-white transition-colors" %>
+        class: "inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 border border-vermillion text-vermillion text-sm font-medium rounded-lg hover:bg-vermillion hover:text-white transition-colors" %>
   </div>
 
   <% if @suggested_books.any? %>

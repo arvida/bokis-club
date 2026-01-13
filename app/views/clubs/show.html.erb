@@ -4,6 +4,10 @@
     <%= image_tag @club.cover_url, alt: @club.name, class: "w-full h-full object-cover" %>
   </div>
 
+  <div class="max-w-2xl mx-auto px-2 sm:px-6 pt-4">
+    <%= render "shared/back_link", path: dashboard_path %>
+  </div>
+
   <%# Live meeting banner %>
   <% if @live_meeting && @is_member %>
     <%= link_to club_meeting_path(@club, @live_meeting),

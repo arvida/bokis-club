@@ -1,14 +1,15 @@
-<div class="max-w-2xl mx-auto py-8 px-4">
-  <div class="flex items-center justify-between mb-6">
-    <div>
-      <h1 class="font-display text-2xl font-light">
-        <%= t("members.index.title") %>
-      </h1>
-      <p class="text-sm text-ink-muted">
-        <%= t("clubs.show.members", count: @members.count) %>
-      </p>
-    </div>
-    <%= link_to "←", club_path(@club), class: "text-ink-muted hover:text-ink transition-colors" %>
+<div class="max-w-2xl mx-auto py-8 px-2 sm:px-6">
+  <div class="mb-4">
+    <%= render "shared/back_link", path: club_path(@club) %>
+  </div>
+
+  <div class="mb-6">
+    <h1 class="font-display text-2xl font-light">
+      <%= t("members.index.title") %>
+    </h1>
+    <p class="text-sm text-ink-muted">
+      <%= t("clubs.show.members", count: @members.count) %>
+    </p>
   </div>
 
   <% if @is_admin %>

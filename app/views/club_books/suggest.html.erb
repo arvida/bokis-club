@@ -1,4 +1,8 @@
 <div class="max-w-2xl mx-auto px-2 sm:px-6 py-8">
+  <div class="mb-4">
+    <%= render "shared/back_link", path: club_club_books_path(@club) %>
+  </div>
+
   <h1 class="font-display text-2xl font-light mb-8"><%= t("club_books.suggest.title") %></h1>
 
   <%= form_with url: suggest_club_club_books_path(@club), method: :post, class: "space-y-6" do |f| %>

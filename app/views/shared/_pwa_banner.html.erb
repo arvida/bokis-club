@@ -1,11 +1,11 @@
 <%# Show banner on mobile when in browser (not standalone PWA) suggesting to open the app %>
-<div id="pwa-open-banner" class="hidden fixed top-14 left-0 right-0 z-30 bg-sage text-white px-4 py-3">
-  <div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
+<div id="pwa-open-banner" class="hidden bg-sage text-white px-4 py-3 rounded-lg mb-6">
+  <div class="flex items-center justify-between gap-4">
     <div class="flex items-center gap-3">
       <span class="text-lg">📱</span>
       <span class="text-sm font-medium"><%= t("pwa.open_in_app") %></span>
     </div>
-    <button type="button" onclick="dismissPwaBanner()" class="text-white/70 hover:text-white p-2 -mr-2" aria-label="<%= t("pwa.dismiss") %>">
+    <button type="button" onclick="dismissPwaBanner()" class="text-white/70 hover:text-white p-3 -mr-3" aria-label="<%= t("pwa.dismiss") %>">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
@@ -15,29 +15,18 @@
 
 <script>
   (function() {
-    // Check if running as installed PWA (standalone mode)
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
                          window.navigator.standalone === true;
-
-    // Check if on mobile device (max-width 640px matches Tailwind's sm breakpoint)
     const isMobile = window.matchMedia('(max-width: 640px)').matches;
-
-    // Check for show_pwa_banner cookie (set on login)
     const hasLoginCookie = document.cookie.includes('show_pwa_banner=1');
 
-    // Show banner only on mobile, right after login, and not in standalone mode
     if (isMobile && !isStandalone && hasLoginCookie) {
       document.getElementById('pwa-open-banner').classList.remove('hidden');
-      // Add padding to main content to account for banner
-      document.getElementById('main-content').style.paddingTop = 'calc(3.5rem + 52px)';
-      // Clear the cookie so banner doesn't show again
       document.cookie = 'show_pwa_banner=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     }
   })();
 
   function dismissPwaBanner() {
     document.getElementById('pwa-open-banner').classList.add('hidden');
-    // Reset main content padding
-    document.getElementById('main-content').style.paddingTop = '';
   }
 </script>
