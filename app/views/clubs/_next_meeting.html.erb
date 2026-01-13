@@ -5,7 +5,7 @@
     </span>
     <%= link_to t("meetings.next_meeting.view_all"),
         club_meetings_path(club),
-        class: "text-xs text-sage hover:text-sage-dark transition-colors min-h-[44px] flex items-center px-2 -mr-2" %>
+        class: "text-xs text-sage hover:text-sage-dark transition-colors min-h-[44px] flex items-center px-2 py-3 -mr-2" %>
   </div>
 
   <% next_meeting = club.meetings.upcoming.first %>
