@@ -1,4 +1,4 @@
-<%= form_with model: [club, meeting], class: "space-y-6 pb-24 md:pb-0" do |f| %>
+<%= form_with model: [club, meeting], class: "space-y-6" do |f| %>
   <% if meeting.errors.any? %>
     <div class="bg-vermillion/10 border border-vermillion/30 rounded-lg p-4">
       <ul class="text-sm text-vermillion space-y-1">
@@ -188,9 +188,9 @@
         class: "form-input" %>
   </div>
 
-  <%# Submit button - sticky on mobile for thumb reach %>
-  <div class="fixed bottom-0 left-0 right-0 p-4 bg-paper/95 backdrop-blur-sm border-t border-cream md:relative md:p-0 md:pt-4 md:bg-transparent md:backdrop-blur-none md:border-0 z-10">
+  <%# Submit button - normal flow with padding for dock navigation %>
+  <div class="pt-4 pb-4 md:pb-0">
     <%= f.submit meeting.persisted? ? t("meetings.edit.submit") : t("meetings.new.submit"),
-        class: "w-full px-6 py-3.5 bg-vermillion text-white font-medium rounded-xl hover:bg-vermillion-dark active:scale-[0.98] transition-all cursor-pointer shadow-lg md:shadow-none" %>
+        class: "w-full px-6 py-3.5 bg-vermillion text-white font-medium rounded-xl hover:bg-vermillion-dark active:scale-[0.98] transition-all cursor-pointer" %>
   </div>
 <% end %>
