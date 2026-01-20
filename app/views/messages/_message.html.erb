@@ -1,0 +1,139 @@
+<%= turbo_frame_tag dom_id(message), class: "block" do %>
+  <article class="bg-white rounded-lg border border-cream-dark overflow-hidden" id="<%= dom_id(message) %>">
+    <div class="p-3">
+      <div class="flex items-center gap-2">
+        <%= render "shared/avatar", user: message.user, size: :sm %>
+
+        <div class="flex-1 min-w-0 flex items-center justify-between gap-2">
+          <div class="flex items-baseline gap-2 flex-wrap">
+            <span class="font-medium text-ink text-sm"><%= message.user.name %></span>
+            <time class="text-xs text-ink-muted"><%= time_ago_in_words(message.created_at) %></time>
+            <% if message.edited? %>
+              <span class="text-xs text-ink-muted">(redigerad)</span>
+            <% end %>
+          </div>
+
+          <% if message.editable_by?(current_user) || message.destroyable_by?(current_user) %>
+            <div class="relative" data-controller="dropdown">
+              <button
+                type="button"
+                class="p-3 -m-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-ink-muted hover:text-ink rounded-lg transition-colors"
+                data-dropdown-target="button"
+                data-action="click->dropdown#toggle"
+                aria-label="Fler alternativ"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+              </button>
+
+              <div
+                class="absolute right-0 mt-1 w-36 bg-white rounded-lg shadow-lg border border-cream-dark py-1 z-10 hidden"
+                data-dropdown-target="menu"
+                role="menu"
+              >
+                <% if message.editable_by?(current_user) %>
+                  <button
+                    type="button"
+                    class="w-full px-4 py-3 min-h-[44px] text-left text-sm text-ink hover:bg-cream/50 transition-colors"
+                    data-action="click->message-edit#open"
+                    data-message-edit-message-id-param="<%= message.id %>"
+                    role="menuitem"
+                  >
+                    <%= t("messages.actions.edit") %>
+                  </button>
+                <% end %>
+                <% if message.destroyable_by?(current_user) %>
+                  <%= button_to club_message_path(message.club, message),
+                      method: :delete,
+                      form: { data: { turbo_confirm: t("messages.actions.delete_confirm") } },
+                      class: "w-full px-4 py-3 min-h-[44px] text-left text-sm text-vermillion hover:bg-cream/50 transition-colors" do %>
+                    <%= t("messages.actions.delete") %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <p class="mt-2 text-ink text-base leading-relaxed whitespace-pre-wrap break-words"><%= render_with_mentions(message.content, message.club) %></p>
+    </div>
+
+    <div class="border-t border-cream" data-controller="replies" data-replies-hide-text-value="<%= t('messages.replies.hide') %>">
+      <% replies_count = message.replies.size %>
+
+      <% if replies_count > 0 %>
+        <button
+          type="button"
+          class="w-full px-4 py-3 min-h-[44px] text-left text-sm text-ink-muted hover:text-ink hover:bg-cream/30 transition-colors flex items-center gap-2"
+          data-action="click->replies#toggle"
+          data-replies-target="button"
+          data-replies-show-text-value="<%= t('messages.replies.show', count: replies_count) %>"
+          aria-expanded="false"
+        >
+          <svg class="w-4 h-4 transition-transform" data-replies-target="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+          <span data-replies-target="text">
+            <%= t("messages.replies.show", count: replies_count) %>
+          </span>
+        </button>
+
+        <div class="hidden px-4 pb-3 space-y-2" data-replies-target="content" id="<%= dom_id(message, :replies) %>">
+          <% message.replies.sort_by(&:created_at).each do |reply| %>
+            <%= render reply %>
+          <% end %>
+
+          <%= form_with url: club_message_replies_path(message.club, message),
+              scope: :message_reply,
+              class: "mt-2 pt-2 border-t border-cream",
+              data: { action: "turbo:submit-end->replies#clearForm" } do |f| %>
+            <div class="flex gap-2 items-end">
+              <%= f.text_area :content,
+                  rows: 1,
+                  placeholder: t("messages.replies.placeholder"),
+                  class: "form-input flex-1 text-sm py-2 resize-none",
+                  autocomplete: "off",
+                  data: { replies_target: "input" } %>
+              <%= f.submit t("messages.replies.submit"),
+                  class: "px-4 py-3 min-h-[44px] bg-sage text-white text-sm font-medium rounded-lg hover:bg-sage-dark transition-colors cursor-pointer whitespace-nowrap" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <button
+          type="button"
+          class="w-full px-4 py-3 min-h-[44px] text-left text-sm text-ink-muted hover:text-ink hover:bg-cream/30 transition-colors flex items-center gap-2"
+          data-action="click->replies#showForm"
+          data-replies-target="button"
+          aria-expanded="false"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+          </svg>
+          <%= t("messages.replies.add") %>
+        </button>
+
+        <div class="hidden px-4 pb-3" data-replies-target="content" id="<%= dom_id(message, :replies) %>">
+          <%= form_with url: club_message_replies_path(message.club, message),
+              scope: :message_reply,
+              data: { action: "turbo:submit-end->replies#clearForm" } do |f| %>
+            <div class="flex gap-2 items-end">
+              <%= f.text_area :content,
+                  rows: 1,
+                  placeholder: t("messages.replies.placeholder"),
+                  class: "form-input flex-1 text-sm py-2 resize-none",
+                  autocomplete: "off",
+                  data: { replies_target: "input" } %>
+              <%= f.submit t("messages.replies.submit"),
+                  class: "px-4 py-3 min-h-[44px] bg-sage text-white text-sm font-medium rounded-lg hover:bg-sage-dark transition-colors cursor-pointer whitespace-nowrap" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </article>
+<% end %>

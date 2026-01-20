@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :memberships, -> { active }
   has_many :clubs, through: :memberships
   has_many :rsvps
+  has_many :messages, dependent: :destroy
+  has_many :message_replies, dependent: :destroy
   passwordless_with :email
 
   validates :email, presence: true,

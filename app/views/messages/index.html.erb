@@ -1,0 +1,77 @@
+<%= turbo_stream_from @club %>
+
+<div class="min-h-screen bg-paper pb-24" data-controller="message-composer">
+  <header class="sticky top-0 z-10 bg-paper border-b border-cream-dark px-4 py-3">
+    <div class="flex items-center gap-3">
+      <%= link_to club_path(@club), class: "text-ink-muted hover:text-ink min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      <% end %>
+      <h1 class="font-display text-xl text-ink"><%= t("messages.index.title") %></h1>
+    </div>
+  </header>
+
+  <main class="p-4 space-y-4">
+    <div id="messages-list" class="space-y-6">
+      <% @messages.each do |message| %>
+        <%= render message %>
+      <% end %>
+    </div>
+
+    <div id="messages-empty" class="<%= 'hidden' unless @messages.empty? %> text-center py-12 text-ink-muted">
+      <p><%= t("messages.index.empty") %></p>
+      <p class="text-sm mt-2"><%= t("messages.index.empty_hint") %></p>
+    </div>
+  </main>
+
+  <button
+    type="button"
+    class="fixed bottom-24 right-4 w-14 h-14 bg-vermillion text-white rounded-full shadow-lg flex items-center justify-center hover:bg-vermillion-dark transition-colors focus:outline-none focus:ring-2 focus:ring-vermillion focus:ring-offset-2"
+    data-action="click->message-composer#open"
+    aria-label="<%= t('messages.index.new') %>"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+  </button>
+
+  <div
+    id="message-modal"
+    class="fixed inset-0 z-50 hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="message-modal-title"
+    data-message-composer-target="modal"
+  >
+    <div
+      class="absolute inset-0 bg-ink/50 backdrop-blur-sm"
+      data-action="click->message-composer#close"
+    ></div>
+
+    <div class="absolute inset-x-0 bottom-0 bg-paper rounded-t-2xl px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] transform translate-y-full transition-transform duration-300 ease-out" data-message-composer-target="sheet">
+      <div class="w-10 h-1 bg-cream-dark rounded-full mx-auto mb-3"></div>
+      <h2 id="message-modal-title" class="sr-only"><%= t("messages.form.title") %></h2>
+
+      <%= form_with model: [@club, @message], id: "new_message", class: "space-y-3", data: { action: "turbo:submit-end->message-composer#handleSuccess" } do |f| %>
+        <%= f.text_area :content,
+            rows: 3,
+            placeholder: t("messages.form.placeholder"),
+            class: "form-input w-full resize-none",
+            autofocus: true,
+            data: { action: "input->message-composer#autoResize", message_composer_target: "textarea" } %>
+
+        <div class="flex gap-3">
+          <button
+            type="button"
+            class="flex-1 px-4 py-3 border border-ink-muted text-ink-muted text-sm font-medium rounded-lg hover:border-ink hover:text-ink transition-colors"
+            data-action="click->message-composer#close"
+          >
+            <%= t("messages.form.cancel") %>
+          </button>
+          <%= f.submit t("messages.form.submit"), class: "flex-1 px-4 py-3 bg-vermillion text-white text-sm font-medium rounded-lg hover:bg-vermillion-dark transition-colors cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

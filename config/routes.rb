@@ -62,6 +62,9 @@ Rails.application.routes.draw do
       end
       post "regenerate_questions", to: "discussion_guide_items#regenerate"
     end
+    resources :messages, only: [ :index, :create, :update, :destroy ] do
+      resources :replies, controller: "message_replies", only: [ :create, :update, :destroy ]
+    end
     post "join", on: :member, to: "clubs#join"
     delete "leave", on: :member, to: "clubs#leave"
     patch "regenerate_invite", on: :member, to: "clubs#regenerate_invite"

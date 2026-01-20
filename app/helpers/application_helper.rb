@@ -43,4 +43,20 @@ module ApplicationHelper
   def dom_id_for_item(item)
     "discussion-item-#{item['id']}"
   end
+
+  def render_with_mentions(content, club)
+    return "" if content.blank?
+
+    member_names = club.members.pluck(:name).map(&:downcase)
+
+    escaped_content = h(content)
+    escaped_content.gsub(/@(\w+)/i) do |match|
+      name = ::Regexp.last_match(1).downcase
+      if member_names.include?(name)
+        "<span class=\"text-vermillion font-medium\">#{match}</span>"
+      else
+        match
+      end
+    end.html_safe
+  end
 end

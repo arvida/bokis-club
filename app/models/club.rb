@@ -18,6 +18,7 @@ class Club < ApplicationRecord
   has_many :club_books, -> { active }
   has_many :books, through: :club_books
   has_many :meetings, -> { active }
+  has_many :messages, dependent: :destroy
 
   LANGUAGES = %w[sv en].freeze
 

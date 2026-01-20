@@ -1,0 +1,65 @@
+<%= turbo_frame_tag dom_id(message_reply) do %>
+  <article class="bg-cream/30 rounded-lg p-3" id="<%= dom_id(message_reply) %>">
+    <div class="flex items-start gap-2">
+      <%= render "shared/avatar", user: message_reply.user, size: :xs %>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-baseline gap-2 flex-wrap">
+            <span class="font-medium text-ink text-sm"><%= message_reply.user.name %></span>
+            <time class="text-xs text-ink-muted"><%= time_ago_in_words(message_reply.created_at) %></time>
+            <% if message_reply.edited? %>
+              <span class="text-xs text-ink-muted">(redigerad)</span>
+            <% end %>
+          </div>
+
+          <% if message_reply.editable_by?(current_user) || message_reply.destroyable_by?(current_user) %>
+            <div class="relative" data-controller="dropdown">
+              <button
+                type="button"
+                class="p-3 -m-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-ink-muted hover:text-ink rounded transition-colors"
+                data-dropdown-target="button"
+                data-action="click->dropdown#toggle"
+                aria-label="Fler alternativ"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+              </button>
+
+              <div
+                class="absolute right-0 mt-1 w-36 bg-white rounded-lg shadow-lg border border-cream-dark py-1 z-10 hidden"
+                data-dropdown-target="menu"
+                role="menu"
+              >
+                <% if message_reply.editable_by?(current_user) %>
+                  <button
+                    type="button"
+                    class="w-full px-4 py-3 min-h-[44px] text-left text-sm text-ink hover:bg-cream/50 transition-colors"
+                    data-action="click->reply-edit#open"
+                    data-reply-edit-reply-id-param="<%= message_reply.id %>"
+                    role="menuitem"
+                  >
+                    <%= t("messages.actions.edit") %>
+                  </button>
+                <% end %>
+                <% if message_reply.destroyable_by?(current_user) %>
+                  <%= button_to club_message_reply_path(message_reply.club, message_reply.message, message_reply),
+                      method: :delete,
+                      form: { data: { turbo_confirm: t("messages.actions.delete_confirm") } },
+                      class: "w-full px-4 py-3 min-h-[44px] text-left text-sm text-vermillion hover:bg-cream/50 transition-colors" do %>
+                    <%= t("messages.actions.delete") %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <p class="text-sm text-ink whitespace-pre-wrap break-words"><%= render_with_mentions(message_reply.content, message_reply.club) %></p>
+      </div>
+    </div>
+  </article>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_07_135422) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_19_100001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -161,6 +161,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_07_135422) do
     t.index ["deleted_at"], name: "index_memberships_on_deleted_at"
     t.index ["user_id", "club_id"], name: "index_memberships_on_user_id_and_club_id", unique: true
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "message_replies", force: :cascade do |t|
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "edited_at"
+    t.bigint "message_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["message_id", "created_at"], name: "index_message_replies_on_message_id_and_created_at"
+    t.index ["message_id"], name: "index_message_replies_on_message_id"
+    t.index ["user_id"], name: "index_message_replies_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "club_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "edited_at"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["club_id", "created_at"], name: "index_messages_on_club_id_and_created_at"
+    t.index ["club_id"], name: "index_messages_on_club_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "passwordless_sessions", force: :cascade do |t|
@@ -365,6 +389,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_07_135422) do
   add_foreign_key "meetings", "users", column: "host_id"
   add_foreign_key "memberships", "clubs"
   add_foreign_key "memberships", "users"
+  add_foreign_key "message_replies", "messages"
+  add_foreign_key "message_replies", "users"
+  add_foreign_key "messages", "clubs"
+  add_foreign_key "messages", "users"
   add_foreign_key "rsvps", "meetings"
   add_foreign_key "rsvps", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

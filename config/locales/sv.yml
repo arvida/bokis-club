@@ -143,6 +143,15 @@ sv:
       item_deleted: "Frågan har tagits bort"
       regenerated: "Nya frågor har genererats"
       max_regenerate: "Du kan inte generera fler frågor för detta möte"
+    messages:
+      created: "Meddelandet har skickats"
+      updated: "Meddelandet har uppdaterats"
+      deleted: "Meddelandet har tagits bort"
+      not_editable: "Du kan inte längre redigera detta meddelande"
+      not_authorized: "Du har inte behörighet att göra detta"
+      reply_created: "Svaret har skickats"
+      reply_updated: "Svaret har uppdaterats"
+      reply_deleted: "Svaret har tagits bort"
 
   clubs:
     dashboard_card:
@@ -506,3 +515,30 @@ sv:
       no_meeting: "Ingen planerad träff"
       create: "Skapa träff"
       view_all: "Visa alla träffar"
+
+  messages:
+    link:
+      title: "Diskussion"
+      description: "Chatta med medlemmarna"
+    index:
+      title: "Diskussion"
+      empty: "Inga meddelanden ännu"
+      empty_hint: "Börja prata med klubben!"
+      new: "Nytt meddelande"
+    form:
+      title: "Nytt meddelande"
+      placeholder: "Skriv ditt meddelande..."
+      cancel: "Avbryt"
+      submit: "Skicka"
+    actions:
+      edit: "Redigera"
+      delete: "Ta bort"
+      delete_confirm: "Är du säker på att du vill ta bort detta meddelande?"
+    replies:
+      show:
+        one: "Visa 1 svar"
+        other: "Visa %{count} svar"
+      hide: "Dölj svar"
+      add: "Svara"
+      placeholder: "Skriv ett svar..."
+      submit: "Svara"
