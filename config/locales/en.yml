@@ -155,6 +155,9 @@ en:
     link:
       title: "Discussion"
       description: "Chat with members"
+    recent:
+      view_all: "View all"
+      start_discussion: "Start a discussion"
     index:
       title: "Discussion"
       empty: "No messages yet"

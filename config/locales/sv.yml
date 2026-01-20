@@ -520,6 +520,9 @@ sv:
     link:
       title: "Diskussion"
       description: "Chatta med medlemmarna"
+    recent:
+      view_all: "Visa alla"
+      start_discussion: "Starta en diskussion"
     index:
       title: "Diskussion"
       empty: "Inga meddelanden ännu"

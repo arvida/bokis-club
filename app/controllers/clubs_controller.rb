@@ -38,6 +38,8 @@ class ClubsController < ApplicationController
                        .where(club_books: { club_id: @club.id, status: "voting" })
                        .first
     end
+
+    @recent_messages = @club.messages.includes(:user).order(created_at: :desc).limit(3) if @is_member
   end
 
   def edit
